@@ -20,7 +20,11 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint --cache .",
+    "lint:fix": "eslint --fix --cache .",
+    "format:fix": "prettier --write --cache .",
+    "postinstall": "husky install"
   },
   "eslintConfig": {
     "extends": [
@@ -39,5 +43,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "husky": "^9.0.10",
+    "prettier": "^3.2.4"
   }
 }
