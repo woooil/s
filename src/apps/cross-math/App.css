@@ -1,0 +1,31 @@
+.domain > .form > .value.checked {
+  background: blue;
+}
+.domain > .form > .value.unchecked {
+  background: gray;
+}
+
+.puzzle {
+  display: grid;
+  grid-template-columns: repeat(7, 100px);
+  grid-template-rows: repeat(7, 100px);
+  padding: 0 500px;
+}
+
+.puzzle > .tile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.puzzle > .tile.span-col {
+  grid-column: span 2;
+}
+.puzzle > .tile.span-row {
+  grid-row: span 2;
+}
+
+.tile.operand {
+  border: 1px solid black;
+  border-radius: 100px;
+}
