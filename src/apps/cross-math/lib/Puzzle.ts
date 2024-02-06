@@ -16,8 +16,16 @@
  * results are semantically distinct, feel free to modify Board to make it easier for you to
  * implement Puzzle.
  */
-interface Board {
+export interface Board {
   data: string
+}
+
+enum Operator {
+  Plus = '+',
+  Minus = '-',
+  Div = '/',
+  Mul = '*',
+  Eq = '=',
 }
 
 const exampleBoard: Board = {
@@ -27,6 +35,27 @@ const exampleBoard: Board = {
 =   =   =
 8   2   6
 `,
+}
+
+function getRandOperator(): Operator {
+  const opArray = Object.values(Operator).filter(op => op !== Operator.Eq)
+  const randIdx = Math.floor(Math.random() * opArray.length)
+  return opArray[randIdx] as Operator
+}
+
+function computeRes(op1: number, op2: number, operator: Operator): number {
+  switch (operator) {
+    case Operator.Plus:
+      return op1 + op2
+    case Operator.Minus:
+      return op1 - op2
+    case Operator.Div:
+      return op1 / op2
+    case Operator.Mul:
+      return op1 * op2
+    default:
+      return 0
+  }
 }
 
 /*
@@ -69,14 +98,87 @@ class Puzzle {
    * could be specified as follows:
    * [1, 2, 3, 4, 5, 6, 7, 8, 9]
    */
-  domain: number[]
 
+  domain: number[]
+  constructor(col: number, row: number, fixedBoard: Board, domain: number[]) {
+    this.col = col
+    this.row = row
+    this.fixedBoard = fixedBoard
+    this.domain = domain
+  }
   /*
    * Creates a Board instance for a cross math puzzle under current options (row, col, fixedBoard and
    * domain) and returns it.
    */
   createBoard(): Board {
-    return exampleBoard // TODO: Please complete this method!!
+    // return exampleBoard // TODO: Please complete this method!!
+    const operands: number[][] = new Array(this.row + 1)
+    const operators: Operator[][] = new Array(this.row * 2)
+
+    // set operands
+    for (let i = 0; i < this.row; i++) {
+      operands[i] = new Array(this.col + 1).fill(0)
+      for (let j = 0; j < this.col; j++) {
+        operands[i][j] =
+          this.domain[Math.floor(Math.random() * this.domain.length)]
+      }
+    }
+    operands[this.row] = new Array(this.col + 1).fill(0)
+
+    // set operators
+    for (let i = 0; i < this.row * 2; i++) {
+      operators[i] = new Array(this.col).fill(Operator.Eq)
+      if (i === this.row * 2 - 1) {
+        break
+      }
+      if (i % 2 === 0) {
+        for (let j = 0; j < this.col - 1; j++) {
+          operators[i][j] = getRandOperator()
+        }
+      } else {
+        for (let j = 0; j < this.col; j++) {
+          operators[i][j] = getRandOperator()
+        }
+      }
+    }
+
+    // set results
+    for (let i = 0; i < this.row; i++) {
+      let res = operands[i][0]
+      for (let j = 0; j < this.col - 1; j++) {
+        res = computeRes(res, operands[i][j + 1], operators[2 * i][j])
+      }
+      operands[i][this.col] = res
+    }
+
+    for (let i = 0; i < this.col; i++) {
+      let res = operands[0][i]
+      for (let j = 0; j < this.row - 1; j++) {
+        res = computeRes(res, operands[j + 1][i], operators[2 * j + 1][i])
+      }
+      operands[this.row][i] = res
+    }
+
+    // set return board
+    const tempData: string[] = []
+    for (let i = 0; i < this.row; i++) {
+      for (let j = 0; j < this.col; j++) {
+        tempData.push(operands[i][j].toString())
+        tempData.push(operators[2 * i][j])
+      }
+      tempData.push(operands[i][this.col].toString())
+      tempData.push('\n')
+      for (let j = 0; j < this.col; j++) {
+        tempData.push(operators[2 * i + 1][j])
+        tempData.push(' ')
+      }
+      tempData.push('\n')
+    }
+    for (let j = 0; j < this.col; j++) {
+      tempData.push(operands[this.row][j].toString())
+      tempData.push(' ')
+    }
+    return { data: tempData.join(' ') }
   }
 
   /*
@@ -96,4 +198,4 @@ class Puzzle {
   }
 }
 
-export { Board, Puzzle }
+export { Puzzle }
