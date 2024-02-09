@@ -16,29 +16,50 @@
  * results are semantically distinct, feel free to modify Board to make it easier for you to
  * implement Puzzle.
  */
-export interface Board {
-  data: string
-}
-
-enum Operator {
+export enum Operator {
   Plus = '+',
   Minus = '-',
   Div = '/',
   Mul = '*',
-  Eq = '=',
+  Null = ' ',
+}
+
+interface Results {
+  rowResult: number[]
+  colResult: number[]
+}
+
+export interface Board {
+  operands: number[][]
+  operators: Operator[][]
+  results: Results
+}
+
+// export interface BoardRequirement extends Omit<Board, 'results'> {}
+
+export interface BoardRequirement {
+  operands: number[][]
+  operators: Operator[][]
 }
 
 const exampleBoard: Board = {
-  data: `3 + 8 - 2 = 9
-+   /   *
-5 * 4 + 3 = 23
-=   =   =
-8   2   6
-`,
+  operands: [
+    [3, 8, 2],
+    [5, 4, 3],
+  ],
+  operators: [
+    [Operator.Plus, Operator.Minus, Operator.Null],
+    [Operator.Plus, Operator.Div, Operator.Mul],
+    [Operator.Mul, Operator.Plus, Operator.Null],
+  ],
+  results: {
+    rowResult: [9, 23],
+    colResult: [8, 2, 6],
+  },
 }
 
 function getRandOperator(): Operator {
-  const opArray = Object.values(Operator).filter(op => op !== Operator.Eq)
+  const opArray = Object.values(Operator).filter(op => op !== Operator.Null)
   const randIdx = Math.floor(Math.random() * opArray.length)
   return opArray[randIdx] as Operator
 }
@@ -78,6 +99,16 @@ class Puzzle {
   row: number
 
   /*
+   * Represents a list of numbers that can be used in the operands. The numbers may not be
+   * consecutive.
+   *
+   * For example, if users want to use natural numbers less than 10 in the operands, this property
+   * could be specified as follows:
+   * [1, 2, 3, 4, 5, 6, 7, 8, 9]
+   */
+  domain: number[]
+
+  /*
    * Represents a (incomplete) Board representing the operands, operators or results that users
    * specified for the puzzle.
    *
@@ -88,97 +119,82 @@ class Puzzle {
    *  =   =   =
    * `
    */
-  fixedBoard: Board
+  fixedBoard?: BoardRequirement
 
-  /*
-   * Represents a list of numbers that can be used in the operands. The numbers may not be
-   * consecutive.
-   *
-   * For example, if users want to use natural numbers less than 10 in the operands, this property
-   * could be specified as follows:
-   * [1, 2, 3, 4, 5, 6, 7, 8, 9]
-   */
-
-  domain: number[]
-  constructor(col: number, row: number, fixedBoard: Board, domain: number[]) {
+  constructor(
+    col: number,
+    row: number,
+    domain: number[],
+    fixedBoard?: BoardRequirement,
+  ) {
     this.col = col
     this.row = row
-    this.fixedBoard = fixedBoard
     this.domain = domain
+    this.fixedBoard = fixedBoard
   }
   /*
    * Creates a Board instance for a cross math puzzle under current options (row, col, fixedBoard and
    * domain) and returns it.
    */
   createBoard(): Board {
-    // return exampleBoard // TODO: Please complete this method!!
-    const operands: number[][] = new Array(this.row + 1)
-    const operators: Operator[][] = new Array(this.row * 2)
-
-    // set operands
-    for (let i = 0; i < this.row; i++) {
-      operands[i] = new Array(this.col + 1).fill(0)
-      for (let j = 0; j < this.col; j++) {
-        operands[i][j] =
-          this.domain[Math.floor(Math.random() * this.domain.length)]
-      }
+    // TODO: Please complete this method!!
+    // const operands: number[][] = new Array(this.row + 1)
+    // const operators: Operator[][] = new Array(this.row * 2)
+    const operators = this.fixedBoard
+      ? this.fixedBoard.operators
+      : new Array(this.row * 2)
+    const operands = this.fixedBoard
+      ? this.fixedBoard.operands
+      : new Array(this.row)
+    const results: Results = {
+      rowResult: new Array(this.row),
+      colResult: new Array(this.col),
     }
-    operands[this.row] = new Array(this.col + 1).fill(0)
 
     // set operators
-    for (let i = 0; i < this.row * 2; i++) {
-      operators[i] = new Array(this.col).fill(Operator.Eq)
-      if (i === this.row * 2 - 1) {
-        break
-      }
+    for (let i = 0; i < this.row * 2 - 1; i++) {
+      if (!this.fixedBoard) operators[i] = new Array(this.col)
       if (i % 2 === 0) {
         for (let j = 0; j < this.col - 1; j++) {
-          operators[i][j] = getRandOperator()
+          if (!operators[i][j]) operators[i][j] = getRandOperator()
         }
       } else {
         for (let j = 0; j < this.col; j++) {
-          operators[i][j] = getRandOperator()
+          if (!operators[i][j]) operators[i][j] = getRandOperator()
+        }
+        operators[i][this.col - 1] = Operator.Null
+      }
+    }
+
+    // set operands
+    for (let i = 0; i < this.row; i++) {
+      if (!this.fixedBoard) operands[i] = new Array(this.col)
+      for (let j = 0; j < this.col; j++) {
+        if (!operands[i][j]) {
+          operands[i][j] =
+            this.domain[Math.floor(Math.random() * this.domain.length)]
         }
       }
     }
 
-    // set results
+    // set results in row
     for (let i = 0; i < this.row; i++) {
       let res = operands[i][0]
       for (let j = 0; j < this.col - 1; j++) {
         res = computeRes(res, operands[i][j + 1], operators[2 * i][j])
       }
-      operands[i][this.col] = res
+      results.rowResult[i] = res
     }
 
+    // set results in column
     for (let i = 0; i < this.col; i++) {
       let res = operands[0][i]
       for (let j = 0; j < this.row - 1; j++) {
         res = computeRes(res, operands[j + 1][i], operators[2 * j + 1][i])
       }
-      operands[this.row][i] = res
+      results.colResult[i] = res
     }
-
-    // set return board
-    const tempData: string[] = []
-    for (let i = 0; i < this.row; i++) {
-      for (let j = 0; j < this.col; j++) {
-        tempData.push(operands[i][j].toString())
-        tempData.push(operators[2 * i][j])
-      }
-      tempData.push(operands[i][this.col].toString())
-      tempData.push('\n')
-      for (let j = 0; j < this.col; j++) {
-        tempData.push(operators[2 * i + 1][j])
-        tempData.push(' ')
-      }
-      tempData.push('\n')
-    }
-    for (let j = 0; j < this.col; j++) {
-      tempData.push(operands[this.row][j].toString())
-      tempData.push(' ')
-    }
-    return { data: tempData.join(' ') }
+    return { operands: operands, operators: operators, results: results }
   }
 
   /*
