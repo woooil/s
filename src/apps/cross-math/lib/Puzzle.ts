@@ -38,8 +38,8 @@ export interface Board {
 // export interface BoardRequirement extends Omit<Board, 'results'> {}
 
 export interface BoardRequirement {
-  operands: number[][]
-  operators: Operator[][]
+  operands?: (number | null)[][]
+  operators?: (Operator | null)[][]
 }
 
 const exampleBoard: Board = {
@@ -84,41 +84,9 @@ function computeRes(op1: number, op2: number, operator: Operator): number {
  * instance, and provide undo and redo functions.
  */
 class Puzzle {
-  /*
-   * Represents the number of columns of the operands.
-   *
-   * For example, exampleBoard has 3 columns for its operands.
-   */
   col: number
-
-  /*
-   * Represents the number of rows of the operands.
-   *
-   * For example, exampleBoard has 2 columns for its operands.
-   */
   row: number
-
-  /*
-   * Represents a list of numbers that can be used in the operands. The numbers may not be
-   * consecutive.
-   *
-   * For example, if users want to use natural numbers less than 10 in the operands, this property
-   * could be specified as follows:
-   * [1, 2, 3, 4, 5, 6, 7, 8, 9]
-   */
   domain: number[]
-
-  /*
-   * Represents a (incomplete) Board representing the operands, operators or results that users
-   * specified for the puzzle.
-   *
-   * For example, if users want to include division by 8, this property could be specified as follows:
-   * `    8     =
-   *      /     =
-   *            =
-   *  =   =   =
-   * `
-   */
   fixedBoard?: BoardRequirement
 
   constructor(
@@ -132,20 +100,15 @@ class Puzzle {
     this.domain = domain
     this.fixedBoard = fixedBoard
   }
-  /*
-   * Creates a Board instance for a cross math puzzle under current options (row, col, fixedBoard and
-   * domain) and returns it.
-   */
+
   createBoard(): Board {
     // TODO: Please complete this method!!
-    // const operands: number[][] = new Array(this.row + 1)
-    // const operators: Operator[][] = new Array(this.row * 2)
-    const operators = this.fixedBoard
+    const operators = this.fixedBoard?.operators
       ? this.fixedBoard.operators
-      : new Array(this.row * 2)
-    const operands = this.fixedBoard
+      : new Array(this.row * 2 - 1).fill([])
+    const operands = this.fixedBoard?.operands
       ? this.fixedBoard.operands
-      : new Array(this.row)
+      : new Array(this.row).fill([])
     const results: Results = {
       rowResult: new Array(this.row),
       colResult: new Array(this.col),
@@ -153,22 +116,26 @@ class Puzzle {
 
     // set operators
     for (let i = 0; i < this.row * 2 - 1; i++) {
-      if (!this.fixedBoard) operators[i] = new Array(this.col)
+      if (!this.fixedBoard) {
+        operators[i] = new Array(this.col)
+      }
       if (i % 2 === 0) {
         for (let j = 0; j < this.col - 1; j++) {
           if (!operators[i][j]) operators[i][j] = getRandOperator()
         }
+        operators[i][this.col - 1] = Operator.Null
       } else {
         for (let j = 0; j < this.col; j++) {
           if (!operators[i][j]) operators[i][j] = getRandOperator()
         }
-        operators[i][this.col - 1] = Operator.Null
       }
     }
 
     // set operands
     for (let i = 0; i < this.row; i++) {
-      if (!this.fixedBoard) operands[i] = new Array(this.col)
+      if (!this.fixedBoard) {
+        operands[i] = new Array(this.col)
+      }
       for (let j = 0; j < this.col; j++) {
         if (!operands[i][j]) {
           operands[i][j] =
