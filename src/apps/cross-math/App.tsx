@@ -13,11 +13,11 @@ interface Tile {
   type: 'operand' | 'operator' | 'equal' | 'result' | 'empty'
 }
 
-const domainMax = 20
+const domainMax = 19
 const possibleDomain = Array.from(Array(domainMax + 1).keys())
 
 const initialOption: Option = {
-  row: 3,
+  row: 2,
   col: 3,
   domain: [1, 2, 3, 4, 5, 6, 7, 8, 9],
 }
@@ -26,6 +26,7 @@ export default function App() {
   const [option, setOption] = useState(initialOption)
   const [isDomainSelectorActive, setIsDomainSelectorActive] = useState(false)
   const [tiles, setTiles] = useState<Tile[]>([])
+  const [showAns, setShowAns] = useState(false)
 
   const decreaseRow = () =>
     setOption(prev => (prev.row < 3 ? prev : { ...prev, row: prev.row - 1 }))
@@ -122,6 +123,15 @@ export default function App() {
     updateTile(board)
   }
 
+  const answerHandler = () => {
+    setShowAns(prev => !prev)
+  }
+
+  useEffect(() => {
+    const board = puzzle.createBoard()
+    updateTile(board)
+  }, [])
+
   useEffect(() => {
     puzzle.row = option.row
     puzzle.col = option.col
@@ -129,67 +139,101 @@ export default function App() {
   }, [option])
 
   return (
-    <div>
-      <h1>Cross Math Puzzle</h1>
-      <div className="options">
-        <div className="row">
-          <div className="form">
-            <button
-              className="dec"
-              onClick={decreaseRow}>
-              -
-            </button>
-            <div className="value">{option.row}</div>
-            <button
-              className="inc"
-              onClick={increaseRow}>
-              +
-            </button>
+    <div className="content">
+      <h1 className="title">가로세로 연산</h1>
+      <div className="container">
+        <div className="dashboard">
+          <div className="options">
+            <div className="option-container">
+              <div className="option row">
+                <div className="label">줄</div>
+                <div className="form">
+                  <button
+                    className="dec button m-icon"
+                    onClick={decreaseRow}>
+                    stat_minus_1
+                  </button>
+                  <div className="value">{option.row}</div>
+                  <button
+                    className="inc button m-icon"
+                    onClick={increaseRow}>
+                    stat_1
+                  </button>
+                </div>
+              </div>
+              <div className="option col">
+                <div className="label">칸</div>
+                <div className="form">
+                  <button
+                    className="dec button m-icon"
+                    onClick={decreaseCol}>
+                    stat_minus_1
+                  </button>
+                  <div className="value">{option.col}</div>
+                  <button
+                    className="inc button m-icon"
+                    onClick={increaseCol}>
+                    stat_1
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className="option domain">
+              <div className="label">값의 범위</div>
+              <div className="domain-list">
+                {possibleDomain.map(d => (
+                  <button
+                    className={`value ${option.domain.includes(d) ? 'checked' : 'unchecked'}`}
+                    onMouseDown={() => domainDownHandler(d)}
+                    onMouseOver={() => domainOverHandler(d)}
+                    key={d}>
+                    {d}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
-          <div className="label">줄</div>
-        </div>
-        <div className="col">
-          <div className="form">
-            <button
-              className="dec"
-              onClick={decreaseCol}>
-              -
-            </button>
-            <div className="value">{option.col}</div>
-            <button
-              className="inc"
-              onClick={increaseCol}>
-              +
-            </button>
-          </div>
-          <div className="label">칸</div>
-        </div>
-        <div className="domain">
-          <div className="label">값의 범위</div>
-          <div className="form">
-            {possibleDomain.map(d => (
+          <div className="controller">
+            <div className="main-controller">
               <button
-                className={`value ${option.domain.includes(d) ? 'checked' : 'unchecked'}`}
-                onMouseDown={() => domainDownHandler(d)}
-                onMouseOver={() => domainOverHandler(d)}
-                key={d}>
-                {d}
+                className="undo button m-icon"
+                onClick={undoHandler}>
+                undo
               </button>
+              <button
+                className="create m-icon"
+                onClick={clickHandler}>
+                deployed_code
+              </button>
+              <button
+                className="redo button m-icon"
+                onClick={redoHandler}>
+                redo
+              </button>
+            </div>
+            <button
+              className="show-ans button m-icon"
+              onClick={answerHandler}>
+              {showAns ? 'visibility' : 'visibility_off'}
+            </button>
+          </div>
+        </div>
+        <div className="puzzle-container">
+          <div
+            className="puzzle"
+            style={{
+              gridTemplateColumns: `repeat(${option.col * 2 + 1}, 1fr)`,
+              gridTemplateRows: `repeat(${option.row * 2 + 1}, 1fr)`,
+            }}>
+            {tiles.map((t, idx) => (
+              <div
+                className={`tile ${t.type}`}
+                key={idx}>
+                {t.type === 'operand' && !showAns ? '' : t.label}
+              </div>
             ))}
           </div>
         </div>
-      </div>
-      <button onClick={clickHandler}>만들기</button>
-      <button onClick={undoHandler}>이전</button>
-      <button onClick={redoHandler}>다음</button>
-      <div className="puzzle">
-        {tiles.map((t, idx) => (
-          <div
-            className={`tile ${t.type}`}
-            key={idx}>
-            {t.label}
-          </div>
-        ))}
       </div>
     </div>
   )

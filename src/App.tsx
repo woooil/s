@@ -16,7 +16,7 @@ export default function App() {
           path="*"
           element={
             <Navigate
-              replacte
+              replace
               to="cross-math"
             />
           }
