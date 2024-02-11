@@ -66,21 +66,36 @@ function getRandOperator(includeDiv: boolean): Operator {
   return opArray[randIdx] as Operator
 }
 
-function computeRes(op1: number, op2: number, operator: Operator): number {
-  switch (operator) {
-    case Operator.Plus:
-      return op1 + op2
-    case Operator.Minus:
-      return op1 - op2
-    case Operator.Div:
-      return op1 / op2
-    case Operator.Mul:
-      return op1 * op2
-    default:
-      return 0
+function getRandOperand(
+  domain: number[],
+  isNom: boolean,
+  isDenom?: number[],
+): number {
+  if (isNom) {
+    const nomDomain = domain.filter(num => num > 1)
+    return nomDomain[Math.floor(Math.random() * nomDomain.length)]
   }
+  if (isDenom) {
+    const denomDomain = getFactors(domain, isDenom)
+    return denomDomain[Math.floor(Math.random() * denomDomain.length)]
+  }
+  return domain[Math.floor(Math.random() * domain.length)]
 }
 
+function getFactors(domain: number[], numbers: number[]): number[] {
+  const factors: number[] = []
+  for (let i = 0; i < domain.length; i++) {
+    let isFactor = true
+    for (let j = 0; j < numbers.length; j++) {
+      if (numbers[j] % domain[i] !== 0) {
+        isFactor = false
+        break
+      }
+    }
+    if (isFactor) factors.push(domain[i])
+  }
+  return factors
+}
 /*
  * Puzzle implements a controller that configure options for a cross math puzzle, generate a new
  * instance, and provide undo and redo functions.
@@ -97,6 +112,11 @@ class Puzzle {
     domain: number[],
     fixedBoard?: BoardRequirement,
   ) {
+    if (col < 2 || row < 2) {
+      throw new Error(
+        "Both 'col' and 'row' must be greater than or equal to 2.",
+      )
+    }
     this.col = col
     this.row = row
     this.domain = domain
@@ -144,13 +164,38 @@ class Puzzle {
       }
       for (let j = 0; j < this.col; j++) {
         if (!operands[i][j]) {
-          operands[i][j] =
-            this.domain[Math.floor(Math.random() * this.domain.length)]
+          if (
+            operators[2 * i][j] === Operator.Div ||
+            (i < this.row - 1 && operators[2 * i + 1][j] === Operator.Div)
+          ) {
+            operands[i][j] = getRandOperand(this.domain, true)
+          } else if (
+            i > 0 &&
+            j > 0 &&
+            operators[2 * i][j - 1] === Operator.Div &&
+            operators[2 * i - 1][j] === Operator.Div
+          ) {
+            operands[i][j] = getRandOperand(this.domain, false, [
+              operands[i][j - 1],
+              operands[i - 1][j],
+            ])
+          } else if (j > 0 && operators[2 * i][j - 1] === Operator.Div) {
+            operands[i][j] = getRandOperand(this.domain, false, [
+              operands[i][j - 1],
+            ])
+          } else if (i > 0 && operators[2 * i - 1][j] === Operator.Div) {
+            operands[i][j] = getRandOperand(this.domain, false, [
+              operands[i - 1][j],
+            ])
+          } else {
+            operands[i][j] = getRandOperand(this.domain, false)
+          }
         }
       }
     }
     console.log('operands', operands)
 
+    // set results
     for (let i = 0; i < this.row; i++) {
       let equation = String(operands[i][0])
       for (let j = 1; j < this.col; j++) {
