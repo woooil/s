@@ -175,7 +175,8 @@
   }
 }
 
-.undo, .redo {
+.undo,
+.redo {
   font-size: 1rem;
 }
 
@@ -191,6 +192,7 @@
 }
 
 .puzzle > .tile {
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;

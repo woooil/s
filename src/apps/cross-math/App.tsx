@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Board, Puzzle } from './lib/Puzzle'
+import { Board, Puzzle, Operator } from './lib/Puzzle'
 import './App.css'
 
 interface Option {
@@ -22,8 +22,15 @@ const initialOption: Option = {
   domain: [1, 2, 3, 4, 5, 6, 7, 8, 9],
 }
 
+const puzzle = new Puzzle(
+  initialOption.col,
+  initialOption.row,
+  initialOption.domain,
+)
+
 export default function App() {
   const [option, setOption] = useState(initialOption)
+  const [domain, setDomain] = useState(initialOption.domain)
   const [isDomainSelectorActive, setIsDomainSelectorActive] = useState(false)
   const [tiles, setTiles] = useState<Tile[]>([])
   const [showAns, setShowAns] = useState(false)
@@ -38,13 +45,8 @@ export default function App() {
     setOption(prev => (prev.col > 3 ? prev : { ...prev, col: prev.col + 1 }))
 
   const toggleDomain = (d: number) =>
-    setOption(prev => {
-      return {
-        ...prev,
-        domain: prev.domain.includes(d)
-          ? prev.domain.filter(f => f !== d)
-          : [...prev.domain, d],
-      }
+    setDomain(prev => {
+      return prev.includes(d) ? prev.filter(f => f !== d) : [...prev, d]
     })
 
   const domainDownHandler = (d: number) => {
@@ -52,6 +54,12 @@ export default function App() {
     document.addEventListener(
       'mouseup',
       () => {
+        setDomain(prev => {
+          setOption(prevOp => {
+            return { ...prevOp, domain: prev }
+          })
+          return prev
+        })
         setIsDomainSelectorActive(false)
       },
       { once: true },
@@ -64,48 +72,60 @@ export default function App() {
     toggleDomain(d)
   }
 
-  const puzzle = new Puzzle(3, 2, '', [1, 2, 3, 4, 5, 6, 7, 8, 9])
-
   const updateTile = (board: Board) => {
-    const data = board.data
-    const dataParsed = data
-      .replace(/ {2}/g, '#')
-      .replace(/ /g, '')
-      .replace(/#/g, ' ')
-      .split('\n')
-    const tiles: Tile[] = []
-    for (let i = 0; i < dataParsed.length - 1; i++) {
-      if (i === dataParsed.length - 2) {
-        ;[...dataParsed[i]].forEach(d => {
-          if (d === ' ') tiles.push({ type: 'empty' })
-          else tiles.push({ label: d, type: 'result' })
-        })
-      } else if (i === dataParsed.length - 3) {
-        ;[...dataParsed[i]].forEach(d => {
-          if (d === ' ') tiles.push({ type: 'empty' })
-          else tiles.push({ label: d, type: 'equal' })
-        })
-        tiles.push({ type: 'empty' })
-        tiles.push({ type: 'empty' })
-      } else if (dataParsed[i].includes('=')) {
-        const s = dataParsed[i].split('=')
-        s[0].split(/(\d+)/).forEach(d => {
-          if (d === '') return
-          else if (/\d+/.test(d)) tiles.push({ label: d, type: 'operand' })
-          else tiles.push({ label: d, type: 'operator' })
-        })
-        tiles.push({ label: '=', type: 'equal' })
-        tiles.push({ label: s[1], type: 'result' })
-      } else {
-        ;[...dataParsed[i]].forEach(d => {
-          if (d === ' ') tiles.push({ type: 'empty' })
-          else tiles.push({ label: d, type: 'operator' })
-        })
-        tiles.push({ type: 'empty' })
-        tiles.push({ type: 'empty' })
-      }
+    const tiles: Tile[][] = [...Array(option.row * 2 + 1)].map(() =>
+      Array(option.col * 2 + 1).fill({ type: 'empty' }),
+    )
+    board.operands.forEach((o, i) => {
+      o.forEach(
+        (oo, j) =>
+          (tiles[i * 2][j * 2] = { label: oo.toString(), type: 'operand' }),
+      )
+    })
+    board.operators.forEach((o, i) => {
+      o.forEach((oo, j) => {
+        if (oo === Operator.Null) return
+        else if (i % 2 === 0)
+          tiles[i][j * 2 + 1] = { label: oo, type: 'operator' }
+        else tiles[i][j * 2] = { label: oo, type: 'operator' }
+      })
+    })
+    board.results.rowResult.forEach((o, i) => {
+      tiles[i * 2][option.col * 2] = { label: o.toString(), type: 'result' }
+    })
+    board.results.colResult.forEach((o, i) => {
+      tiles[option.row * 2][i * 2] = { label: o.toString(), type: 'result' }
+    })
+    for (let i = 0; i < option.row; i++)
+      tiles[i * 2][option.col * 2 - 1] = { type: 'equal' }
+    for (let i = 0; i < option.col; i++)
+      tiles[option.row * 2 - 1][i * 2] = { type: 'equal' }
+
+    setTiles(tiles.flat())
+  }
+
+  const formatLabel = (tile: Tile) => {
+    switch (tile.type) {
+      case 'equal':
+        return '='
+      case 'result':
+        return '' + Math.round(parseFloat(tile.label || '0') * 10) / 10
+      case 'operator':
+        switch (tile.label) {
+          case Operator.Plus:
+            return '＋'
+          case Operator.Minus:
+            return '−'
+          case Operator.Div:
+            return '÷'
+          case Operator.Mul:
+            return '×'
+          default:
+            return tile.label
+        }
+      default:
+        return tile.label
     }
-    setTiles(tiles)
   }
 
   const clickHandler = () => {
@@ -114,12 +134,12 @@ export default function App() {
   }
 
   const undoHandler = () => {
-    const board = puzzle.undo()
+    const board = puzzle.undo() as Board
     updateTile(board)
   }
 
   const redoHandler = () => {
-    const board = puzzle.redo()
+    const board = puzzle.redo() as Board
     updateTile(board)
   }
 
@@ -136,6 +156,8 @@ export default function App() {
     puzzle.row = option.row
     puzzle.col = option.col
     puzzle.domain = option.domain
+    const board = puzzle.createBoard()
+    updateTile(board)
   }, [option])
 
   return (
@@ -183,7 +205,7 @@ export default function App() {
               <div className="domain-list">
                 {possibleDomain.map(d => (
                   <button
-                    className={`value ${option.domain.includes(d) ? 'checked' : 'unchecked'}`}
+                    className={`value ${domain.includes(d) ? 'checked' : 'unchecked'}`}
                     onMouseDown={() => domainDownHandler(d)}
                     onMouseOver={() => domainOverHandler(d)}
                     key={d}>
@@ -229,7 +251,7 @@ export default function App() {
               <div
                 className={`tile ${t.type}`}
                 key={idx}>
-                {t.type === 'operand' && !showAns ? '' : t.label}
+                {t.type === 'operand' && !showAns ? '' : formatLabel(t)}
               </div>
             ))}
           </div>

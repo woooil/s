@@ -12,12 +12,13 @@
   "plugins": ["@typescript-eslint"],
   "rules": {
     "indent": ["error", 2, { "SwitchCase": 1 }],
-    "curly": ["error", "multi-line"],
+    // "curly": ["error", "multi"],
     "no-var": "error",
     "no-multiple-empty-lines": "error",
-    "no-console": ["error", { "allow": ["warn", "error", "info"] }],
+    // "no-console": ["error", { "allow": ["warn", "error", "info"] }],
     "eqeqeq": "error",
     "dot-notation": "error",
-    "no-unused-vars": "error"
+    "no-unused-vars": "off",
+    "no-empty-interface": "off"
   }
 }
