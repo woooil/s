@@ -58,8 +58,10 @@ const exampleBoard: Board = {
   },
 }
 
-function getRandOperator(): Operator {
-  const opArray = Object.values(Operator).filter(op => op !== Operator.Null)
+function getRandOperator(includeDiv: boolean): Operator {
+  const opArray = Object.values(Operator).filter(
+    op => op !== (Operator.Null || (includeDiv && Operator.Div)),
+  )
   const randIdx = Math.floor(Math.random() * opArray.length)
   return opArray[randIdx] as Operator
 }
@@ -113,28 +115,23 @@ class Puzzle {
       rowResult: new Array(this.row),
       colResult: new Array(this.col),
     }
-    const midResults = {
-      rowResult: new Array(this.row)
-        .fill([])
-        .map(() => new Array(this.col).fill(undefined)),
-      colResult: new Array(this.row)
-        .fill([])
-        .map(() => new Array(this.col).fill(undefined)),
-    }
 
     // set operators
     for (let i = 0; i < this.row * 2 - 1; i++) {
+      let includeDiv = true
       if (!this.fixedBoard?.operators) {
         operators[i] = new Array(this.col)
       }
       if (i % 2 === 0) {
         for (let j = 0; j < this.col - 1; j++) {
-          if (!operators[i][j]) operators[i][j] = getRandOperator()
+          if (!operators[i][j]) operators[i][j] = getRandOperator(includeDiv)
+          if (operators[i][j] === Operator.Div) includeDiv = false
         }
         operators[i][this.col - 1] = Operator.Null
       } else {
         for (let j = 0; j < this.col; j++) {
-          if (!operators[i][j]) operators[i][j] = getRandOperator()
+          if (!operators[i][j]) operators[i][j] = getRandOperator(includeDiv)
+          if (operators[i][j] === Operator.Div) includeDiv = false
         }
       }
     }
@@ -154,93 +151,24 @@ class Puzzle {
     }
     console.log('operands', operands)
 
-    // set results in row
     for (let i = 0; i < this.row; i++) {
-      midResults.rowResult[i][0] = operands[i][0]
+      let equation = String(operands[i][0])
       for (let j = 1; j < this.col; j++) {
-        if (
-          operators[2 * i][j - 1] === Operator.Mul ||
-          operators[2 * i][j - 1] === Operator.Div
-        ) {
-          midResults.rowResult[i][j] = computeRes(
-            midResults.rowResult[i][j - 1]
-              ? midResults.rowResult[i][j - 1]
-              : operands[i][j - 1],
-            operands[i][j],
-            operators[2 * i][j - 1],
-          )
-          results.rowResult[i] = midResults.rowResult[i][j]
-          midResults.rowResult[i][j - 1] = null
-        }
+        equation += operators[2 * i][j - 1]
+        equation += String(operands[i][j])
       }
-      for (let j = 1; j < this.col; j++) {
-        if (
-          operators[2 * i][j - 1] === Operator.Plus ||
-          operators[2 * i][j - 1] === Operator.Minus
-        ) {
-          let k = j
-          while (midResults.rowResult[i][k] === null) {
-            k++
-          }
-          midResults.rowResult[i][j] = computeRes(
-            midResults.rowResult[i][j - 1]
-              ? midResults.rowResult[i][j - 1]
-              : operands[i][j - 1],
-            midResults.rowResult[i][k]
-              ? midResults.rowResult[i][k]
-              : operands[i][k],
-            operators[2 * i][j - 1],
-          )
-          results.rowResult[i] = midResults.rowResult[i][j]
-          midResults.rowResult[i][j - 1] = null
-          j = k
-        }
-      }
+      results.rowResult[i] = eval(equation)
     }
-
-    // set results in column
     for (let i = 0; i < this.col; i++) {
-      midResults.colResult[0][i] = operands[0][i]
+      let equation = String(operands[0][i])
       for (let j = 1; j < this.row; j++) {
-        if (
-          operators[2 * j - 1][i] === Operator.Mul ||
-          operators[2 * j - 1][i] === Operator.Div
-        ) {
-          midResults.colResult[j][i] = computeRes(
-            midResults.colResult[j - 1][i]
-              ? midResults.colResult[j - 1][i]
-              : operands[j][i],
-            operands[j][i],
-            operators[2 * j - 1][i],
-          )
-          results.colResult[i] = midResults.colResult[j][i]
-          midResults.colResult[j - 1][i] = null
-        }
+        equation += operators[2 * j - 1][i]
+        equation += String(operands[j][i])
       }
-      for (let j = 1; j < this.row; j++) {
-        if (
-          operators[2 * j - 1][i] === Operator.Plus ||
-          operators[2 * j - 1][i] === Operator.Minus
-        ) {
-          let k = j
-          while (midResults.colResult[k][i] === null) {
-            k++
-          }
-          midResults.colResult[j][i] = computeRes(
-            midResults.colResult[j - 1][i]
-              ? midResults.colResult[j - 1][i]
-              : operands[j - 1][i],
-            midResults.colResult[k][i]
-              ? midResults.colResult[k][i]
-              : operands[k][k],
-            operators[2 * j - 1][i],
-          )
-          results.colResult[i] = midResults.colResult[j][i]
-          midResults.colResult[j - 1][i] = null
-          j = k
-        }
-      }
+      results.colResult[i] = eval(equation)
     }
+    console.log('results', results)
+
     return { operands: operands, operators: operators, results: results }
   }
 
