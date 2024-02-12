@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react'
-import { Board, Puzzle, Operator } from './lib/Puzzle'
+import { BoardRequirement, Board, Puzzle, Operator } from './lib/Puzzle'
 import './App.css'
 
 interface Option {
   row: number
   col: number
   domain: number[]
+  fixedBoard: BoardRequirement
 }
 
 interface Tile {
   label?: string
   type: 'operand' | 'operator' | 'equal' | 'result' | 'empty'
+  fixed?: boolean
 }
 
 const domainMax = 19
@@ -20,6 +22,7 @@ const initialOption: Option = {
   row: 2,
   col: 3,
   domain: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+  fixedBoard: { operands: [], operators: [] },
 }
 
 const puzzle = new Puzzle(
@@ -147,6 +150,25 @@ export default function App() {
     setShowAns(prev => !prev)
   }
 
+  const fixHandler = (idx: number) => {
+    setTiles(prev => {
+      setOption(prev2 => {
+        const tile = prev[idx]
+        let row = 0
+        let col = 0
+        if (tile.type === 'operand')
+          row = Math.floor(idx / (option.col * 2 + 1))
+        col = (idx % (option.col * 2 + 1)) / 2
+        const fixedBoard = prev2.fixedBoard.map(i => i.slice())
+        fixedBoard[row][col] = tile.label
+        return { ...prev2, fixedBoard }
+      })
+      return prev.map((i, idx2) =>
+        idx2 === idx ? { ...prev[idx], fixed: prev[idx].fixed } : i,
+      )
+    })
+  }
+
   useEffect(() => {
     const board = puzzle.createBoard()
     updateTile(board)
@@ -156,6 +178,7 @@ export default function App() {
     puzzle.row = option.row
     puzzle.col = option.col
     puzzle.domain = option.domain
+    puzzle.fixedBoard = option.fixedBoard
     const board = puzzle.createBoard()
     updateTile(board)
   }, [option])
@@ -250,7 +273,12 @@ export default function App() {
             {tiles.map((t, idx) => (
               <div
                 className={`tile ${t.type}`}
+                onClick={() => {
+                  if (t.type === 'operand' || t.type === 'operator')
+                    fixHandler(idx)
+                }}
                 key={idx}>
+                {t.fixed && <div className={`tile-fixed m-icon`}>push_pin</div>}
                 {t.type === 'operand' && !showAns ? '' : formatLabel(t)}
               </div>
             ))}
