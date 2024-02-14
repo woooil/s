@@ -42,21 +42,21 @@ export interface BoardRequirement {
   operators?: (Operator | null)[][]
 }
 
-const exampleBoard: Board = {
-  operands: [
-    [3, 8, 2],
-    [5, 4, 3],
-  ],
-  operators: [
-    [Operator.Plus, Operator.Minus, Operator.Null],
-    [Operator.Plus, Operator.Div, Operator.Mul],
-    [Operator.Mul, Operator.Plus, Operator.Null],
-  ],
-  results: {
-    rowResult: [9, 23],
-    colResult: [8, 2, 6],
-  },
-}
+// const exampleBoard: Board = {
+//   operands: [
+//     [3, 8, 2],
+//     [5, 4, 3],
+//   ],
+//   operators: [
+//     [Operator.Plus, Operator.Minus, Operator.Null],
+//     [Operator.Plus, Operator.Div, Operator.Mul],
+//     [Operator.Mul, Operator.Plus, Operator.Null],
+//   ],
+//   results: {
+//     rowResult: [9, 23],
+//     colResult: [8, 2, 6],
+//   },
+// }
 
 function getRandOperator(includeDiv: boolean): Operator {
   const opArray = Object.values(Operator).filter(
@@ -217,21 +217,21 @@ class Puzzle {
       results.colResult[i] = eval(equation)
     }
     console.log('results', results)
-    const newBoard = { operands, operators, results }    
+    const newBoard = { operands, operators, results }
     this.addToHistory(newBoard)
 
     return newBoard
   }
 
-  private addToHistory(board: Board): void { 
+  private addToHistory(board: Board): void {
     if (this.historyIndex < this.boardHistory.length - 1) {
       this.boardHistory = this.boardHistory.slice(0, this.historyIndex + 1)
-    } 
-    this.boardHistory.push(board) 
-    if ((this.boardHistory.length > 5)) {
+    }
+    this.boardHistory.push(board)
+    if (this.boardHistory.length > 5) {
       this.boardHistory.shift()
     }
-    this.historyIndex = this.boardHistory.length - 1 
+    this.historyIndex = this.boardHistory.length - 1
   }
 
   /*
@@ -243,7 +243,7 @@ class Puzzle {
       this.historyIndex--
       return this.boardHistory[this.historyIndex]
     } else {
-      return new Error("No more undo steps available.")
+      return new Error('No more undo steps available.')
     }
   }
 
@@ -252,11 +252,11 @@ class Puzzle {
    * try to find a history earlier than that, it throws an error.
    */
   redo(): Board | Error {
-    if (this.historyIndex < this.boardHistory.length - 1) { 
+    if (this.historyIndex < this.boardHistory.length - 1) {
       this.historyIndex++
       return this.boardHistory[this.historyIndex]
     } else {
-      return new Error("No more redo steps available.") 
+      return new Error('No more redo steps available.')
     }
   }
 }
