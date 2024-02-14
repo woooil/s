@@ -105,6 +105,8 @@ class Puzzle {
   row: number
   domain: number[]
   fixedBoard?: BoardRequirement
+  private boardHistory: Board[] = []
+  private historyIndex = -1
 
   constructor(
     col: number,
@@ -215,8 +217,21 @@ class Puzzle {
       results.colResult[i] = eval(equation)
     }
     console.log('results', results)
+    const newBoard = { operands, operators, results }    
+    this.addToHistory(newBoard)
 
-    return { operands: operands, operators: operators, results: results }
+    return newBoard
+  }
+
+  private addToHistory(board: Board): void { 
+    if (this.historyIndex < this.boardHistory.length - 1) {
+      this.boardHistory = this.boardHistory.slice(0, this.historyIndex + 1)
+    } 
+    this.boardHistory.push(board) 
+    if ((this.boardHistory.length > 5)) {
+      this.boardHistory.shift()
+    }
+    this.historyIndex = this.boardHistory.length - 1 
   }
 
   /*
@@ -224,7 +239,12 @@ class Puzzle {
    * and if users try to find a history earlier than that, it throws an error.
    */
   undo(): Board | Error {
-    return exampleBoard // TODO: Please complete this method!!
+    if (this.historyIndex > 0) {
+      this.historyIndex--
+      return this.boardHistory[this.historyIndex]
+    } else {
+      return new Error("No more undo steps available.")
+    }
   }
 
   /*
@@ -232,7 +252,12 @@ class Puzzle {
    * try to find a history earlier than that, it throws an error.
    */
   redo(): Board | Error {
-    return exampleBoard // TODO: Please complete this method!!
+    if (this.historyIndex < this.boardHistory.length - 1) { 
+      this.historyIndex++
+      return this.boardHistory[this.historyIndex]
+    } else {
+      return new Error("No more redo steps available.") 
+    }
   }
 }
 
