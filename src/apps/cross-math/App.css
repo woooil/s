@@ -189,18 +189,16 @@
   display: grid;
   max-width: 100%;
   max-height: 100%;
-  gap: 8px;
 }
 
 .puzzle > .tile {
-  position: relative;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
   font-weight: 800;
   font-size: 2rem;
   aspect-ratio: 1;
-  border-radius: 100px;
 }
 
 .puzzle > .tile.span-col {
@@ -210,29 +208,7 @@
   grid-row: span 2;
 }
 
-.tile.operand,
-.tile.operator {
-  cursor: pointer;
-}
-
 .tile.operand {
   border: 1px solid black;
-}
-
-.tile > .tile-fixed {
-  font-variation-settings: 'FILL' 1;
-  position: absolute;
-  color: #ff991a;
-  font-size: 1rem;
-  right: 0;
-  top: 0;
-  rotate: 37deg;
-}
-
-.tile:has(> .tile-fixed) {
-  color: #ff991a;
-}
-
-.tile.operand:has(> .tile-fixed) {
-  border-color: #ff991a;
+  border-radius: 100px;
 }
