@@ -1,0 +1,214 @@
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
+
+.m-icon {
+  font-family: 'Material Symbols Outlined';
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+}
+
+.content {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 60px;
+  padding: 0 10%;
+}
+
+.title {
+  padding-top: 80px;
+}
+
+.container {
+  width: 100%;
+  max-width: 1040px;
+  display: flex;
+  justify-content: space-around;
+  gap: 40px;
+  margin-bottom: 80px;
+}
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+  gap: 4px;
+  font-weight: 500;
+}
+
+.option {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.form {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.button {
+  background: none;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 16px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: #eeeeee;
+}
+
+.option-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.domain {
+  flex-direction: column;
+}
+
+.domain > .label {
+  width: 100%;
+}
+
+.domain-list {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 4px;
+}
+
+.domain-list > .value {
+  border-radius: 9999px;
+  width: 30px;
+  height: 30px;
+  border: none;
+  cursor: pointer;
+}
+
+.domain-list > .value.checked {
+  background: #3f51b5;
+  color: white;
+}
+.domain-list > .value.unchecked {
+  background: none;
+}
+.domain-list > .value:hover {
+  color: black;
+  background: #eeeeee;
+}
+
+.puzzle-container {
+  width: 500px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 60px 40px 40px 60px;
+  border-radius: 40px;
+  box-shadow: 0px 0 10px 6px #eeeeee;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.controller {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.main-controller {
+  display: flex;
+  place-items: center;
+  gap: 8px;
+}
+
+.main-controller > * {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.create {
+  font-size: 3rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.create:hover {
+  animation: shaking 0.25s infinite;
+  background: #3f51b5;
+  color: white;
+}
+
+@keyframes shaking {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(5px, 5px) rotate(5deg);
+  }
+  50% {
+    transform: translate(0, 0) rotate(0eg);
+  }
+  75% {
+    transform: translate(-5px, 5px) rotate(-5deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+.undo,
+.redo {
+  font-size: 1rem;
+}
+
+.show-ans {
+  position: absolute;
+  right: 0;
+}
+
+.puzzle {
+  display: grid;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.puzzle > .tile {
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 800;
+  font-size: 2rem;
+  aspect-ratio: 1;
+}
+
+.puzzle > .tile.span-col {
+  grid-column: span 2;
+}
+.puzzle > .tile.span-row {
+  grid-row: span 2;
+}
+
+.tile.operand {
+  border: 1px solid black;
+  border-radius: 100px;
+}
