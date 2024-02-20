@@ -251,13 +251,13 @@ export default function App() {
 
   return (
     <div className="content">
-      <h1 className="title">가로세로 연산</h1>
       <div className="container">
         <div className="dashboard">
+          <h1 className="title">가로세로 연산</h1>
           <div className="options">
             <div className="option-container">
               <div className="option row">
-                <div className="label">칸</div>
+                <div className="label">줄</div>
                 <div className="form">
                   <button
                     className="dec button m-icon"
