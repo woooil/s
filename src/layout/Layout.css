@@ -1,0 +1,62 @@
+footer {
+  position: relative;
+  display: flex;
+  padding: 8px;
+  background: #f2f3f5; 
+  align-items: center;
+  font-size: 0.8rem;
+}
+
+footer .left {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+footer .app-logo {
+  height: 100%;
+  aspect-ratio: 1;
+  scale: 0.6;
+}
+
+footer .middle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+}
+
+footer .middle > * {
+  display: flex;
+}
+
+footer .title {
+  align-items: flex-end;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+.homepage-link, .wooil-kim-link, .about-link {
+  color: #2e2e2e;
+  text-decoration: none;
+}
+
+.github-link {
+  padding-left: 8px;
+  line-height: 1;
+}
+
+.github-logo {
+  height: 1rem;
+}
+
+.privacy-link {
+  color: #2e2e2e;
+  font-weight: bold;
+  text-decoration: none;
+  padding-right: 8px;
+}
