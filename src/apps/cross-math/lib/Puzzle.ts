@@ -106,10 +106,12 @@ class Puzzle {
   createBoard(): Board {
     // TODO: Please complete this method!!
     const operators = this.fixedBoard?.operators
-      ? this.fixedBoard.operators
+      // ? this.fixedBoard.operators
+      ? this.fixedBoard.operators.map(i => i.slice())
       : new Array(this.row * 2 - 1).fill([])
     const operands = this.fixedBoard?.operands
-      ? this.fixedBoard.operands
+      // ? this.fixedBoard.operands
+      ? this.fixedBoard.operands.map(i => i.slice())
       : new Array(this.row).fill([])
     const results: Results = {
       rowResult: new Array(this.row),

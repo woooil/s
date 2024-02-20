@@ -1,31 +1,39 @@
 import { useState, useEffect } from 'react'
-import { Board, Puzzle, Operator } from './lib/Puzzle'
+import { Board, Puzzle, Operator, BoardRequirement } from './lib/Puzzle'
 import './App.css'
 
 interface Option {
   row: number
   col: number
   domain: number[]
+  fixedBoard: BoardRequirement
 }
 
 interface Tile {
   label?: string
   type: 'operand' | 'operator' | 'equal' | 'result' | 'empty'
+  fixed?: boolean
 }
 
 const domainMax = 19
 const possibleDomain = Array.from(Array(domainMax + 1).keys())
 
+function getEmpty2DArr(row: number, col: number) {
+  return [...Array(row)].map(() => [...Array(col)])
+}
+
 const initialOption: Option = {
   row: 2,
   col: 3,
   domain: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+  fixedBoard: { operands: getEmpty2DArr(2, 3), operators: getEmpty2DArr(3, 3) },
 }
 
 const puzzle = new Puzzle(
   initialOption.col,
   initialOption.row,
   initialOption.domain,
+  initialOption.fixedBoard,
 )
 
 export default function App() {
@@ -36,13 +44,57 @@ export default function App() {
   const [showAns, setShowAns] = useState(false)
 
   const decreaseRow = () =>
-    setOption(prev => (prev.row < 3 ? prev : { ...prev, row: prev.row - 1 }))
+    setOption(prev =>
+      prev.row < 3
+        ? prev
+        : {
+            ...prev,
+            row: prev.row - 1,
+            fixedBoard: {
+              operands: getEmpty2DArr(prev.row - 1, prev.col),
+              operators: getEmpty2DArr(2 * (prev.row - 1) - 1, prev.col),
+            },
+          },
+    )
   const increaseRow = () =>
-    setOption(prev => (prev.row > 3 ? prev : { ...prev, row: prev.row + 1 }))
+    setOption(prev =>
+      prev.row > 3
+        ? prev
+        : {
+            ...prev,
+            row: prev.row + 1,
+            fixedBoard: {
+              operands: getEmpty2DArr(prev.row + 1, prev.col),
+              operators: getEmpty2DArr(2 * (prev.row + 1) - 1, prev.col),
+            },
+          },
+    )
   const decreaseCol = () =>
-    setOption(prev => (prev.col < 3 ? prev : { ...prev, col: prev.col - 1 }))
+    setOption(prev =>
+      prev.col < 3
+        ? prev
+        : {
+            ...prev,
+            col: prev.col - 1,
+            fixedBoard: {
+              operands: getEmpty2DArr(prev.row, prev.col - 1),
+              operators: getEmpty2DArr(2 * prev.row - 1, prev.col - 1),
+            },
+          },
+    )
   const increaseCol = () =>
-    setOption(prev => (prev.col > 3 ? prev : { ...prev, col: prev.col + 1 }))
+    setOption(prev =>
+      prev.col > 3
+        ? prev
+        : {
+            ...prev,
+            col: prev.col + 1,
+            fixedBoard: {
+              operands: getEmpty2DArr(prev.row, prev.col + 1),
+              operators: getEmpty2DArr(2 * prev.row - 1, prev.col + 1),
+            },
+          },
+    )
 
   const toggleDomain = (d: number) =>
     setDomain(prev => {
@@ -101,7 +153,13 @@ export default function App() {
     for (let i = 0; i < option.col; i++)
       tiles[option.row * 2 - 1][i * 2] = { type: 'equal' }
 
-    setTiles(tiles.flat())
+    setTiles(prev => {
+      const newTiles = tiles.flat()
+      if (prev.length !== newTiles.length) return newTiles
+      return prev.map((i, idx) => {
+        return { ...newTiles[idx], fixed: i.fixed }
+      })
+    })
   }
 
   const formatLabel = (tile: Tile) => {
@@ -129,6 +187,11 @@ export default function App() {
   }
 
   const clickHandler = () => {
+    console.log('wow', option)
+    puzzle.row = option.row
+    puzzle.col = option.col
+    puzzle.domain = option.domain
+    puzzle.fixedBoard = option.fixedBoard
     const board = puzzle.createBoard()
     updateTile(board)
   }
@@ -147,18 +210,44 @@ export default function App() {
     setShowAns(prev => !prev)
   }
 
-  useEffect(() => {
-    const board = puzzle.createBoard()
-    updateTile(board)
-  }, [])
+  const fixHandler = (idx: number) => {
+    const tile = tiles[idx]
+    if (tile.type !== 'operand' && tile.type !== 'operator') return
+    setTiles(prev => {
+      const n = [...prev]
+      const newState = n[idx].fixed === undefined || n[idx].fixed === false
+      n.splice(idx, 1, { ...n[idx], fixed: newState })
+      setOption(prev2 => {
+        const superCol = 2 * prev2.col + 1
+        if (tile.type === 'operand') {
+          const operands =
+            prev2.fixedBoard.operands?.map(i => i.slice()) ||
+            getEmpty2DArr(prev2.row, prev2.col)
+          const row = Math.floor(idx / (2 * superCol))
+          const col = (idx % superCol) / 2
+          const operandsRow = [...operands[row]]
+          operandsRow.splice(col, 1, newState ? tile.label : undefined)
+          operands.splice(row, 1, operandsRow)
+          return { ...prev2, fixedBoard: { ...prev2.fixedBoard, operands } }
+        } else {
+          const operators =
+            prev2.fixedBoard.operators?.map(i => i.slice()) ||
+            getEmpty2DArr(prev2.row * 2 - 1, prev2.col)
+          const row = Math.floor(idx / superCol)
+          const col = Math.floor((idx % superCol) / 2)
+          const operatorsRow = [...operators[row]]
+          operatorsRow.splice(col, 1, newState ? tile.label : undefined)
+          operators.splice(row, 1, operatorsRow)
+          return { ...prev2, fixedBoard: { ...prev2.fixedBoard, operators } }
+        }
+      })
+      return n
+    })
+  }
 
   useEffect(() => {
-    puzzle.row = option.row
-    puzzle.col = option.col
-    puzzle.domain = option.domain
-    const board = puzzle.createBoard()
-    updateTile(board)
-  }, [option])
+    clickHandler()
+  }, [option.row, option.col, option.domain])
 
   return (
     <div className="content">
@@ -168,7 +257,7 @@ export default function App() {
           <div className="options">
             <div className="option-container">
               <div className="option row">
-                <div className="label">줄</div>
+                <div className="label">칸</div>
                 <div className="form">
                   <button
                     className="dec button m-icon"
@@ -244,14 +333,22 @@ export default function App() {
           <div
             className="puzzle"
             style={{
-              gridTemplateColumns: `repeat(${option.col * 2 + 1}, 1fr)`,
-              gridTemplateRows: `repeat(${option.row * 2 + 1}, 1fr)`,
+              gridTemplateColumns: `repeat(${option.col * 2 + 1}, minmax(0, 1fr))`,
+              gridTemplateRows: `repeat(${option.row * 2 + 1}, minmax(0, 1fr))`,
             }}>
             {tiles.map((t, idx) => (
               <div
                 className={`tile ${t.type}`}
+                onClick={() => fixHandler(idx)}
                 key={idx}>
-                {t.type === 'operand' && !showAns ? '' : formatLabel(t)}
+                {t.fixed ? (
+                  <div className="fixed-flag m-icon">push_pin</div>
+                ) : (
+                  ''
+                )}
+                <div className="label">
+                  {t.type === 'operand' && !showAns ? '' : formatLabel(t)}
+                </div>
               </div>
             ))}
           </div>
