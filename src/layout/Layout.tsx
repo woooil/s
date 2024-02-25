@@ -4,11 +4,11 @@ import './Layout.css'
 
 export default function Layout() {
   return (
-  <>
+    <>
       <main>
         <Outlet />
       </main>
       <Footer />
-  </>
+    </>
   )
 }
