@@ -35,32 +35,14 @@ export interface Board {
   results: Results
 }
 
-// export interface BoardRequirement extends Omit<Board, 'results'> {}
-
 export interface BoardRequirement {
   operands?: (number | null)[][]
   operators?: (Operator | null)[][]
 }
 
-// const exampleBoard: Board = {
-//   operands: [
-//     [3, 8, 2],
-//     [5, 4, 3],
-//   ],
-//   operators: [
-//     [Operator.Plus, Operator.Minus, Operator.Null],
-//     [Operator.Plus, Operator.Div, Operator.Mul],
-//     [Operator.Mul, Operator.Plus, Operator.Null],
-//   ],
-//   results: {
-//     rowResult: [9, 23],
-//     colResult: [8, 2, 6],
-//   },
-// }
-
 function getRandOperator(includeDiv: boolean): Operator {
   const opArray = Object.values(Operator).filter(
-    op => op !== (Operator.Null || (includeDiv && Operator.Div)),
+    op => op !== Operator.Null && (includeDiv || op !== Operator.Div),
   )
   const randIdx = Math.floor(Math.random() * opArray.length)
   return opArray[randIdx] as Operator
@@ -128,12 +110,12 @@ class Puzzle {
   createBoard(): Board {
     // TODO: Please complete this method!!
     const operators = this.fixedBoard?.operators
-      // ? this.fixedBoard.operators
-      ? this.fixedBoard.operators.map(i => i.slice())
+      ? // ? this.fixedBoard.operators
+        this.fixedBoard.operators.map(i => i.slice())
       : new Array(this.row * 2 - 1).fill([])
     const operands = this.fixedBoard?.operands
-      // ? this.fixedBoard.operands
-      ? this.fixedBoard.operands.map(i => i.slice())
+      ? // ? this.fixedBoard.operands
+        this.fixedBoard.operands.map(i => i.slice())
       : new Array(this.row).fill([])
     const results: Results = {
       rowResult: new Array(this.row),
@@ -141,21 +123,31 @@ class Puzzle {
     }
 
     // set operators
-    for (let i = 0; i < this.row * 2 - 1; i++) {
+    for (let i = 0; i < this.row * 2 - 1; i += 2) {
       let includeDiv = true
       if (!this.fixedBoard?.operators) {
         operators[i] = new Array(this.col)
       }
-      if (i % 2 === 0) {
-        for (let j = 0; j < this.col - 1; j++) {
-          if (!operators[i][j]) operators[i][j] = getRandOperator(includeDiv)
-          if (operators[i][j] === Operator.Div) includeDiv = false
+      for (let j = 0; j < this.col - 1; j++) {
+        if (!operators[i][j]) operators[i][j] = getRandOperator(includeDiv)
+        if (operators[i][j] === Operator.Div) {
+          includeDiv = false
         }
-        operators[i][this.col - 1] = Operator.Null
-      } else {
-        for (let j = 0; j < this.col; j++) {
-          if (!operators[i][j]) operators[i][j] = getRandOperator(includeDiv)
-          if (operators[i][j] === Operator.Div) includeDiv = false
+      }
+      operators[i][this.col - 1] = Operator.Null
+    }
+
+    for (let i = 1; i < this.row * 2 - 1; i += 2) {
+      if (!this.fixedBoard?.operators) {
+        operators[i] = new Array(this.col)
+      }
+    }
+    for (let i = 0; i < this.col; i++) {
+      let includeDiv = true
+      for (let j = 1; j < this.row * 2 - 1; j += 2) {
+        if (!operators[j][i]) operators[j][i] = getRandOperator(includeDiv)
+        if (operators[j][i] === Operator.Div) {
+          includeDiv = false
         }
       }
     }
