@@ -2,7 +2,7 @@ footer {
   position: relative;
   display: flex;
   padding: 8px;
-  background: #f2f3f5; 
+  background: #f2f3f5;
   align-items: center;
   font-size: 0.8rem;
 }
@@ -40,7 +40,9 @@ footer a:hover {
   text-decoration: underline;
 }
 
-.homepage-link, .wooil-kim-link, .about-link {
+.homepage-link,
+.wooil-kim-link,
+.about-link {
   color: #2e2e2e;
   text-decoration: none;
 }

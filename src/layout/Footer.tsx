@@ -7,10 +7,11 @@ export default function Footer() {
         <Link
           className="homepage-link"
           to="/">
-          <img 
-          className="app-logo"
-          src={`${process.env.PUBLIC_URL}/logo512.png`}
-          alt="app-logo"/>
+          <img
+            className="app-logo"
+            src={`${process.env.PUBLIC_URL}/logo512.png`}
+            alt="app-logo"
+          />
         </Link>
       </div>
       <div className="middle">
@@ -18,7 +19,7 @@ export default function Footer() {
           <Link
             className="homepage-link"
             to="https://s.wooil.kim">
-            s by Wooil Kim 
+            s by Wooil Kim
           </Link>
           <div>&nbsp;— 단 한 명을 위한 수학 도구</div>
           <Link
@@ -34,13 +35,25 @@ export default function Footer() {
           </Link>
         </div>
         <div>
-          <Link className="privacy-link" to="/privacy">개인정보처리방침</Link>
-          <Link className="about-link" to="/about">서비스 안내</Link>
+          <Link
+            className="privacy-link"
+            to="/privacy">
+            개인정보처리방침
+          </Link>
+          <Link
+            className="about-link"
+            to="/about">
+            서비스 안내
+          </Link>
         </div>
         <div>
           <div>© 2024.&nbsp;</div>
-          <Link className="wooil-kim-link" to="https://wooil.kim" target="_blank" rel="noopener noreferrer">
-          wooil.kim.
+          <Link
+            className="wooil-kim-link"
+            to="https://wooil.kim"
+            target="_blank"
+            rel="noopener noreferrer">
+            wooil.kim.
           </Link>
           <div>&nbsp;All rights reserved.</div>
         </div>

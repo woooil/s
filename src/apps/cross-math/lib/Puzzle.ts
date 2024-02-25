@@ -151,7 +151,6 @@ class Puzzle {
         }
       }
     }
-    console.log('operators', operators)
 
     // set operands
     for (let i = 0; i < this.row; i++) {
@@ -165,27 +164,28 @@ class Puzzle {
             (i < this.row - 1 && operators[2 * i + 1][j] === Operator.Div)
           ) {
             operands[i][j] = getRandOperand(this.domain, true)
-          } else if (
-            i > 0 &&
-            j > 0 &&
-            operators[2 * i][j - 1] === Operator.Div &&
-            operators[2 * i - 1][j] === Operator.Div
-          ) {
-            operands[i][j] = getRandOperand(this.domain, false, [
-              operands[i][j - 1],
-              operands[i - 1][j],
-            ])
-          } else if (j > 0 && operators[2 * i][j - 1] === Operator.Div) {
-            operands[i][j] = getRandOperand(this.domain, false, [
-              operands[i][j - 1],
-            ])
-          } else if (i > 0 && operators[2 * i - 1][j] === Operator.Div) {
-            operands[i][j] = getRandOperand(this.domain, false, [
-              operands[i - 1][j],
-            ])
-          } else {
-            operands[i][j] = getRandOperand(this.domain, false)
           }
+        }
+        if (
+          i > 0 &&
+          j > 0 &&
+          operators[2 * i][j - 1] === Operator.Div &&
+          operators[2 * i - 1][j] === Operator.Div
+        ) {
+          operands[i][j] = getRandOperand(this.domain, false, [
+            operands[i][j - 1],
+            operands[i - 1][j],
+          ])
+        } else if (j > 0 && operators[2 * i][j - 1] === Operator.Div) {
+          operands[i][j] = getRandOperand(this.domain, false, [
+            operands[i][j - 1],
+          ])
+        } else if (i > 0 && operators[2 * i - 1][j] === Operator.Div) {
+          operands[i][j] = getRandOperand(this.domain, false, [
+            operands[i - 1][j],
+          ])
+        } else {
+          operands[i][j] = getRandOperand(this.domain, false)
         }
       }
     }
