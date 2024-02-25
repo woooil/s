@@ -11,10 +11,7 @@
  *     =   =   =
  *     8   2   6
  * is exampleBoard, a constant delcared below.
- *
- * TODO: Please richen its structure, it's so naive now! As long as operands, Operators, and the
- * results are semantically distinct, feel free to modify Board to make it easier for you to
- * implement Puzzle.
+
  */
 export enum Operator {
   Plus = '+',
@@ -108,14 +105,11 @@ class Puzzle {
   }
 
   createBoard(): Board {
-    // TODO: Please complete this method!!
     const operators = this.fixedBoard?.operators
-      ? // ? this.fixedBoard.operators
-        this.fixedBoard.operators.map(i => i.slice())
+      ? this.fixedBoard.operators.map(i => i.slice())
       : new Array(this.row * 2 - 1).fill([])
     const operands = this.fixedBoard?.operands
-      ? // ? this.fixedBoard.operands
-        this.fixedBoard.operands.map(i => i.slice())
+      ? this.fixedBoard.operands.map(i => i.slice())
       : new Array(this.row).fill([])
     const results: Results = {
       rowResult: new Array(this.row),
@@ -189,7 +183,6 @@ class Puzzle {
         }
       }
     }
-    console.log('operands', operands)
 
     // set results
     for (let i = 0; i < this.row; i++) {
@@ -208,10 +201,8 @@ class Puzzle {
       }
       results.colResult[i] = eval(equation)
     }
-    console.log('results', results)
     const newBoard = { operands, operators, results }
     this.addToHistory(newBoard)
-
     return newBoard
   }
 
@@ -230,12 +221,13 @@ class Puzzle {
    * Returns the Board instance previously created by this Puzzle. Up to five instances are stored,
    * and if users try to find a history earlier than that, it throws an error.
    */
-  undo(): Board | Error {
+  undo(): Board {
     if (this.historyIndex > 0) {
       this.historyIndex--
       return this.boardHistory[this.historyIndex]
     } else {
-      return new Error('No more undo steps available.')
+      // return new Error('No more undo steps available.')
+      return this.boardHistory[this.historyIndex]
     }
   }
 
@@ -243,12 +235,13 @@ class Puzzle {
    * Returns the Board instance undoned by this Puzzle. Up to five instances are stored, and if users
    * try to find a history earlier than that, it throws an error.
    */
-  redo(): Board | Error {
+  redo(): Board {
     if (this.historyIndex < this.boardHistory.length - 1) {
       this.historyIndex++
       return this.boardHistory[this.historyIndex]
     } else {
-      return new Error('No more redo steps available.')
+      // return new Error('No more redo steps available.')
+      return this.boardHistory[this.historyIndex]
     }
   }
 }
