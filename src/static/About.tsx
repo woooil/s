@@ -22,15 +22,14 @@ export default function About() {
         원하는 설정에 맞추고 퍼즐을 마음껏 즐겨 보세요!
       </p>
       <p>
-        가로세로 연산은 특별히 공동 작업으로 만들어진 도구입니다. 즐거이 작업에
-        참여해 주신{' '}
+        가로세로 연산은 특별히{' '}
         <Link
           to={SIHYUN_LINK}
           target="_blank"
           rel="noopener noreferrer">
           안시현
         </Link>
-        님께 감사 인사를 전합니다!
+        님과의 공동 작업으로 만들어진 도구입니다.
       </p>
       <h4>공동 작업자</h4>
       <ul>
