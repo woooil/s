@@ -7,6 +7,7 @@ interface Option {
   col: number
   domain: number[]
   fixedBoard: BoardRequirement
+  board: Board
 }
 
 interface Tile {
@@ -22,7 +23,7 @@ function getEmpty2DArr(row: number, col: number) {
   return [...Array(row)].map(() => [...Array(col)])
 }
 
-const initialOption: Option = {
+const initialOptionRaw = {
   row: 2,
   col: 3,
   domain: [1, 2, 3, 4, 5, 6, 7, 8, 9],
@@ -30,11 +31,16 @@ const initialOption: Option = {
 }
 
 const puzzle = new Puzzle(
-  initialOption.col,
-  initialOption.row,
-  initialOption.domain,
-  initialOption.fixedBoard,
+  initialOptionRaw.col,
+  initialOptionRaw.row,
+  initialOptionRaw.domain,
+  initialOptionRaw.fixedBoard,
 )
+
+const initialOption: Option = {
+  ...initialOptionRaw,
+  board: puzzle.createBoard(),
+}
 
 export default function App() {
   const [option, setOption] = useState(initialOption)
@@ -43,61 +49,40 @@ export default function App() {
   const [tiles, setTiles] = useState<Tile[]>([])
   const [showAns, setShowAns] = useState(false)
 
-  const decreaseRow = () =>
-    setOption(prev =>
-      prev.row < 3
-        ? prev
-        : {
-            ...prev,
-            row: prev.row - 1,
-            fixedBoard: {
-              operands: getEmpty2DArr(prev.row - 1, prev.col),
-              operators: getEmpty2DArr(2 * (prev.row - 1) - 1, prev.col),
-            },
-          },
-    )
-  const increaseRow = () =>
-    setOption(prev =>
-      prev.row > 3
-        ? prev
-        : {
-            ...prev,
-            row: prev.row + 1,
-            fixedBoard: {
-              operands: getEmpty2DArr(prev.row + 1, prev.col),
-              operators: getEmpty2DArr(2 * (prev.row + 1) - 1, prev.col),
-            },
-          },
-    )
-  const decreaseCol = () =>
-    setOption(prev =>
-      prev.col < 3
-        ? prev
-        : {
-            ...prev,
-            col: prev.col - 1,
-            fixedBoard: {
-              operands: getEmpty2DArr(prev.row, prev.col - 1),
-              operators: getEmpty2DArr(2 * prev.row - 1, prev.col - 1),
-            },
-          },
-    )
-  const increaseCol = () =>
-    setOption(prev =>
-      prev.col > 3
-        ? prev
-        : {
-            ...prev,
-            col: prev.col + 1,
-            fixedBoard: {
-              operands: getEmpty2DArr(prev.row, prev.col + 1),
-              operators: getEmpty2DArr(2 * prev.row - 1, prev.col + 1),
-            },
-          },
-    )
+  const changeRowCol = (row: boolean, inc: boolean) => {
+    setOption(prev => {
+      if (
+        (row && ((inc && prev.row > 3) || (!inc && prev.row < 3))) ||
+        (!row && ((inc && prev.col > 3) || (!inc && prev.col < 3)))
+      )
+        return prev
+      const newRow = prev.row + (row ? (inc ? 1 : -1) : 0)
+      const newCol = prev.col + (row ? 0 : inc ? 1 : -1)
+      const newFixedBoard = {
+        operands: getEmpty2DArr(newRow, newCol),
+        operators: getEmpty2DArr(2 * newRow - 1, newCol),
+      }
+      puzzle.row = newRow
+      puzzle.col = newCol
+      puzzle.fixedBoard = newFixedBoard
+      return {
+        ...prev,
+        row: newRow,
+        col: newCol,
+        fixedBoard: newFixedBoard,
+        board: puzzle.createBoard(),
+      }
+    })
+  }
+
+  const decreaseRow = () => changeRowCol(true, false)
+  const increaseRow = () => changeRowCol(true, true)
+  const decreaseCol = () => changeRowCol(false, false)
+  const increaseCol = () => changeRowCol(false, true)
 
   const toggleDomain = (d: number) =>
     setDomain(prev => {
+      if (prev.length === 1 && d === prev[0]) return prev
       return prev.includes(d) ? prev.filter(f => f !== d) : [...prev, d]
     })
 
@@ -108,7 +93,8 @@ export default function App() {
       () => {
         setDomain(prev => {
           setOption(prevOp => {
-            return { ...prevOp, domain: prev }
+            puzzle.domain = prev
+            return { ...prevOp, domain: prev, board: puzzle.createBoard() }
           })
           return prev
         })
@@ -124,17 +110,20 @@ export default function App() {
     toggleDomain(d)
   }
 
-  const updateTile = (board: Board) => {
+  const updateTile = () => {
     const tiles: Tile[][] = [...Array(option.row * 2 + 1)].map(() =>
       Array(option.col * 2 + 1).fill({ type: 'empty' }),
     )
-    board.operands.forEach((o, i) => {
+    option.board.operands.forEach((o, i) => {
       o.forEach(
         (oo, j) =>
-          (tiles[i * 2][j * 2] = { label: oo.toString(), type: 'operand' }),
+          (tiles[i * 2][j * 2] = {
+            label: oo?.toString() || '',
+            type: 'operand',
+          }),
       )
     })
-    board.operators.forEach((o, i) => {
+    option.board.operators.forEach((o, i) => {
       o.forEach((oo, j) => {
         if (oo === Operator.Null) return
         else if (i % 2 === 0)
@@ -142,11 +131,17 @@ export default function App() {
         else tiles[i][j * 2] = { label: oo, type: 'operator' }
       })
     })
-    board.results.rowResult.forEach((o, i) => {
-      tiles[i * 2][option.col * 2] = { label: o.toString(), type: 'result' }
+    option.board.results.rowResult.forEach((o, i) => {
+      tiles[i * 2][option.col * 2] = {
+        label: o?.toString() || '',
+        type: 'result',
+      }
     })
-    board.results.colResult.forEach((o, i) => {
-      tiles[option.row * 2][i * 2] = { label: o.toString(), type: 'result' }
+    option.board.results.colResult.forEach((o, i) => {
+      tiles[option.row * 2][i * 2] = {
+        label: o?.toString() || '',
+        type: 'result',
+      }
     })
     for (let i = 0; i < option.row; i++)
       tiles[i * 2][option.col * 2 - 1] = { type: 'equal' }
@@ -187,23 +182,33 @@ export default function App() {
   }
 
   const clickHandler = () => {
-    console.log('wow', option)
-    puzzle.row = option.row
-    puzzle.col = option.col
-    puzzle.domain = option.domain
-    puzzle.fixedBoard = option.fixedBoard
-    const board = puzzle.createBoard()
-    updateTile(board)
+    setOption(prev => {
+      return { ...prev, board: puzzle.createBoard() }
+    })
   }
 
   const undoHandler = () => {
-    const board = puzzle.undo() as Board
-    updateTile(board)
+    const board = puzzle.undo()
+    setOption(prev => {
+      return {
+        ...prev,
+        row: board.operands.length,
+        col: board.operands[0].length,
+        board,
+      }
+    })
   }
 
   const redoHandler = () => {
-    const board = puzzle.redo() as Board
-    updateTile(board)
+    const board = puzzle.redo()
+    setOption(prev => {
+      return {
+        ...prev,
+        row: board.operands.length,
+        col: board.operands[0].length,
+        board,
+      }
+    })
   }
 
   const answerHandler = () => {
@@ -246,8 +251,11 @@ export default function App() {
   }
 
   useEffect(() => {
-    clickHandler()
-  }, [option.row, option.col, option.domain])
+    puzzle.row = option.row
+    puzzle.col = option.col
+    puzzle.fixedBoard = option.fixedBoard
+    updateTile()
+  }, [option])
 
   return (
     <div className="content">
