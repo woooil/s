@@ -1,0 +1,9 @@
+.privacy,
+.about {
+  padding: 40px;
+  max-width: 800px;
+}
+
+.about a {
+  color: inherit;
+}
