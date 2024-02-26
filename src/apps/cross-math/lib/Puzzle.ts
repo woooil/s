@@ -159,27 +159,27 @@ class Puzzle {
           ) {
             operands[i][j] = getRandOperand(this.domain, true)
           }
-        }
-        if (
-          i > 0 &&
-          j > 0 &&
-          operators[2 * i][j - 1] === Operator.Div &&
-          operators[2 * i - 1][j] === Operator.Div
-        ) {
-          operands[i][j] = getRandOperand(this.domain, false, [
-            operands[i][j - 1],
-            operands[i - 1][j],
-          ])
-        } else if (j > 0 && operators[2 * i][j - 1] === Operator.Div) {
-          operands[i][j] = getRandOperand(this.domain, false, [
-            operands[i][j - 1],
-          ])
-        } else if (i > 0 && operators[2 * i - 1][j] === Operator.Div) {
-          operands[i][j] = getRandOperand(this.domain, false, [
-            operands[i - 1][j],
-          ])
-        } else {
-          operands[i][j] = getRandOperand(this.domain, false)
+          if (
+            i > 0 &&
+            j > 0 &&
+            operators[2 * i][j - 1] === Operator.Div &&
+            operators[2 * i - 1][j] === Operator.Div
+          ) {
+            operands[i][j] = getRandOperand(this.domain, false, [
+              operands[i][j - 1],
+              operands[i - 1][j],
+            ])
+          } else if (j > 0 && operators[2 * i][j - 1] === Operator.Div) {
+            operands[i][j] = getRandOperand(this.domain, false, [
+              operands[i][j - 1],
+            ])
+          } else if (i > 0 && operators[2 * i - 1][j] === Operator.Div) {
+            operands[i][j] = getRandOperand(this.domain, false, [
+              operands[i - 1][j],
+            ])
+          } else {
+            operands[i][j] = getRandOperand(this.domain, false)
+          }
         }
       }
     }
@@ -218,29 +218,25 @@ class Puzzle {
   }
 
   /*
-   * Returns the Board instance previously created by this Puzzle. Up to five instances are stored,
-   * and if users try to find a history earlier than that, it throws an error.
+   * Returns the Board instance previously created by this Puzzle. Up to five instances are stored.
    */
   undo(): Board {
     if (this.historyIndex > 0) {
       this.historyIndex--
       return this.boardHistory[this.historyIndex]
     } else {
-      // return new Error('No more undo steps available.')
       return this.boardHistory[this.historyIndex]
     }
   }
 
   /*
-   * Returns the Board instance undoned by this Puzzle. Up to five instances are stored, and if users
-   * try to find a history earlier than that, it throws an error.
+   * Returns the Board instance undoned by this Puzzle. Up to five instances are stored.
    */
   redo(): Board {
     if (this.historyIndex < this.boardHistory.length - 1) {
       this.historyIndex++
       return this.boardHistory[this.historyIndex]
     } else {
-      // return new Error('No more redo steps available.')
       return this.boardHistory[this.historyIndex]
     }
   }

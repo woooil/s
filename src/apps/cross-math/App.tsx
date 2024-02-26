@@ -98,6 +98,7 @@ export default function App() {
 
   const toggleDomain = (d: number) =>
     setDomain(prev => {
+      if (prev.length === 1 && d === prev[0]) return prev
       return prev.includes(d) ? prev.filter(f => f !== d) : [...prev, d]
     })
 
@@ -187,7 +188,6 @@ export default function App() {
   }
 
   const clickHandler = () => {
-    console.log('wow', option)
     puzzle.row = option.row
     puzzle.col = option.col
     puzzle.domain = option.domain
@@ -198,11 +198,25 @@ export default function App() {
 
   const undoHandler = () => {
     const board = puzzle.undo() as Board
+    setOption(prev => {
+      return {
+        ...prev,
+        row: board.operands.length,
+        col: board.operands[0].length,
+      }
+    })
     updateTile(board)
   }
 
   const redoHandler = () => {
     const board = puzzle.redo() as Board
+    setOption(prev => {
+      return {
+        ...prev,
+        row: board.operands.length,
+        col: board.operands[0].length,
+      }
+    })
     updateTile(board)
   }
 
