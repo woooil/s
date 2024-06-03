@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Board, Puzzle, Operator, BoardRequirement } from './lib/Puzzle'
 import './App.css'
+import { useReactToPrint } from 'react-to-print'
 
 interface Option {
   row: number
@@ -48,6 +49,8 @@ export default function App() {
   const [isDomainSelectorActive, setIsDomainSelectorActive] = useState(false)
   const [tiles, setTiles] = useState<Tile[]>([])
   const [showAns, setShowAns] = useState(false)
+
+  const printRef = useRef(null)
 
   const changeRowCol = (row: boolean, inc: boolean) => {
     setOption(prev => {
@@ -211,6 +214,11 @@ export default function App() {
     })
   }
 
+  const printHandler = useReactToPrint({
+    content: () => printRef.current,
+    documentTitle: '가로세로 연산',
+  })
+
   const answerHandler = () => {
     setShowAns(prev => !prev)
   }
@@ -256,6 +264,41 @@ export default function App() {
     puzzle.fixedBoard = option.fixedBoard
     updateTile()
   }, [option])
+
+  const PuzzleContainer = () => {
+    return (
+      <div className="puzzle-container">
+        <div
+          className="puzzle"
+          style={{
+            gridTemplateColumns: `repeat(${option.col * 2 + 1}, minmax(0, 1fr))`,
+            gridTemplateRows: `repeat(${option.row * 2 + 1}, minmax(0, 1fr))`,
+          }}>
+          {tiles.map((t, idx) => (
+            <div
+              className={`tile ${t.type}`}
+              onClick={() => fixHandler(idx)}
+              key={idx}>
+              {t.fixed ? <div className="fixed-flag m-icon">push_pin</div> : ''}
+              <div className="label">
+                {t.type === 'operand' && !showAns ? '' : formatLabel(t)}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  const PuzzleForPrint = () => {
+    return (
+      <div
+        className="puzzle-for-print"
+        ref={printRef}>
+        <PuzzleContainer />
+      </div>
+    )
+  }
 
   return (
     <div className="content">
@@ -330,37 +373,24 @@ export default function App() {
                 redo
               </button>
             </div>
-            <button
-              className="show-ans button m-icon"
-              onClick={answerHandler}>
-              {showAns ? 'visibility' : 'visibility_off'}
-            </button>
-          </div>
-        </div>
-        <div className="puzzle-container">
-          <div
-            className="puzzle"
-            style={{
-              gridTemplateColumns: `repeat(${option.col * 2 + 1}, minmax(0, 1fr))`,
-              gridTemplateRows: `repeat(${option.row * 2 + 1}, minmax(0, 1fr))`,
-            }}>
-            {tiles.map((t, idx) => (
-              <div
-                className={`tile ${t.type}`}
-                onClick={() => fixHandler(idx)}
-                key={idx}>
-                {t.fixed ? (
-                  <div className="fixed-flag m-icon">push_pin</div>
-                ) : (
-                  ''
-                )}
-                <div className="label">
-                  {t.type === 'operand' && !showAns ? '' : formatLabel(t)}
+            <div className="view-controller">
+              <button
+                className="print button m-icon"
+                onClick={printHandler}>
+                print
+                <div style={{ display: 'none' }}>
+                  <PuzzleForPrint />
                 </div>
-              </div>
-            ))}
+              </button>
+              <button
+                className="show-ans button m-icon"
+                onClick={answerHandler}>
+                {showAns ? 'visibility' : 'visibility_off'}
+              </button>
+            </div>
           </div>
         </div>
+        <PuzzleContainer />
       </div>
     </div>
   )
