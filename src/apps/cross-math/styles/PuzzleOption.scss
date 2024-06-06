@@ -1,0 +1,44 @@
+.option {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.domain {
+  padding-top: 4px;
+  flex-direction: column;
+  width: 100%;
+  align-items: flex-start;
+  > .label {
+    width: 100%;
+  }
+}
+
+.domain-list {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  width: 100%;
+  max-width: 400px;
+  gap: 4px;
+
+  > .value {
+    border-radius: 9999px;
+    aspect-ratio: 1;
+    border: none;
+    padding: 0;
+    text-align: center;
+    color: inherit;
+    cursor: pointer;
+  }
+  > .value.checked {
+    background: #ff5f00;
+    color: white;
+  }
+  > .value.unchecked {
+    background: none;
+  }
+  > .value:hover {
+    color: black;
+    background: #eeeeee;
+  }
+}
