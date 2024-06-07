@@ -1,0 +1,10 @@
+.main-controller {
+  display: flex;
+  place-items: center;
+  justify-content: space-between;
+  & > * {
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+}

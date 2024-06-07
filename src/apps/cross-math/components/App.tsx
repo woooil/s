@@ -1,9 +1,14 @@
 import { useState, useEffect, useRef } from 'react'
-import { Board, Puzzle, Operator, BoardRequirement } from './lib/Puzzle'
-import './App.css'
+import { Board, Puzzle, Operator, BoardRequirement } from '../lib/Puzzle'
+import '../styles/App.scss'
 import { useReactToPrint } from 'react-to-print'
+import MainController from './MainController'
+import ViewController from './ViewController'
+import PuzzleContainer from './PuzzleContainer'
+import PuzzleSizeOption from './PuzzleSizeOption'
+import PuzzleDomainOption from './PuzzleDomainOption'
 
-interface Option {
+export interface Option {
   row: number
   col: number
   domain: number[]
@@ -11,14 +16,19 @@ interface Option {
   board: Board
 }
 
-interface Tile {
+export interface Tile {
   label?: string
   type: 'operand' | 'operator' | 'equal' | 'result' | 'empty'
   fixed?: boolean
 }
 
-const domainMax = 19
-const possibleDomain = Array.from(Array(domainMax + 1).keys())
+export enum Direction {
+  Row = 'row',
+  Col = 'col',
+}
+
+const DOMAIN_MAX = 19
+const possibleDomain = Array.from(Array(DOMAIN_MAX + 1).keys())
 
 function getEmpty2DArr(row: number, col: number) {
   return [...Array(row)].map(() => [...Array(col)])
@@ -160,33 +170,10 @@ export default function App() {
     })
   }
 
-  const formatLabel = (tile: Tile) => {
-    switch (tile.type) {
-      case 'equal':
-        return '='
-      case 'result':
-        return '' + Math.round(parseFloat(tile.label || '0') * 10) / 10
-      case 'operator':
-        switch (tile.label) {
-          case Operator.Plus:
-            return '＋'
-          case Operator.Minus:
-            return '−'
-          case Operator.Div:
-            return '÷'
-          case Operator.Mul:
-            return '×'
-          default:
-            return tile.label
-        }
-      default:
-        return tile.label
-    }
-  }
-
   const clickHandler = () => {
+    const newBoard = puzzle.createBoard()
     setOption(prev => {
-      return { ...prev, board: puzzle.createBoard() }
+      return { ...prev, board: newBoard }
     })
   }
 
@@ -265,41 +252,6 @@ export default function App() {
     updateTile()
   }, [option])
 
-  const PuzzleContainer = () => {
-    return (
-      <div className="puzzle-container">
-        <div
-          className="puzzle"
-          style={{
-            gridTemplateColumns: `repeat(${option.col * 2 + 1}, minmax(0, 1fr))`,
-            gridTemplateRows: `repeat(${option.row * 2 + 1}, minmax(0, 1fr))`,
-          }}>
-          {tiles.map((t, idx) => (
-            <div
-              className={`tile ${t.type}`}
-              onClick={() => fixHandler(idx)}
-              key={idx}>
-              {t.fixed ? <div className="fixed-flag m-icon">push_pin</div> : ''}
-              <div className="label">
-                {t.type === 'operand' && !showAns ? '' : formatLabel(t)}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    )
-  }
-
-  const PuzzleForPrint = () => {
-    return (
-      <div
-        className="puzzle-for-print"
-        ref={printRef}>
-        <PuzzleContainer />
-      </div>
-    )
-  }
-
   return (
     <div className="content">
       <div className="container">
@@ -307,90 +259,57 @@ export default function App() {
           <h1 className="title">가로세로 연산</h1>
           <div className="options">
             <div className="option-container">
-              <div className="option row">
-                <div className="label">줄</div>
-                <div className="form">
-                  <button
-                    className="dec button m-icon"
-                    onClick={decreaseRow}>
-                    stat_minus_1
-                  </button>
-                  <div className="value">{option.row}</div>
-                  <button
-                    className="inc button m-icon"
-                    onClick={increaseRow}>
-                    stat_1
-                  </button>
-                </div>
-              </div>
-              <div className="option col">
-                <div className="label">칸</div>
-                <div className="form">
-                  <button
-                    className="dec button m-icon"
-                    onClick={decreaseCol}>
-                    stat_minus_1
-                  </button>
-                  <div className="value">{option.col}</div>
-                  <button
-                    className="inc button m-icon"
-                    onClick={increaseCol}>
-                    stat_1
-                  </button>
-                </div>
-              </div>
+              <PuzzleSizeOption
+                direction={Direction.Row}
+                decreaseHandler={decreaseRow}
+                increaseHandler={increaseRow}
+                value={option.row}
+              />
+              <PuzzleSizeOption
+                direction={Direction.Col}
+                decreaseHandler={decreaseCol}
+                increaseHandler={increaseCol}
+                value={option.col}
+              />
             </div>
-            <div className="option domain">
-              <div className="label">값의 범위</div>
-              <div className="domain-list">
-                {possibleDomain.map(d => (
-                  <button
-                    className={`value ${domain.includes(d) ? 'checked' : 'unchecked'}`}
-                    onMouseDown={() => domainDownHandler(d)}
-                    onMouseOver={() => domainOverHandler(d)}
-                    key={d}>
-                    {d}
-                  </button>
-                ))}
-              </div>
-            </div>
+            <PuzzleDomainOption
+              possibleDomain={possibleDomain}
+              domain={domain}
+              domainDownHandler={domainDownHandler}
+              domainOverHandler={domainOverHandler}
+            />
           </div>
           <div className="controller">
-            <div className="main-controller">
-              <button
-                className="undo button m-icon"
-                onClick={undoHandler}>
-                undo
-              </button>
-              <button
-                className="create m-icon"
-                onClick={clickHandler}>
-                deployed_code
-              </button>
-              <button
-                className="redo button m-icon"
-                onClick={redoHandler}>
-                redo
-              </button>
-            </div>
-            <div className="view-controller">
-              <button
-                className="print button m-icon"
-                onClick={printHandler}>
-                print
-                <div style={{ display: 'none' }}>
-                  <PuzzleForPrint />
-                </div>
-              </button>
-              <button
-                className="show-ans button m-icon"
-                onClick={answerHandler}>
-                {showAns ? 'visibility' : 'visibility_off'}
-              </button>
-            </div>
+            <MainController
+              undoHandler={undoHandler}
+              clickHandler={clickHandler}
+              redoHandler={redoHandler}
+            />
+            <ViewController
+              printHandler={printHandler}
+              answerHandler={answerHandler}
+              showAns={showAns}
+            />
           </div>
         </div>
-        <PuzzleContainer />
+        <PuzzleContainer
+          option={option}
+          tiles={tiles}
+          fixHandler={fixHandler}
+          showAns={showAns}
+        />
+        <div style={{ display: 'none' }}>
+          <div
+            className="puzzle-for-print"
+            ref={printRef}>
+            <PuzzleContainer
+              option={option}
+              tiles={tiles}
+              fixHandler={fixHandler}
+              showAns={showAns}
+            />
+          </div>
+        </div>
       </div>
     </div>
   )
