@@ -53,10 +53,5 @@
     "husky": "^9.0.10",
     "prettier": "^3.2.4",
     "typescript": "^4.9.5"
-  },
-  "overrides": {
-    "react-scripts": {
-      "typescript": "^5"
-    }
   }
 }
