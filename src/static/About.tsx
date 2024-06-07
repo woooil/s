@@ -40,7 +40,7 @@ export default function About() {
             rel="noopener noreferrer">
             김우일
           </Link>
-          : In charge of view. Created the interface bertween the user and the
+          : In charge of view. Created the interface between the user and the
           model and designed the UI.
         </li>
         <li>

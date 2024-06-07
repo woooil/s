@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Layout from './layout/Layout'
 import Privacy from './static/Privacy'
 import About from './static/About'
-import CrossMath from './apps/cross-math/App'
+import CrossMath from './apps/cross-math/components/App'
 
 export default function App() {
   return (
