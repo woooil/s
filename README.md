@@ -14,3 +14,7 @@ s by Wooil Kim(약칭 s)은 오직 단 한 명을 위한 수학 도구입니다.
 
 - [김우일](https://github.com/woooil): In charge of view. Created the interface bertween the user and the model and designed the UI.
 - [안시현](https://github.com/sihyun-ahn): In charge of model. Implemented the logic of the puzzle and provided the API to the view.
+
+### 분수의 나눗셈 (Division Diagram)
+
+분수의 나눗셈을 블록으로 시각화하여 이해를 돕는 그림입니다. 분수의 나눗셈 식에 따라 블록의 크기와 개수가 변하면서 분수의 나눗셈을 단계별로 이해할 수 있습니다. 빈 칸을 클릭하면 각 단계에서 발생하는 계산 값을 하나씩 확인할 수 있습니다. 분수의 나눗셈 식을 바꾸어 보면서 나눗셈의 원리를 마스터해 보세요!
