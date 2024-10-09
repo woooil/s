@@ -1,0 +1,55 @@
+.controller {
+  position: relative;
+  width: 520px;
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  padding: 20px 20px 20px 35px;
+  border: 1px solid olive;
+  border-radius: 20px;
+}
+
+.controller .single-controller {
+  display: flex;
+  align-items: center;
+}
+
+.controller .single-controller .number {
+  display: flex;
+  flex-direction: column;
+  width: 30px;
+  gap: 4px;
+}
+
+.controller .single-controller .number .divider {
+  width: 100%;
+  border: 1px solid black;
+}
+
+.controller .single-controller .unit {
+  text-align: left;
+}
+
+.controller input {
+  flex-grow: 1;
+  font-size: inherit;
+  border: none;
+  text-align: center;
+}
+
+.controller .division-label {
+  padding-right: 8px;
+}
+
+.controller button.toggle {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 8px;
+  color: black;
+  background-color: white;
+  border: 0;
+  border-radius: 12px;
+}

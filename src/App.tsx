@@ -5,6 +5,7 @@ import Layout from './layout/Layout'
 import Privacy from './static/Privacy'
 import About from './static/About'
 import CrossMath from './apps/cross-math/components/App'
+import DivisionDiagram from './apps/division-diagram/components/App'
 
 export default function App() {
   return (
@@ -14,6 +15,10 @@ export default function App() {
           <Route
             path="/cross-math"
             element={<CrossMath />}
+          />
+          <Route
+            path="/division-diagram"
+            element={<DivisionDiagram />}
           />
           <Route
             path="/privacy"

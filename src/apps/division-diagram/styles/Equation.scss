@@ -1,0 +1,17 @@
+.equation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.togglable {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 20px;
+  min-width: 20px;
+  padding: 8px;
+  border: 1px solid black;
+  border-radius: 8px;
+}

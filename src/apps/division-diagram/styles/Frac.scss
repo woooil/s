@@ -1,0 +1,11 @@
+.frac {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.frac .frac-line {
+  width: 100%;
+  border: 1px solid black;
+}

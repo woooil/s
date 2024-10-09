@@ -1,0 +1,22 @@
+.diagram-container {
+  width: 80%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+.diagram-container .row-container {
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.diagram-container .arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
