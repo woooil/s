@@ -37,7 +37,8 @@ export default function App() {
   }
 
   return (
-    <div className="content">
+    <div className="division-diagram content">
+      <h1 className="title">분수의 나눗셈</h1>
       <Controller
         problem={problem}
         setProblem={gatedSetProblem}

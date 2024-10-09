@@ -10,14 +10,20 @@
   font-size: medium;
 }
 
-.content {
+.division-diagram.content {
   height: 100%;
   width: 100vw;
-  padding-top: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 60px;
+  gap: 40px;
+  padding-bottom: 200px;
+}
+
+h1 {
+  width: 100%;
+  text-align: left;
+  padding-left: 240px;
 }
 
 .togglable {

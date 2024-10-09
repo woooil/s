@@ -14,8 +14,11 @@ export default function Axis({ a, b, unit }) {
   return (
     <div className="axis">
       <div className="tick-container">
-        {[...Array(b + 1)].map(() => (
-          <div className="tick" />
+        {[...Array(b + 1)].map((_, idx) => (
+          <div
+            className="tick"
+            key={idx}
+          />
         ))}
       </div>
       <div className="line" />

@@ -38,13 +38,22 @@ export default function Chunk({
   return (
     <div className="chunk">
       {[...Array(filled)].map((_, idx) => (
-        <Block type={FILLED} />
+        <Block
+          type={FILLED}
+          key={idx}
+        />
       ))}
       {[...Array(shaded)].map((_, idx) => (
-        <Block type={SHADED} />
+        <Block
+          type={SHADED}
+          key={idx}
+        />
       ))}
-      {[...Array(n - filled - shaded)].map(() => (
-        <Block type={EMPTY} />
+      {[...Array(n - filled - shaded)].map((_, idx) => (
+        <Block
+          type={EMPTY}
+          key={idx}
+        />
       ))}
       <div
         className="label"
@@ -67,7 +76,10 @@ export default function Chunk({
         className="divider-container"
         style={dividerContainerStyle}>
         <Divider solid />
-        {divider && [...Array(filled + shaded - 1)].map(() => <Divider />)}
+        {divider &&
+          [...Array(filled + shaded - 1)].map((_, idx) => (
+            <Divider key={idx} />
+          ))}
         <Divider solid />
       </div>
     </div>
