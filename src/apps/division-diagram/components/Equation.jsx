@@ -3,11 +3,11 @@ import Frac from './Frac'
 import '../styles/Equation.scss'
 
 function Divided() {
-  return <div className="divided">/</div>
+  return <div className="divided">÷</div>
 }
 
 function Times() {
-  return <div className="times">*</div>
+  return <div className="times">×</div>
 }
 
 function Equals() {

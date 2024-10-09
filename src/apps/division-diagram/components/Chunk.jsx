@@ -50,7 +50,7 @@ export default function Chunk({
         className="label"
         style={labelStyle}>
         <div
-          className="number"
+          className="number togglable"
           onClick={toggleClosed}>
           {closed ? (
             ''

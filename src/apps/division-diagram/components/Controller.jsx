@@ -86,7 +86,7 @@ function ControllerSet({ problem, setProblem }) {
         namedB="m"
         namedUnit="dividendUnit"
       />
-      <div className="division-label">/</div>
+      <div className="division-label">÷</div>
       <SingleController
         problem={problem}
         setProblem={setProblem}
@@ -109,9 +109,9 @@ export default function Controller({ problem, setProblem }) {
   return (
     <div className="controller">
       <button
-        className="toggle"
+        className="toggle m-icon"
         onClick={toggleOpen}>
-        {'<>'}
+        {open ? 'switch_right' : 'switch_left'}
       </button>
       {open ? (
         <ControllerSet

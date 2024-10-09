@@ -5,7 +5,7 @@ function Arrow({ label }) {
   return (
     <div className="arrow">
       <div className="label">{label}</div>
-      <div className="arrow-icon">=======&gt;</div>
+      <div className="arrow-icon">⟶</div>
     </div>
   )
 }
@@ -29,7 +29,7 @@ export default function DiagramContainer({ problem }) {
           label={step1}
           baseUnit={problem.divisorUnit}
         />
-        <Arrow label={`/ ${problem.a}`} />
+        <Arrow label={`÷ ${problem.a}`} />
         <Diagram
           n={problem.b}
           filled={1}
@@ -48,7 +48,7 @@ export default function DiagramContainer({ problem }) {
           baseUnit={problem.divisorUnit}
           initClosed
         />
-        <Arrow label={`* ${problem.b}`} />
+        <Arrow label={`× ${problem.b}`} />
         <Diagram
           n={problem.b}
           filled={problem.b}
