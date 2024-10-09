@@ -1,6 +1,8 @@
 {
   "name": "s",
-  "version": "0.1.0",
+  "version": "1.1.0",
+  "description": "Mathematical tool made exclusively for her",
+  "author": "Wooil Kim",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
