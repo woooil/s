@@ -1,0 +1,47 @@
+.home.content {
+  display: flex;
+  flex-direction: column;
+  padding: 80px;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.home .title {
+  padding-bottom: 80px;
+}
+
+.home .app-link-container {
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: flex-start;
+  gap: 20px;
+}
+
+.home .app-links {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.home .app-link {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: black;
+  padding: 28px;
+  border-radius: 16px;
+  box-shadow: 0px 0 10px 6px #eeeeee;
+  gap: 12px;
+}
+
+.home .app-link:hover {
+  color: #a7a7a7;
+}
+
+.home .app-name {
+  font-size: x-large;
+  font-weight: bold;
+}

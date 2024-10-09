@@ -6,7 +6,7 @@ const FILLED = 'filled'
 const SHADED = 'shaded'
 const EMPTY = 'empty'
 
-function Block({ type, border }) {
+function Block({ type }) {
   return <div className={`block ${type}`} />
 }
 
