@@ -1,6 +1,8 @@
 {
   "name": "s",
-  "version": "0.1.0",
+  "version": "1.1.0",
+  "description": "Mathematical tool made exclusively for her",
+  "author": "Wooil Kim",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
@@ -13,6 +15,7 @@
     "classnames": "^2.5.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-input-autosize": "^3.0.0",
     "react-router-dom": "^6.22.0",
     "react-scripts": "5.0.1",
     "react-to-print": "^2.15.1",
@@ -53,5 +56,10 @@
     "husky": "^9.0.10",
     "prettier": "^3.2.4",
     "typescript": "^4.9.5"
+  },
+  "overrides": {
+    "react-input-autosize": {
+      "react": "$react"
+    }
   }
 }

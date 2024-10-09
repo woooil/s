@@ -1,0 +1,66 @@
+.division-diagram .controller {
+  position: relative;
+  width: 400px;
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 20px 20px 35px;
+  margin-bottom: 40px;
+  border: 1px solid olive;
+  border-radius: 20px;
+}
+
+.controller .single-controller {
+  display: flex;
+  align-items: center;
+}
+
+.controller .single-controller .number {
+  display: flex;
+  flex-direction: column;
+  width: 30px;
+  gap: 4px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.controller .single-controller .number .divider {
+  width: 100%;
+  border-top: 1px solid black;
+}
+
+.controller .single-controller .unit {
+  text-align: left;
+}
+
+.controller input {
+  flex-grow: 1;
+  font-size: inherit;
+  border: none;
+  text-align: center;
+}
+
+.controller .division-label {
+  padding-right: 8px;
+}
+
+.controller button.toggle {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 8px;
+  color: black;
+  background-color: white;
+  border: 0;
+  border-radius: 12px;
+}

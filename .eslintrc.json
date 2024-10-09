@@ -21,5 +21,6 @@
     "dot-notation": "error",
     "no-unused-vars": "off",
     "no-empty-interface": "off"
-  }
+  },
+  "ignorePatterns": ["src/temp/*"]
 }
