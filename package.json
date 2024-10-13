@@ -3,63 +3,39 @@
   "version": "1.1.0",
   "description": "Mathematical tool made exclusively for her",
   "author": "Wooil Kim",
-  "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.79",
-    "@types/react": "^18.2.51",
-    "@types/react-dom": "^18.2.18",
-    "classnames": "^2.5.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-input-autosize": "^3.0.0",
-    "react-router-dom": "^6.22.0",
-    "react-scripts": "5.0.1",
-    "react-to-print": "^2.15.1",
-    "sass": "^1.77.4",
-    "web-vitals": "^2.1.4"
-  },
+  "main": "index.tsx",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "lint": "eslint --cache .",
-    "lint:fix": "eslint --fix --cache .",
-    "format:fix": "prettier --write --cache .",
-    "postinstall": "husky install"
+    "start": "webpack serve --config ./webpack.config.js --mode development --port 3000"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "browserslist": [
+    "defaults"
+  ],
+  "dependencies": {
+    "react": "^18.0.1",
+    "react-dom": "^18.0.1"
   },
   "devDependencies": {
-    "eslint": "^8.56.0",
-    "eslint-config-prettier": "^9.1.0",
-    "husky": "^9.0.10",
-    "prettier": "^3.2.4",
-    "typescript": "^4.9.5"
+    "@babel/core": "^7.13.8",
+    "@babel/preset-env": "^7.13.9",
+    "@babel/preset-react": "^7.12.13",
+    "@babel/preset-typescript": "^7.25.7",
+    "@types/copy-webpack-plugin": "^10.1.0",
+    "@types/node": "^22.7.5",
+    "@types/react": "^17.0.83",
+    "@types/react-dom": "^18.3.1",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^6.7.3",
+    "react-hot-loader": "^4.13.0",
+    "style-loader": "^3.3.1",
+    "typescript": "^5.6.3",
+    "webpack": "^5.24.3",
+    "webpack-cli": "^4.5.0",
+    "webpack-dev-server": "^3.11.2"
   },
   "overrides": {
-    "react-input-autosize": {
-      "react": "$react"
+    "react-hot-loader": {
+      "react": "$react",
+      "react-dom": "$react-dom"
     }
   }
 }
