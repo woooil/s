@@ -2,8 +2,9 @@
 // node_modules/typescript/lib/lib.dom.d.ts
 // node_modules/@types/react/index.d.ts
 
-import * as React from 'react'
 import { v4 as uuid } from 'uuid'
+import { Coord } from './Coord'
+import { SVGAttributes } from './SVGAttributes'
 
 /**
  * The properties of Shape.
@@ -30,14 +31,7 @@ type ShapeType = string
  */
 type ShapeDependenciesIndex = number
 
-/**
- * The mathematical coordinates in Cartesian coordinate system.
- * @prop x - The x coordinate.
- * @prop y - The y coordinate.
- */
-type Coord = { x: number, y: number }
-
-export { ShapeProp, ShapeResolved, ShapeID, ShapeType, ShapeDependenciesIndex, Coord }
+export { ShapeProp, ShapeResolved, ShapeID, ShapeType, ShapeDependenciesIndex }
 
 /**
  * Represents any shapes.
@@ -72,7 +66,7 @@ abstract class Shape {
   /**
    * Returns the attributes of svg element tag which should draw Shape.
    */
-  public abstract get svgAttr(): React.SVGAttributes<SVGElement> 
+  public abstract get svgAttr(): SVGAttributes
 
   /**
    * Assigns properties to Shape. id is auto-generated using uuid().
