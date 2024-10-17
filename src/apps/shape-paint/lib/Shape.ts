@@ -5,54 +5,84 @@
 import * as React from 'react'
 import { v4 as uuid } from 'uuid'
 
-type ShapeID = string
-type ShapeDef = { }
-type ShapeType = string
-type ShapeResolved = { }
-type ShapeDependenciesIndex = number
-
-type Coord = { x: number, y: number }
-
-export { ShapeID, ShapeDef, ShapeType, ShapeResolved, ShapeDependenciesIndex, Coord }
+/**
+ * The properties of Shape.
+ */
+interface ShapeProp { }
 
 /**
- * @class
- * Represents any shape.
+ * The mathematical definition of Shape. Once resolved, any Shape of the same ShapeType should be of the same type.
+ */
+interface ShapeResolved { }
+
+/**
+ * The identifier of Shape. 
+ */
+type ShapeID = string
+
+/**
+ * The type of Shape.
+ */
+type ShapeType = string
+
+/**
+ * The index of Dependencies.
+ */
+type ShapeDependenciesIndex = number
+
+/**
+ * The mathematical coordinates in Cartesian coordinate system.
+ * @prop x - The x coordinate.
+ * @prop y - The y coordinate.
+ */
+type Coord = { x: number, y: number }
+
+export { ShapeProp, ShapeResolved, ShapeID, ShapeType, ShapeDependenciesIndex, Coord }
+
+/**
+ * Represents any shapes.
  * @hierarchy Shape
  */
 abstract class Shape {
   /**
-   * @props
-   * id           - The identifier for each instance.
-   * dependencies - The list of Shapes on which this Shape depends.
-   * def          - The relational definition.
-   * type         - The geometric type.
-   * svgType      - The name of svg element tag which this Shape should use.
+   * The identifier of Shape.
    */
   readonly id: ShapeID
+  /**
+   * The list of Shapes which Shape depends on to be defined.
+   */
   readonly dependencies: Shape[]
-  readonly def: ShapeDef
+  /**
+   * The properties of Shape except its Dependencies. This may include the division ratio of PointInternalDivision, the extending direction of Line, and more.
+   */
+  readonly prop: ShapeProp
+  /**
+   * The type of Shape. For example, Point is one type of Shape.
+   */
   readonly type: ShapeType
-  readonly svgType: keyof SVGElementTagNameMap
+  /**
+   * The name of svg element tag which Shape should use.
+   */
+  readonly svgTag: keyof SVGElementTagNameMap
 
   /**
-   * @methods
-   * resolve  - Resolves the instance into a defined type based on its type and returns it.
-   * svgProps - Returns the attributes of svg element tag which draw the instance.
+   * Resolves Shape into its mathematical definition. Once resolved, any Shape of the same ShapeType should be of the same type.
    */
   public abstract resolve(): ShapeResolved
-  public abstract get svgProps(): React.SVGAttributes<SVGElement> 
+  /**
+   * Returns the attributes of svg element tag which should draw Shape.
+   */
+  public abstract get svgAttr(): React.SVGAttributes<SVGElement> 
 
   /**
-   * @constructor
-   * Takes def, type, and svgType and assigns them into the instance. id is auto-generated using uuid().
+   * Assigns properties to Shape. id is auto-generated using uuid().
    */
-  constructor(dependencies: Shape[], def: ShapeDef, type: ShapeType, svgType: keyof SVGElementTagNameMap) {
+  constructor(dependencies: Shape[], prop: ShapeProp, type: ShapeType, svgTag: keyof SVGElementTagNameMap) {
     this.id = uuid()
     this.dependencies = dependencies
-    this.def = def
+    this.prop = prop
     this.type = type
-    this.svgType = svgType
+    this.svgTag = svgTag
   }
 }
 

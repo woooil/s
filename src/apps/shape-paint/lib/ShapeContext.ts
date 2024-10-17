@@ -1,20 +1,20 @@
 import { Shape, ShapeID } from './Shape'
 
 /**
- * @class
  * Controls the context in which Shapes are stored.
  */
 class ShapeContext {
   /**
-   * @props
-   * __shapes     - The Shapes stored in the context.
-   * __dependents - The map of dependents which depends on each Shape in the context.
+   * The shapes which are stored in the context.
    */
   private __shapes: { [key: ShapeID]: Shape } = { }
+
+  /**
+   * The map of Shapes to the list of Shapes which depends on it in the context.
+   */
   private __dependents: { [key: ShapeID]: Shape[] } = { }
 
   /**
-   * @method
    * Returns an empty context.
    */
   public static init() {
@@ -22,8 +22,8 @@ class ShapeContext {
   }
 
   /**
-   * @method
-   * Adds a Shape to the context while updating the dependents.
+   * Adds Shape to the context while updating the dependents.
+   * @throws Throws an Error if Dependencies of Shape to be added are not present in the context.
    */
   public add(shape: Shape) {
     shape.dependencies.forEach((i: Shape) => {
@@ -36,8 +36,8 @@ class ShapeContext {
   }
 
   /**
-   * @method
    * Deletes a Shape from the context with/without cascading. If cascade is true, all Shapes which depends on the Shape to be deleted are also deleted. Otherwise, it will throw an Error if any Shape depends on the Shape to be deleted.
+   * @throws Throws an Error if any Shape depends on the Shape to be deleted when cascade is false.
    */
   public delete(shape: Shape, cascade: boolean = true) {
     if (cascade && this.__dependents.hasOwnProperty(shape.id)) {
@@ -52,8 +52,11 @@ class ShapeContext {
     delete this.__dependents[shape.id]
   }
 
-  public map(param: (i: Shape) => any) {
-    return Object.values(this.__shapes).map(param)
+  /**
+   * Maps the func to Shapes stored in the context.
+   */
+  public map(func: (i: Shape) => any) {
+    return Object.values(this.__shapes).map(func)
   }
 }
 
