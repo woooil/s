@@ -2,36 +2,36 @@ import { Coord } from '../Coord'
 import { ShapeResolved, ShapeProp, ShapeDependenciesIndex, Shape } from '../Shape'
 
 /**
- * Represents the extension of line.
- * @value 'None'  - No endpoint is extended; represents a segment.
- * @value 'A'     - Endpoint A is extended; represents a ray extended from A.
- * @value 'B'     - Endpoint B is extended; represents a ray extended from B.
- * @value 'Both'  - Both endpoints are extended; represents an infinite line.
- */
-type LineExtend = 'None' | 'A' | 'B' | 'Both'
-
-/**
  * The mathematical definition of Line. Defined by two points Line passes through.
- * @prop a      - One Coord which Line passes through.
- * @prop b      - Another Coord which Line passes through.
- * @prop extend - The extension of Line.
+ * @prop a        - One Coord which Line passes through.
+ * @prop b        - Another Coord which Line passes through.
+ * @prop extendA  - Whether to extend point A or not.
+ * @prop extendB  - Whether to extend point B or not.
  */
 interface LineResolved extends ShapeResolved {
   a: Coord
   b: Coord
-  extend: LineExtend
+  extendA: boolean,
+  extendB: boolean,
 }
 
 /**
  * The properties of Line.
+ * @prop cutA - Whether to cut extending point A by another Line.
+ * @prop cutB - Whether to cut extending point B by another Line.
  */
-interface LineProp extends ShapeProp { }
+interface LineProp extends ShapeProp {
+  cutA?: boolean
+  cutB?: boolean
+}
 
 /**
  * Represents lines.
  * @hierarchy Shape <- Line
  */
 abstract class Line extends Shape {
+  declare readonly prop: LineProp
+
   /**
    * Uses 'Line' as ShapeType and 'line' as svgTag.
    */
@@ -40,33 +40,21 @@ abstract class Line extends Shape {
   }
 
   /**
-   * Uses stroke of width 2, filled black. Scales extended points to very large numbers.
+   * Uses stroke of width 2, filled black. Extends points to very large numbers.
    */
   public get svgAttr() {
     const resolved = this.resolve()
 
     const extend = (coord: Coord, ref: Coord) => {
       return {
-        x: ref.x + (coord.x - ref.x) * (2 << 10),
-        y: ref.y + (coord.y - ref.y) * (2 << 10),
+        x: coord.x + (coord.x - ref.x) * (2 << 10),
+        y: coord.y + (coord.y - ref.y) * (2 << 10),
       }
     }
 
-    switch (resolved.extend) {
-      case 'A':
-        resolved.a = extend(resolved.a, resolved.b)
-        break
-      case 'B': 
-        resolved.b = extend(resolved.b, resolved.a)
-        break
-      case 'Both':
-        const tempA = extend(resolved.a, resolved.b)
-        resolved.b = extend(resolved.b, resolved.a)
-        resolved.a = tempA
-        break
-      default:
-        break
-    }
+    const tempA = resolved.extendA ? extend(resolved.a, resolved.b) : resolved.a
+    resolved.b = resolved.extendB ? extend(resolved.b, resolved.a) : resolved.b
+    resolved.a = tempA
 
     return {
       x1: resolved.a.x,
@@ -79,17 +67,37 @@ abstract class Line extends Shape {
   }
 
   /**
-   * Resolves Line to LineResolved.
+   * Resolves Line to LineResolved without the cut.
    */
-  public abstract resolve(): LineResolved
+  protected abstract preresolve(): LineResolved
+
+  /**
+   * Resolves Line to LineResolved with the cut.
+   */
+  public resolve(): LineResolved {
+    const preresolved = this.preresolve()
+    const length = this.dependencies.length
+    const offset = this.prop.cutB ? 1 : 0
+    if (preresolved.extendA && this.prop.cutA) {
+      const pointCutA = this.intersect(this.dependencies[length - offset - 1])
+      preresolved.a = pointCutA
+      preresolved.extendA = false
+    }
+    if (preresolved.extendB && this.prop.cutB) {
+      const pointCutB = this.intersect(this.dependencies[length - 1])
+      preresolved.b = pointCutB
+      preresolved.extendB = false
+    }
+    return preresolved
+  }
 
   /**
    * Returns an intersection with another Line.
    * @throws Throws an Error if two Lines are parallel.
    */
   public intersect(line: Line) {
-    const lResolved = this.resolve()
-    const mResolved = line.resolve()
+    const lResolved = this.preresolve()
+    const mResolved = line.preresolve()
 
     const alpha1 = lResolved.a.x - lResolved.b.x
     const alpha2 = mResolved.a.x - mResolved.b.x
@@ -120,4 +128,4 @@ abstract class Line extends Shape {
   }
 }
 
-export { LineExtend, LineResolved, LineProp, Line }
+export { LineResolved, LineProp, Line }

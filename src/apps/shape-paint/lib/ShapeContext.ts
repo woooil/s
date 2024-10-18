@@ -25,7 +25,7 @@ class ShapeContext {
    * Adds Shape to the context while updating the dependents.
    * @throws Throws an Error if Dependencies of Shape to be added are not present in the context.
    */
-  public add(shape: Shape) {
+  public add<T extends Shape>(shape: T): T {
     shape.dependencies.forEach((i: Shape) => {
       if (!(this.__shapes.hasOwnProperty(i.id))) throw new Error("No Shape in context")
       if (!(this.__dependents.hasOwnProperty(i.id))) this.__dependents[i.id] = []

@@ -6,15 +6,12 @@ export default function App() {
   const pointA = sx.add(new PointAbsoluteCoord([], { x: 700, y: 450 }))
   const pointB = sx.add(new PointAbsoluteCoord([], { x: 300, y: 450 }))
   const pointC = sx.add(new PointAbsoluteCoord([], { x: 500, y: 300 }))
-  const lineA  = sx.add(new LineTwoPoints([pointA, pointB], { extend: 'B' }))
-  const lineB  = sx.add(new LineTwoPoints([pointA, pointC], { extend: 'B' }))
-  const lineC  = sx.add(new LineTwoPoints([pointB, pointC], { extend: 'None' }))
-  const lineD  = sx.add(new LineAngleBisector([lineA, lineC], { direction: 0 }))
-  const lineE  = sx.add(new LineAngleBisector([lineA, lineC], { direction: 3 }))
-  const pointD = sx.add(new PointAbsoluteCoord([], { x: 300, y: 50 }))
-  const lineF  = sx.add(new LineTwoPoints([pointB, pointD], { extend: 'None' }))
-  const lineG  = sx.add(new LineAngleBisector([lineD, lineF], { direction: 1 }))
-  const pointE = sx.add(new PointIntersection([lineB, lineD], {}))
+  const lineA  = sx.add(new LineTwoPoints([pointA, pointB], { extendB: true }))
+  const lineB  = sx.add(new LineTwoPoints([pointA, pointC], { extendB: true }))
+  const lineC  = sx.add(new LineTwoPoints([pointB, pointC], { }))
+  const lineD  = sx.add(new LineAngleBisector([lineA, lineC, lineB], { direction: 0, cutB: true }))
+  const lineE  = sx.add(new LineAngleBisector([lineA, lineC, lineB], { direction: 3, cutB: true }))
+  const pointD = sx.add(new PointIntersection([lineB, lineD], { }))
 
   return (
     <div>

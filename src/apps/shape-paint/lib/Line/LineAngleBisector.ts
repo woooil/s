@@ -1,5 +1,6 @@
-import { LineExtend, LineProp, Line } from './index'
+import { Shape } from '../Shape'
 import { Coord } from '../Coord'
+import { LineProp, Line } from './index'
 
 /**
  * The properties of LineAngleBisectorProp. Chooses the direction of the angle to bisect.
@@ -19,11 +20,6 @@ interface LineAngleBisectorProp extends LineProp {
  */
 class LineAngleBisector extends Line {
   /**
-   * Two Lines which Line bisects.
-   */
-  declare readonly dependencies: Line[]
-
-  /**
    * The properties of LineAngleBisector.
    * @prop direction - The direction of the angle to bisect.
    */
@@ -32,8 +28,8 @@ class LineAngleBisector extends Line {
   /**
    * @throws Throws an Error if given Dependencies are not type of Line.
    */
-  constructor(dependencies: Line[], prop: LineAngleBisectorProp) {
-    if (dependencies.length !== 2 || !(dependencies.every((i) => i.type === 'Line'))) throw new Error("Dependencies are not type of Point")
+  constructor(dependencies: Shape[], prop: LineAngleBisectorProp) {
+    if (dependencies[0].type !== 'Line' || dependencies[1].type !== 'Line') throw new Error("Dependencies are not type of Line")
     super(dependencies, prop)
   }
 
@@ -41,8 +37,8 @@ class LineAngleBisector extends Line {
    * Calculates the angle bisector of two Lines mathematically.
    * @throws Throws an Error if two Lines are parallel.
    */
-  resolve() {
-    const a = this.dependencies[0].intersect(this.dependencies[1])
+  preresolve() {
+    const a = this.dependencies[0].intersect(this.dependencies[1]) // Throws an Error
     
     const lResolved = this.dependencies[0].resolve()
     const mResolved = this.dependencies[1].resolve()
@@ -88,7 +84,8 @@ class LineAngleBisector extends Line {
     return {
       a: a,
       b: b,
-      extend: 'B' as LineExtend
+      extendA: false,
+      extendB: true
     }
   }
 }

@@ -1,11 +1,24 @@
 import { PointProp, Point } from './index'
 import { Line } from '../Line'
 
+/**
+ * The properties of PointIntersection.
+ */
 interface PointIntersectionProp extends PointProp { }
 
+/**
+ * Represents points as an intersection of two lines.
+ * @hierarchy Shape <- Point <- PointIntersection
+ */
 class PointIntersection extends Point {
+  /**
+   * Two Lines which intersect.
+   */
   declare readonly dependencies: Line[]
 
+  /**
+   * The properties of PointIntersection.
+   */
   declare readonly prop: PointIntersectionProp
 
   /**
@@ -16,6 +29,9 @@ class PointIntersection extends Point {
     super(dependencies, prop)
   }
 
+  /**
+   * Calculates the intersection of two Lines.
+   */
   resolve() {
     return this.dependencies[0].intersect(this.dependencies[1])
   }
