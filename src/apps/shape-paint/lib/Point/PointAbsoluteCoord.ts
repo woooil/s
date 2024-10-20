@@ -15,10 +15,9 @@ interface PointAbsoluteCoordProp extends PointProp {
  * @hierarchy Shape <- Point <- PointAbsoluteCoord
  */
 class PointAbsoluteCoord extends Point {
-  /**
-   * The absolute coordinates of PointAbsoluteCoord in the Cartesian coordinate system.
-   */
-  declare readonly prop: PointAbsoluteCoordProp
+  constructor(prop: PointAbsoluteCoordProp) {
+    super([], prop)
+  }
 
   /**
    * Returns its coordinates without any modification.

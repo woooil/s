@@ -14,17 +14,6 @@ interface PointInternalDivisionProp extends PointProp {
  */
 class PointInternalDivision extends Point {
   /**
-   * Two Points which Point devides
-   */
-  declare readonly dependencies: Point[]
-
-  /**
-   * The properties of PointInternalDivision.
-   * @prop r - The division ratio.
-   */
-  declare readonly prop: PointInternalDivisionProp
-
-  /**
    * @throws Throws an Error if given Dependencies are not type of Point.
    */
   constructor(dependencies: Point[], prop: PointInternalDivisionProp) {

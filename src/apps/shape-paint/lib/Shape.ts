@@ -45,11 +45,17 @@ abstract class Shape {
   /**
    * The list of Shapes which Shape depends on to be defined.
    */
-  readonly dependencies: Shape[]
+  protected __dependencies: Shape[]
+  public get dependencies() {
+    return this.__dependencies
+  }
   /**
    * The properties of Shape except its Dependencies. This may include the division ratio of PointInternalDivision, the extending direction of Line, and more.
    */
-  readonly prop: ShapeProp
+  protected __prop: ShapeProp
+  public get prop() {
+    return this.__prop
+  }
   /**
    * The type of Shape. For example, Point is one type of Shape.
    */
@@ -73,8 +79,8 @@ abstract class Shape {
    */
   constructor(dependencies: Shape[], prop: ShapeProp, type: ShapeType, svgTag: keyof SVGElementTagNameMap) {
     this.id = uuid()
-    this.dependencies = dependencies
-    this.prop = prop
+    this.__dependencies = dependencies
+    this.__prop = prop
     this.type = type
     this.svgTag = svgTag
   }

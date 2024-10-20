@@ -20,12 +20,6 @@ interface LineAngleBisectorProp extends LineProp {
  */
 class LineAngleBisector extends Line {
   /**
-   * The properties of LineAngleBisector.
-   * @prop direction - The direction of the angle to bisect.
-   */
-  declare readonly prop: LineAngleBisectorProp
-
-  /**
    * @throws Throws an Error if given Dependencies are not type of Line.
    */
   constructor(dependencies: Shape[], prop: LineAngleBisectorProp) {

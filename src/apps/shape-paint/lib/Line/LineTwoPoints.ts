@@ -16,12 +16,6 @@ interface LineTwoPointsProp extends LineProp {
  */
 class LineTwoPoints extends Line {
   /**
-   * The properties of LineTwoPoints.
-   * @prop extend - The extension of LineTwoPoints.
-   */
-  declare readonly prop: LineTwoPointsProp
-
-  /**
    * @throws Throws an Error if given Dependencies are not type of Point.
    */
   constructor(dependencies: Shape[], prop: LineTwoPointsProp) {

@@ -12,16 +12,6 @@ interface PointIntersectionProp extends PointProp { }
  */
 class PointIntersection extends Point {
   /**
-   * Two Lines which intersect.
-   */
-  declare readonly dependencies: Line[]
-
-  /**
-   * The properties of PointIntersection.
-   */
-  declare readonly prop: PointIntersectionProp
-
-  /**
    * @throws Throws an Error if given Dependencies are not type of Line.
    */
   constructor(dependencies: Line[], prop: PointIntersectionProp) {

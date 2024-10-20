@@ -30,7 +30,7 @@ interface LineProp extends ShapeProp {
  * @hierarchy Shape <- Line
  */
 abstract class Line extends Shape {
-  declare readonly prop: LineProp
+  declare protected __prop: LineProp
 
   /**
    * Uses 'Line' as ShapeType and 'line' as svgTag.
@@ -89,6 +89,17 @@ abstract class Line extends Shape {
       preresolved.extendB = false
     }
     return preresolved
+  }
+
+  /**
+   * Cuts Line with the given Line.
+   * @param line  - Line which cut.
+   * @param cutA  - True if cut extending point A; false if cut extending point B.
+   */
+  public cut(line: Line, cutA: boolean) {
+    this.__dependencies.push(line)
+    if (cutA) this.__prop.cutA = true
+    else this.__prop.cutB = true
   }
 
   /**
