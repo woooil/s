@@ -1,4 +1,5 @@
-import { PointProp, Point } from './index'
+import { DependeciesInitError } from '../Error'
+import { PointProp, Point } from './Point'
 import { Line } from '../Line'
 
 /**
@@ -15,14 +16,18 @@ class PointIntersection extends Point {
   protected declare __prop: PointIntersectionProp
 
   /**
-   * @throws Throws an Error if given Dependencies are not type of Line.
+   * @throws Throws DependenciesInitError if given Dependencies are not of Line type or its length is not 2.
    */
   constructor(dependencies: Line[], prop: PointIntersectionProp) {
     if (
       dependencies.length !== 2 ||
-      !dependencies.every(i => i.type === 'Line')
+      !dependencies.every(i => i.type === Line.TYPE)
     )
-      throw new Error('Dependencies are not type of Point')
+      throw DependeciesInitError(
+        2,
+        Line.TYPE,
+        dependencies.map(i => i.id),
+      )
     super(dependencies, prop)
   }
 

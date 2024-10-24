@@ -1,3 +1,4 @@
+export * from './Error'
 export * from './Coord'
 export * from './Shape'
 export * from './Point'

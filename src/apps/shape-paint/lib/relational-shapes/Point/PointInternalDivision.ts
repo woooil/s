@@ -1,4 +1,5 @@
-import { PointProp, Point } from './index'
+import { DependeciesInitError } from '../Error'
+import { PointProp, Point } from './Point'
 
 /**
  * The properties of PointInternalDivison.
@@ -17,14 +18,18 @@ class PointInternalDivision extends Point {
   protected declare __prop: PointInternalDivisionProp
 
   /**
-   * @throws Throws an Error if given Dependencies are not type of Point.
+   * @throws Throws DependenciesInitError if given Dependencies are not of Point type or its length is not 2.
    */
   constructor(dependencies: Point[], prop: PointInternalDivisionProp) {
     if (
       dependencies.length !== 2 ||
-      !dependencies.every(i => i.type === 'Point')
+      !dependencies.every(i => i.type === Point.TYPE)
     )
-      throw new Error('Dependencies are not type of Point')
+      throw DependeciesInitError(
+        2,
+        Point.TYPE,
+        dependencies.map(i => i.id),
+      )
     super(dependencies, prop)
   }
 

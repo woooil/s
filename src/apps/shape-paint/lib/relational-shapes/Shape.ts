@@ -30,7 +30,7 @@ abstract class Shape {
   /**
    * The prefix of the id.
    */
-  public static ID_PREFIX = 'RS-'
+  public static ID_PREFIX = 'rs-'
   /**
    * The identifier of this Shape.
    */

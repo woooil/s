@@ -1,4 +1,4 @@
-import { PointProp, Point } from '../Point'
+import { PointProp, Point } from './Point'
 import { Shape } from '../Shape'
 
 /**

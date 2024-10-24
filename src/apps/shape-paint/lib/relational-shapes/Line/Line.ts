@@ -1,4 +1,5 @@
 import { Coord } from '../Coord'
+import { ParallelLinesError } from '../Error'
 import { ShapeResolved, ShapeProp, Shape } from '../Shape'
 
 /**
@@ -135,7 +136,7 @@ abstract class Line extends Shape {
       }
     } else if ((beta2 === 0 && beta1 === 0) || gamma1 === 0) {
       // m || l
-      throw new Error('Parallel lines given')
+      throw ParallelLinesError(this.id, line.id)
     } else {
       a = {
         x: lResolved.a.x - alpha1 * (gamma2 / gamma1), // div by 0 if l || m

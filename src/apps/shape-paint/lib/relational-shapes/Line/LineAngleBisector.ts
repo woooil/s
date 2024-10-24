@@ -1,4 +1,5 @@
 import { Coord } from '../Coord'
+import { DependeciesInitError } from '../Error'
 import { LineProp, Line } from './index'
 
 /**
@@ -22,14 +23,18 @@ class LineAngleBisector extends Line {
   protected declare __prop: LineAngleBisectorProp
 
   /**
-   * @throws Throws an Error if given Dependencies are not type of Line.
+   * @throws Throws DependenciesInitError if given Dependencies are not of Line type or its length is not 2.
    */
   constructor(dependencies: Line[], prop: LineAngleBisectorProp) {
     if (
       dependencies.length !== 2 ||
-      !dependencies.every(i => i.type === 'Line')
+      !dependencies.every(i => i.type === Line.TYPE)
     )
-      throw new Error('Dependencies are not type of Line')
+      throw DependeciesInitError(
+        2,
+        Line.TYPE,
+        dependencies.map(i => i.id),
+      )
     super(dependencies, prop)
   }
 

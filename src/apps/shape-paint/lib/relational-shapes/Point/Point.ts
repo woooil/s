@@ -22,6 +22,7 @@ abstract class Point extends Shape {
    * 'Point'.
    */
   public static TYPE = 'Point'
+
   constructor(dependencies: Shape[], prop: PointProp) {
     super(dependencies, prop, Point.TYPE)
   }
