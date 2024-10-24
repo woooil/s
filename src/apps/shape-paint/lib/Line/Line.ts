@@ -35,9 +35,12 @@ interface LineProp extends ShapeProp {
  * @hierarchy Shape <- Line
  */
 abstract class Line extends Shape {
-  protected __dependenciesCut: Line[]
+  protected __dependenciesCut: { a: Line | undefined; b: Line | undefined }
   public get dependencies(): Shape[] {
-    return [...this.__dependencies, ...this.__dependenciesCut]
+    const d = this.__dependencies
+    if (this.__dependenciesCut.a) d.push(this.__dependenciesCut.a)
+    if (this.__dependenciesCut.b) d.push(this.__dependenciesCut.b)
+    return d
   }
   protected declare __prop: LineProp
 
@@ -46,7 +49,7 @@ abstract class Line extends Shape {
    */
   constructor(dependencies: Shape[], prop: LineProp) {
     super(dependencies, prop, 'Line', 'line')
-    this.__dependenciesCut = []
+    this.__dependenciesCut = { a: undefined, b: undefined }
   }
 
   /**
@@ -87,14 +90,12 @@ abstract class Line extends Shape {
   public resolve(): LineResolved {
     const preresolved = this.preresolve()
     if (preresolved.extendA && this.__prop.cutA) {
-      const pointCutA = this.intersect(this.__dependenciesCut[0])
+      const pointCutA = this.intersect(this.__dependenciesCut.a)
       preresolved.a = pointCutA
       preresolved.extendA = false
     }
     if (preresolved.extendB && this.__prop.cutB) {
-      const pointCutB = this.intersect(
-        this.__dependenciesCut[this.__dependenciesCut.length - 1],
-      )
+      const pointCutB = this.intersect(this.__dependenciesCut.b)
       preresolved.b = pointCutB
       preresolved.extendB = false
     }
@@ -103,13 +104,33 @@ abstract class Line extends Shape {
 
   /**
    * Cuts Line with the given Line.
-   * @param line  - Line which cut.
-   * @param cutA  - True if cut extending point A; false if cut extending point B.
+   * If Line has been already cut, it will change the cutting line.
+   * @param line    - Line which cut.
+   * @param selectA - True if cut extending point A; false if cut extending point B.
    */
-  public cut(line: Line, cutA: boolean) {
-    this.__dependenciesCut.push(line)
-    if (cutA) this.__prop.cutA = true
-    else this.__prop.cutB = true
+  public cut(line: Line, selectA: boolean) {
+    if (selectA) {
+      this.__dependenciesCut.a = line
+      this.__prop.cutA = true
+    } else if (!selectA) {
+      this.__dependenciesCut.b = line
+      this.__prop.cutB = true
+    }
+  }
+
+  /**
+   * Uncuts Line which is cut.
+   * If Line has not been cut, it will have no effect.
+   * @param selectA - True if uncut extending point A; false if uncut extending point B.
+   */
+  public uncut(selectA: boolean) {
+    if (selectA) {
+      this.__dependenciesCut.a = undefined
+      this.__prop.cutA = false
+    } else if (!selectA) {
+      this.__dependenciesCut.b = undefined
+      this.__prop.cutB = false
+    }
   }
 
   /**

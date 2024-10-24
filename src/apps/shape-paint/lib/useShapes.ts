@@ -5,7 +5,8 @@ import { Line } from './Line'
 interface Action {
   add: <T extends Shape>(shape: T) => T
   delete: <T extends Shape>(shape: T, cacade?: boolean) => T
-  cutLine: (line: Line, cut: Line, cutA: boolean) => Line
+  cutLine: (line: Line, cut: Line, selectA: boolean) => Line
+  uncutLine: (line: Line, selectA: boolean) => Line
 }
 
 function useShapes() {
@@ -34,10 +35,19 @@ function useShapes() {
     return shape
   }
 
-  const cutLine = (line: Line, cut: Line, cutA: boolean) => {
+  const cutLine = (line: Line, cut: Line, selectA: boolean) => {
     setShapes(i => {
       if (!i.includes(line)) throw new Error('No such shape in shapes')
-      line.cut(cut, cutA)
+      line.cut(cut, selectA)
+      return [...i]
+    })
+    return line
+  }
+
+  const uncutLine = (line: Line, selectA: boolean) => {
+    setShapes(i => {
+      if (!i.includes(line)) throw new Error('No such shape in shapes')
+      line.uncut(selectA)
       return [...i]
     })
     return line
@@ -47,6 +57,7 @@ function useShapes() {
     add: addShape,
     delete: deleteShape,
     cutLine: cutLine,
+    uncutLine: uncutLine,
   }
 
   return { shapes, action }
