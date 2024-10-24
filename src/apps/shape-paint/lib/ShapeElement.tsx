@@ -58,6 +58,28 @@ function LineElement({
   )
 }
 
+function LabelElement({
+  resolved,
+  ...props
+}: Props<Shape.LabelResolved, SVGTextElement>) {
+  const attr = {
+    x: resolved.x,
+    y: resolved.y,
+    textAnchor: 'middle',
+    dominantBaseline: 'middle',
+    fontFamily: 'Latin Modern',
+    fontSize: '24px',
+  }
+
+  return (
+    <text
+      {...attr}
+      {...props}>
+      {resolved.label}
+    </text>
+  )
+}
+
 function ShapeElement({ shape, ...props }: { shape: Shape.Shape }) {
   switch (shape.type) {
     case Shape.Point.TYPE:
@@ -74,7 +96,14 @@ function ShapeElement({ shape, ...props }: { shape: Shape.Shape }) {
           {...props}
         />
       )
+    case Shape.Label.TYPE:
+      return (
+        <LabelElement
+          resolved={(shape as Shape.Label).resolve()}
+          {...props}
+        />
+      )
   }
 }
 
-export { PointElement, LineElement, ShapeElement }
+export { ShapeElement, PointElement, LineElement, LabelElement }

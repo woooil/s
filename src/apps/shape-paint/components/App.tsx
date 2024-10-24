@@ -1,14 +1,17 @@
 import * as React from 'react'
 import {
+  QUARTER,
   Shape,
   PointAbsoluteCoord,
   PointInternalDivision,
   PointIntersection,
   LineTwoPoints,
   LineAngleBisector,
+  LabelOnPoint,
 } from '../lib/relational-shapes'
 import { useShapes } from '../lib/useShapes'
 import { ShapeElement } from '../lib/ShapeElement'
+import '../styles/App.css'
 
 export default function App() {
   const { shapes, action } = useShapes()
@@ -35,6 +38,21 @@ export default function App() {
     action.cutLine(lineD, lineB, false)
     action.cutLine(lineB, lineE, false)
     action.cutLine(lineE, lineB, false)
+    const labelA = action.add(
+      new LabelOnPoint([pointC], { r: 16, theta: QUARTER.ny, label: 'A' }),
+    )
+    const labelB = action.add(
+      new LabelOnPoint([pointB], { r: 24, theta: QUARTER.py, label: 'B' }),
+    )
+    const labelC = action.add(
+      new LabelOnPoint([pointA], { r: 24, theta: QUARTER.py, label: 'C' }),
+    )
+    const labelD = action.add(
+      new LabelOnPoint([pointD], { r: 20, theta: 6, label: 'D' }),
+    )
+    const labelE = action.add(
+      new LabelOnPoint([pointE], { r: 16, theta: 3.5, label: 'E' }),
+    )
   }, [])
 
   return (
