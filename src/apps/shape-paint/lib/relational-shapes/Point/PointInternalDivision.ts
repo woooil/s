@@ -1,5 +1,4 @@
-import { Shape } from '../Shape'
-import { PointProp, Point, PointResolved } from './index'
+import { PointProp, Point } from './index'
 
 /**
  * The properties of PointInternalDivison.

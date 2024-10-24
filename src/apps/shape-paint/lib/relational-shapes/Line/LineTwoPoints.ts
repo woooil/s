@@ -31,7 +31,7 @@ class LineTwoPoints extends Line {
   }
 
   /**
-   * Returns Line passing through two points.
+   * Returns LineResolved passing through two points.
    */
   preresolve() {
     const aResolved = this.__dependencies[0].resolve()

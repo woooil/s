@@ -27,21 +27,7 @@ abstract class Point extends Shape {
   }
 
   /**
-   * Sets radius of the circle to be 3, fills it with black.
-   */
-  // public get svgAttr() {
-  //   const resolved = this.resolve()
-
-  //   return {
-  //     cx: resolved.x,
-  //     cy: resolved.y,
-  //     r: 3,
-  //     fill: 'black',
-  //   }
-  // }
-
-  /**
-   * Resolves Point into PointResolved.
+   * Resolves this Point into PointResolved.
    */
   public abstract resolve(): PointResolved
 }

@@ -3,8 +3,8 @@ import { ShapeResolved, ShapeProp, Shape } from '../Shape'
 
 /**
  * The mathematical definition of Line. Defined by two points Line passes through.
- * @prop a        - One Coord which Line passes through.
- * @prop b        - Another Coord which Line passes through.
+ * @prop a        - One Coord which this Line passes through.
+ * @prop b        - Another Coord which this Line passes through.
  * @prop extendA  - Whether to extend point A or not.
  * @prop extendB  - Whether to extend point B or not.
  */
@@ -35,6 +35,11 @@ abstract class Line extends Shape {
    */
   public static TYPE: string = 'Line'
 
+  /**
+   * The dependencies for the cut.
+   * @prop a  - Line which cuts the extending point A of this Line. undefined if not cut.
+   * @prop b  - Line which cuts the extending point B of this Line. undefined if not cut.
+   */
   protected __dependenciesCut: { a: Line | undefined; b: Line | undefined }
   public get dependencies(): Shape[] {
     const d = this.__dependencies
@@ -50,39 +55,12 @@ abstract class Line extends Shape {
   }
 
   /**
-   * Uses stroke of width 2, filled black. Extends points to very large numbers.
-   */
-  // public get svgAttr() {
-  //   const resolved = this.resolve()
-
-  //   const extend = (coord: Coord, ref: Coord) => {
-  //     return {
-  //       x: coord.x + (coord.x - ref.x) * (2 << 10),
-  //       y: coord.y + (coord.y - ref.y) * (2 << 10),
-  //     }
-  //   }
-
-  //   const tempA = resolved.extendA ? extend(resolved.a, resolved.b) : resolved.a
-  //   resolved.b = resolved.extendB ? extend(resolved.b, resolved.a) : resolved.b
-  //   resolved.a = tempA
-
-  //   return {
-  //     x1: resolved.a.x,
-  //     y1: resolved.a.y,
-  //     x2: resolved.b.x,
-  //     y2: resolved.b.y,
-  //     stroke: 'black',
-  //     strokeWidth: 2,
-  //   }
-  // }
-
-  /**
-   * Resolves Line to LineResolved without the cut.
+   * Resolves this Line to LineResolved without the cut.
    */
   protected abstract preresolve(): LineResolved
 
   /**
-   * Resolves Line to LineResolved with the cut.
+   * Resolves this Line to LineResolved with the cut.
    */
   public resolve(): LineResolved {
     const preresolved = this.preresolve()
@@ -100,8 +78,8 @@ abstract class Line extends Shape {
   }
 
   /**
-   * Cuts Line with the given Line.
-   * If Line has been already cut, it will change the cutting line.
+   * Cuts this Line with the given Line.
+   * If this Line has been already cut, it will change the cutting line.
    * @param line    - Line which cut.
    * @param selectA - True if cut extending point A; false if cut extending point B.
    */
@@ -116,8 +94,8 @@ abstract class Line extends Shape {
   }
 
   /**
-   * Uncuts Line which is cut.
-   * If Line has not been cut, it will have no effect.
+   * Uncuts this Line.
+   * If this Line has not been cut, it will have no effect.
    * @param selectA - True if uncut extending point A; false if uncut extending point B.
    */
   public uncut(selectA: boolean) {

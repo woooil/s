@@ -28,47 +28,45 @@ export { ShapeProp, ShapeResolved, ShapeID, ShapeType }
  */
 abstract class Shape {
   /**
-   * The identifier of Shape.
+   * The identifier of this Shape.
    */
   readonly id: ShapeID
   /**
-   * The list of Shapes which Shape depends on to be defined.
+   * The list of Shapes on which this Shape depends.
    */
   protected __dependencies: Shape[]
+  /**
+   * The list of Shapes on which this Shape depends.
+   */
   public get dependencies() {
     return this.__dependencies
   }
   /**
-   * The properties of Shape except its Dependencies. This may include the division ratio of PointInternalDivision, the extending direction of Line, and more.
+   * The properties of this Shape except its Dependencies. This may include the division ratio of PointInternalDivision, or the extending direction of Line.
    */
   protected __prop: ShapeProp
+  /**
+   * The properties of this Shape except its Dependencies. This may include the division ratio of PointInternalDivision, or the extending direction of Line.
+   */
   public get prop() {
     return this.__prop
   }
   /**
-   * The type of Shape. For example, Point is one type of Shape.
+   * The type of this Shape. For example, Point is one type of Shape.
    */
   public static TYPE: ShapeType
   /**
-   * The type of Shape. For example, Point is one type of Shape.
+   * The type of this Shape. For example, Point is one type of Shape.
    */
   readonly type: ShapeType
-  /**
-   * The name of svg element tag which Shape should use.
-   */
-  // readonly svgTag: keyof SVGElementTagNameMap
 
   /**
-   * Resolves Shape into its mathematical definition. Once resolved, any Shape of the same ShapeType should be of the same type.
+   * Resolves this Shape into its mathematical definition. Any Shape of the same type should be resolved into the same type.
    */
   public abstract resolve(): ShapeResolved
-  /**
-   * Returns the attributes of svg element tag which should draw Shape.
-   */
-  // public abstract get svgAttr(): SVGAttributes
 
   /**
-   * Assigns properties to Shape. id is auto-generated using uuid().
+   * Assigns properties to this Shape. id is auto-generated using uuid().
    */
   constructor(dependencies: Shape[], prop: ShapeProp, type: ShapeType) {
     this.id = uuid()
