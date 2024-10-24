@@ -1,7 +1,4 @@
 export * from './Coord'
 export * from './Shape'
-export * from './SVGAttributes'
 export * from './Point'
 export * from './Line'
-export * from './ShapeElement'
-export * from './useShapes'

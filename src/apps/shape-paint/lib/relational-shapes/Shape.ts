@@ -1,23 +1,17 @@
-// See the following code for type definition:
-// node_modules/typescript/lib/lib.dom.d.ts
-// node_modules/@types/react/index.d.ts
-
 import { v4 as uuid } from 'uuid'
-import { Coord } from './Coord'
-import { SVGAttributes } from './SVGAttributes'
 
 /**
  * The properties of Shape.
  */
-interface ShapeProp { }
+interface ShapeProp {}
 
 /**
  * The mathematical definition of Shape. Once resolved, any Shape of the same ShapeType should be of the same type.
  */
-interface ShapeResolved { }
+interface ShapeResolved {}
 
 /**
- * The identifier of Shape. 
+ * The identifier of Shape.
  */
 type ShapeID = string
 
@@ -26,12 +20,7 @@ type ShapeID = string
  */
 type ShapeType = string
 
-/**
- * The index of Dependencies.
- */
-type ShapeDependenciesIndex = number
-
-export { ShapeProp, ShapeResolved, ShapeID, ShapeType, ShapeDependenciesIndex }
+export { ShapeProp, ShapeResolved, ShapeID, ShapeType }
 
 /**
  * Represents any shapes.
@@ -59,11 +48,15 @@ abstract class Shape {
   /**
    * The type of Shape. For example, Point is one type of Shape.
    */
+  public static TYPE: ShapeType
+  /**
+   * The type of Shape. For example, Point is one type of Shape.
+   */
   readonly type: ShapeType
   /**
    * The name of svg element tag which Shape should use.
    */
-  readonly svgTag: keyof SVGElementTagNameMap
+  // readonly svgTag: keyof SVGElementTagNameMap
 
   /**
    * Resolves Shape into its mathematical definition. Once resolved, any Shape of the same ShapeType should be of the same type.
@@ -72,17 +65,16 @@ abstract class Shape {
   /**
    * Returns the attributes of svg element tag which should draw Shape.
    */
-  public abstract get svgAttr(): SVGAttributes
+  // public abstract get svgAttr(): SVGAttributes
 
   /**
    * Assigns properties to Shape. id is auto-generated using uuid().
    */
-  constructor(dependencies: Shape[], prop: ShapeProp, type: ShapeType, svgTag: keyof SVGElementTagNameMap) {
+  constructor(dependencies: Shape[], prop: ShapeProp, type: ShapeType) {
     this.id = uuid()
     this.__dependencies = dependencies
     this.__prop = prop
     this.type = type
-    this.svgTag = svgTag
   }
 }
 

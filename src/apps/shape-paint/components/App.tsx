@@ -1,15 +1,14 @@
 import * as React from 'react'
 import {
-  useShapes,
-  Action,
   Shape,
-  ShapeElement,
   PointAbsoluteCoord,
   PointInternalDivision,
   PointIntersection,
   LineTwoPoints,
   LineAngleBisector,
-} from '../lib'
+} from '../lib/relational-shapes'
+import { useShapes } from '../lib/useShapes'
+import { ShapeElement } from '../lib/ShapeElement'
 
 export default function App() {
   const { shapes, action } = useShapes()
@@ -48,7 +47,9 @@ export default function App() {
         width="800px"
         height="500px"
         style={{ border: '1px solid blue' }}>
-        {shapes.map((i: Shape) => ShapeElement(i))}
+        {shapes.map((i: Shape) => (
+          <ShapeElement shape={i} />
+        ))}
       </svg>
     </div>
   )

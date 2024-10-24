@@ -1,4 +1,3 @@
-import { Shape } from '../Shape'
 import { Coord } from '../Coord'
 import { LineProp, Line } from './index'
 

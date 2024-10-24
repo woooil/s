@@ -26,6 +26,7 @@
     "@types/node": "^22.7.5",
     "@types/react": "^17.0.83",
     "@types/react-dom": "^18.3.1",
+    "@types/uuid": "^10.0.0",
     "babel-loader": "^8.2.2",
     "css-loader": "^6.7.3",
     "react-hot-loader": "^4.13.0",

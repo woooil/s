@@ -1,17 +1,17 @@
 import { Coord } from '../Coord'
-import { ShapeResolved, ShapeProp, ShapeDependenciesIndex, Shape } from '../Shape'
+import { ShapeResolved, ShapeProp, Shape } from '../Shape'
 
 /**
  * The mathematical definition of Point. Equal to Coord.
  * @prop x - The x coordinate.
  * @prop y - The y coordinate.
  */
-interface PointResolved extends ShapeResolved, Coord { }
+interface PointResolved extends ShapeResolved, Coord {}
 
 /**
  * The properties of Point.
  */
-interface PointProp extends ShapeProp { }
+interface PointProp extends ShapeProp {}
 
 /**
  * Represents points.
@@ -19,25 +19,26 @@ interface PointProp extends ShapeProp { }
  */
 abstract class Point extends Shape {
   /**
-   * Uses 'Point' as ShapeType and 'circle' as svgTag.
+   * 'Point'.
    */
+  public static TYPE = 'Point'
   constructor(dependencies: Shape[], prop: PointProp) {
-    super(dependencies, prop, 'Point', 'circle')
+    super(dependencies, prop, Point.TYPE)
   }
 
   /**
    * Sets radius of the circle to be 3, fills it with black.
    */
-  public get svgAttr() {
-    const resolved = this.resolve()
+  // public get svgAttr() {
+  //   const resolved = this.resolve()
 
-    return {
-      cx: resolved.x,
-      cy: resolved.y,
-      r: 3,
-      fill: 'black',
-    }
-  }
+  //   return {
+  //     cx: resolved.x,
+  //     cy: resolved.y,
+  //     r: 3,
+  //     fill: 'black',
+  //   }
+  // }
 
   /**
    * Resolves Point into PointResolved.

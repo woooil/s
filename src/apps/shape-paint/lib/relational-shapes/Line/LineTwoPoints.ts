@@ -1,6 +1,5 @@
-import { Shape } from '../Shape'
 import { LineProp, Line } from './Line'
-import { Point, PointResolved } from '../Point'
+import { Point } from '../Point'
 
 /**
  * The properties of LineTwoPointsProp. Sets LineExtend explicitly.

@@ -1,10 +1,5 @@
 import { Coord } from '../Coord'
-import {
-  ShapeResolved,
-  ShapeProp,
-  ShapeDependenciesIndex,
-  Shape,
-} from '../Shape'
+import { ShapeResolved, ShapeProp, Shape } from '../Shape'
 
 /**
  * The mathematical definition of Line. Defined by two points Line passes through.
@@ -35,6 +30,11 @@ interface LineProp extends ShapeProp {
  * @hierarchy Shape <- Line
  */
 abstract class Line extends Shape {
+  /**
+   * 'Line'.
+   */
+  public static TYPE: string = 'Line'
+
   protected __dependenciesCut: { a: Line | undefined; b: Line | undefined }
   public get dependencies(): Shape[] {
     const d = this.__dependencies
@@ -44,40 +44,37 @@ abstract class Line extends Shape {
   }
   protected declare __prop: LineProp
 
-  /**
-   * Uses 'Line' as ShapeType and 'line' as svgTag.
-   */
   constructor(dependencies: Shape[], prop: LineProp) {
-    super(dependencies, prop, 'Line', 'line')
+    super(dependencies, prop, 'Line')
     this.__dependenciesCut = { a: undefined, b: undefined }
   }
 
   /**
    * Uses stroke of width 2, filled black. Extends points to very large numbers.
    */
-  public get svgAttr() {
-    const resolved = this.resolve()
+  // public get svgAttr() {
+  //   const resolved = this.resolve()
 
-    const extend = (coord: Coord, ref: Coord) => {
-      return {
-        x: coord.x + (coord.x - ref.x) * (2 << 10),
-        y: coord.y + (coord.y - ref.y) * (2 << 10),
-      }
-    }
+  //   const extend = (coord: Coord, ref: Coord) => {
+  //     return {
+  //       x: coord.x + (coord.x - ref.x) * (2 << 10),
+  //       y: coord.y + (coord.y - ref.y) * (2 << 10),
+  //     }
+  //   }
 
-    const tempA = resolved.extendA ? extend(resolved.a, resolved.b) : resolved.a
-    resolved.b = resolved.extendB ? extend(resolved.b, resolved.a) : resolved.b
-    resolved.a = tempA
+  //   const tempA = resolved.extendA ? extend(resolved.a, resolved.b) : resolved.a
+  //   resolved.b = resolved.extendB ? extend(resolved.b, resolved.a) : resolved.b
+  //   resolved.a = tempA
 
-    return {
-      x1: resolved.a.x,
-      y1: resolved.a.y,
-      x2: resolved.b.x,
-      y2: resolved.b.y,
-      stroke: 'black',
-      strokeWidth: 2,
-    }
-  }
+  //   return {
+  //     x1: resolved.a.x,
+  //     y1: resolved.a.y,
+  //     x2: resolved.b.x,
+  //     y2: resolved.b.y,
+  //     stroke: 'black',
+  //     strokeWidth: 2,
+  //   }
+  // }
 
   /**
    * Resolves Line to LineResolved without the cut.
