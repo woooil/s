@@ -19,11 +19,18 @@ interface LineAngleBisectorProp extends LineProp {
  * @hierarchy Shape <- Line <- LineAngleBisector
  */
 class LineAngleBisector extends Line {
+  protected declare __dependencies: Line[]
+  protected declare __prop: LineAngleBisectorProp
+
   /**
    * @throws Throws an Error if given Dependencies are not type of Line.
    */
-  constructor(dependencies: Shape[], prop: LineAngleBisectorProp) {
-    if (dependencies[0].type !== 'Line' || dependencies[1].type !== 'Line') throw new Error("Dependencies are not type of Line")
+  constructor(dependencies: Line[], prop: LineAngleBisectorProp) {
+    if (
+      dependencies.length !== 2 ||
+      !dependencies.every(i => i.type === 'Line')
+    )
+      throw new Error('Dependencies are not type of Line')
     super(dependencies, prop)
   }
 
@@ -32,15 +39,15 @@ class LineAngleBisector extends Line {
    * @throws Throws an Error if two Lines are parallel.
    */
   preresolve() {
-    const a = this.dependencies[0].intersect(this.dependencies[1]) // Throws an Error
-    
-    const lResolved = this.dependencies[0].resolve()
-    const mResolved = this.dependencies[1].resolve()
+    const a = this.__dependencies[0].intersect(this.__dependencies[1]) // Throws an Error
+
+    const lResolved = this.__dependencies[0].resolve()
+    const mResolved = this.__dependencies[1].resolve()
 
     const alpha1 = lResolved.a.x - lResolved.b.x
     const alpha2 = mResolved.a.x - mResolved.b.x
-    const beta1  = lResolved.a.y - lResolved.b.y
-    const beta2  = mResolved.a.y - mResolved.b.y
+    const beta1 = lResolved.a.y - lResolved.b.y
+    const beta2 = mResolved.a.y - mResolved.b.y
 
     const theta1 = Math.atan(beta1 / alpha1)
     const theta2 = Math.atan(beta2 / alpha2)
@@ -49,12 +56,12 @@ class LineAngleBisector extends Line {
 
     let b: Coord = {
       x: a.x,
-      y: a.y
+      y: a.y,
     }
 
     const c = 1 << 8
 
-    switch (this.prop.direction % 4) {
+    switch (this.__prop.direction % 4) {
       case 0:
         b.x += c
         b.y += c * tan
@@ -79,7 +86,7 @@ class LineAngleBisector extends Line {
       a: a,
       b: b,
       extendA: false,
-      extendB: true
+      extendB: true,
     }
   }
 }

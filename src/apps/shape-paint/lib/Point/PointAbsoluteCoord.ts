@@ -1,4 +1,5 @@
 import { PointProp, Point } from '../Point'
+import { Shape } from '../Shape'
 
 /**
  * The properties of PointAbsoluteCoord. Defined by its absolute coordinates.
@@ -15,7 +16,10 @@ interface PointAbsoluteCoordProp extends PointProp {
  * @hierarchy Shape <- Point <- PointAbsoluteCoord
  */
 class PointAbsoluteCoord extends Point {
-  constructor(prop: PointAbsoluteCoordProp) {
+  protected declare __dependencies: Shape[]
+  protected declare __prop: PointAbsoluteCoordProp
+
+  constructor(_: Shape[], prop: PointAbsoluteCoordProp) {
     super([], prop)
   }
 
@@ -24,8 +28,8 @@ class PointAbsoluteCoord extends Point {
    */
   resolve() {
     return {
-      x: this.prop.x,
-      y: this.prop.y
+      x: this.__prop.x,
+      y: this.__prop.y,
     }
   }
 }

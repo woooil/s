@@ -1,7 +1,8 @@
-import { PointProp, Point } from './index'
+import { Shape } from '../Shape'
+import { PointProp, Point, PointResolved } from './index'
 
 /**
- * The properties of PointInternalDivison. 
+ * The properties of PointInternalDivison.
  * @prop r - The division ratio.
  */
 interface PointInternalDivisionProp extends PointProp {
@@ -13,11 +14,18 @@ interface PointInternalDivisionProp extends PointProp {
  * @hierarchy Shape <- Point <- PointInternalDivision
  */
 class PointInternalDivision extends Point {
+  protected declare __dependencies: Point[]
+  protected declare __prop: PointInternalDivisionProp
+
   /**
    * @throws Throws an Error if given Dependencies are not type of Point.
    */
   constructor(dependencies: Point[], prop: PointInternalDivisionProp) {
-    if (dependencies.length !== 2 || !(dependencies.every((i) => i.type === 'Point'))) throw new Error("Dependencies are not type of Point")
+    if (
+      dependencies.length !== 2 ||
+      !dependencies.every(i => i.type === 'Point')
+    )
+      throw new Error('Dependencies are not type of Point')
     super(dependencies, prop)
   }
 
@@ -25,12 +33,12 @@ class PointInternalDivision extends Point {
    * Calculates the internal division mathematically.
    */
   resolve() {
-    const aResolved = this.dependencies[0].resolve()
-    const bResolved = this.dependencies[1].resolve()
+    const aResolved = this.__dependencies[0].resolve()
+    const bResolved = this.__dependencies[1].resolve()
 
     return {
-      x: aResolved.x * (1 - this.prop.r) + bResolved.x * this.prop.r,
-      y: aResolved.y * (1 - this.prop.r) + bResolved.y * this.prop.r,
+      x: aResolved.x * (1 - this.__prop.r) + bResolved.x * this.__prop.r,
+      y: aResolved.y * (1 - this.__prop.r) + bResolved.y * this.__prop.r,
     }
   }
 }

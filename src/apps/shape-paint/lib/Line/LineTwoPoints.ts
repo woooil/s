@@ -1,5 +1,6 @@
 import { Shape } from '../Shape'
-import { LineProp, Line } from './index'
+import { LineProp, Line } from './Line'
+import { Point, PointResolved } from '../Point'
 
 /**
  * The properties of LineTwoPointsProp. Sets LineExtend explicitly.
@@ -15,11 +16,18 @@ interface LineTwoPointsProp extends LineProp {
  * @hierarchy Shape <- Line <- LineTwoPoints
  */
 class LineTwoPoints extends Line {
+  protected declare __dependencies: Point[]
+  protected declare __prop: LineTwoPointsProp
+
   /**
    * @throws Throws an Error if given Dependencies are not type of Point.
    */
-  constructor(dependencies: Shape[], prop: LineTwoPointsProp) {
-    if (dependencies[0].type !== 'Point' || dependencies[1].type !== 'Point') throw new Error("Dependencies are not type of Point")
+  constructor(dependencies: Point[], prop: LineTwoPointsProp) {
+    if (
+      dependencies.length !== 2 ||
+      !dependencies.every(i => i.type === 'Point')
+    )
+      throw new Error('Dependencies are not type of Point')
     super(dependencies, prop)
   }
 
@@ -27,14 +35,14 @@ class LineTwoPoints extends Line {
    * Returns Line passing through two points.
    */
   preresolve() {
-    const aResolved = this.dependencies[0].resolve()
-    const bResolved = this.dependencies[1].resolve()
+    const aResolved = this.__dependencies[0].resolve()
+    const bResolved = this.__dependencies[1].resolve()
 
     return {
       a: aResolved,
       b: bResolved,
-      extendA: this.prop.extendA || false,
-      extendB: this.prop.extendB || false,
+      extendA: this.__prop.extendA || false,
+      extendB: this.__prop.extendB || false,
     }
   }
 }
