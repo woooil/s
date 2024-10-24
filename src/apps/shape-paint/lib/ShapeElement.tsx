@@ -1,7 +1,15 @@
 import * as React from 'react'
 import * as Shape from './relational-shapes'
 
-function PointElement({ resolved }: { resolved: Shape.PointResolved }) {
+type Props<R, T> = {
+  resolved: R
+} & React.AllHTMLAttributes<T> &
+  React.SVGAttributes<T>
+
+function PointElement({
+  resolved,
+  ...props
+}: Props<Shape.PointResolved, SVGCircleElement>) {
   const attr = {
     cx: resolved.x,
     cy: resolved.y,
@@ -9,10 +17,18 @@ function PointElement({ resolved }: { resolved: Shape.PointResolved }) {
     fill: 'black',
   }
 
-  return <circle {...attr} />
+  return (
+    <circle
+      {...attr}
+      {...props}
+    />
+  )
 }
 
-function LineElement({ resolved }: { resolved: Shape.LineResolved }) {
+function LineElement({
+  resolved,
+  ...props
+}: Props<Shape.LineResolved, SVGLineElement>) {
   const extend = (coord: Shape.Coord, ref: Shape.Coord) => {
     return {
       x: coord.x + (coord.x - ref.x) * (2 << 10),
@@ -33,23 +49,29 @@ function LineElement({ resolved }: { resolved: Shape.LineResolved }) {
     strokeWidth: 2,
   }
 
-  return <line {...attr} />
+  return (
+    <line
+      {...attr}
+      {...props}
+      key={'s'}
+    />
+  )
 }
 
-function ShapeElement({ shape }: { shape: Shape.Shape }) {
+function ShapeElement({ shape, ...props }: { shape: Shape.Shape }) {
   switch (shape.type) {
     case Shape.Point.TYPE:
       return (
         <PointElement
           resolved={(shape as Shape.Point).resolve()}
-          key={shape.id}
+          {...props}
         />
       )
     case Shape.Line.TYPE:
       return (
         <LineElement
           resolved={(shape as Shape.Line).resolve()}
-          key={shape.id}
+          {...props}
         />
       )
   }

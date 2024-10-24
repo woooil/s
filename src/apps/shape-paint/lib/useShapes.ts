@@ -1,6 +1,5 @@
 import * as React from 'react'
-import { Shape } from './Shape'
-import { Line } from './Line'
+import { Shape, Line } from './relational-shapes'
 
 interface Action {
   add: <T extends Shape>(shape: T) => T

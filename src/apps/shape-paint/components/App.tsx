@@ -48,7 +48,10 @@ export default function App() {
         height="500px"
         style={{ border: '1px solid blue' }}>
         {shapes.map((i: Shape) => (
-          <ShapeElement shape={i} />
+          <ShapeElement
+            shape={i}
+            key={i.id}
+          />
         ))}
       </svg>
     </div>

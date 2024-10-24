@@ -28,6 +28,10 @@ export { ShapeProp, ShapeResolved, ShapeID, ShapeType }
  */
 abstract class Shape {
   /**
+   * The prefix of the id.
+   */
+  public static ID_PREFIX = 'RS-'
+  /**
    * The identifier of this Shape.
    */
   readonly id: ShapeID
@@ -69,7 +73,7 @@ abstract class Shape {
    * Assigns properties to this Shape. id is auto-generated using uuid().
    */
   constructor(dependencies: Shape[], prop: ShapeProp, type: ShapeType) {
-    this.id = uuid()
+    this.id = `${Shape.ID_PREFIX}${uuid()}`
     this.__dependencies = dependencies
     this.__prop = prop
     this.type = type
