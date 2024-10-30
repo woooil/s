@@ -1,13 +1,14 @@
 import * as React from 'react'
 import {
-  QUARTER,
   Shape,
+  QUARTER,
   PointAbsoluteCoord,
   PointInternalDivision,
   PointIntersection,
   LineTwoPoints,
   LineAngleBisector,
   LabelOnPoint,
+  AngleTwoLines,
 } from '../lib/relational-shapes'
 import { useShapes } from '../lib/useShapes'
 import { ShapeElement } from '../lib/ShapeElement'
@@ -52,6 +53,18 @@ export default function App() {
     )
     const labelE = action.add(
       new LabelOnPoint([pointE], { r: 16, theta: 3.5, label: 'E' }),
+    )
+    const angleA = action.add(
+      new AngleTwoLines([lineA, lineD], { direction: 0, marker: '.' })
+    )
+    const angleB = action.add(
+      new AngleTwoLines([lineC, lineD], { direction: 0, marker: '.' })
+    )
+    const angleC = action.add(
+      new AngleTwoLines([lineA, lineE], { direction: 2, marker: '.' })
+    )
+    const angleD = action.add(
+      new AngleTwoLines([lineC, lineE], { direction: 1, marker: '.' })
     )
   }, [])
 

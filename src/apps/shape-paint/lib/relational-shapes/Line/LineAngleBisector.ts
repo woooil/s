@@ -1,6 +1,6 @@
 import { Coord } from '../Coord'
 import { DependeciesInitError } from '../Error'
-import { LineProp, Line } from './index'
+import { LineProp, Line } from './Line'
 
 /**
  * The properties of LineAngleBisectorProp. Chooses the direction of the angle to bisect.
