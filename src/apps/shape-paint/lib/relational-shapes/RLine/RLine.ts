@@ -1,15 +1,15 @@
 import { Coord } from '../Coord'
 import { ParallelLinesError } from '../Error'
-import { ShapeResolved, ShapeProp, Shape } from '../Shape'
+import { RShapeResolved, RShapeProp, RShape } from '../RShape'
 
 /**
- * The mathematical definition of Line. Defined by two points Line passes through.
- * @prop a        - One Coord which this Line passes through.
- * @prop b        - Another Coord which this Line passes through.
+ * The mathematical definition of RLine. Defined by two points Line passes through.
+ * @prop a        - One Coord which this RLine passes through.
+ * @prop b        - Another Coord which this RLine passes through.
  * @prop extendA  - Whether to extend point A or not.
  * @prop extendB  - Whether to extend point B or not.
  */
-interface LineResolved extends ShapeResolved {
+interface RLineResolved extends RShapeResolved {
   a: Coord
   b: Coord
   extendA: boolean
@@ -17,53 +17,53 @@ interface LineResolved extends ShapeResolved {
 }
 
 /**
- * The properties of Line.
+ * The properties of RLine.
  * @prop cutA - Whether to cut extending point A by another Line.
  * @prop cutB - Whether to cut extending point B by another Line.
  */
-interface LineProp extends ShapeProp {
+interface RLineProp extends RShapeProp {
   cutA?: boolean
   cutB?: boolean
 }
 
 /**
  * Represents lines.
- * @hierarchy Shape <- Line
+ * @hierarchy RShape <- RLine
  */
-abstract class Line extends Shape {
+abstract class RLine extends RShape {
   /**
-   * 'Line'.
+   * 'RLine'.
    */
-  public static TYPE: string = 'Line'
+  public static TYPE: string = 'RLine'
 
   /**
    * The dependencies for the cut.
-   * @prop a  - Line which cuts the extending point A of this Line. undefined if not cut.
-   * @prop b  - Line which cuts the extending point B of this Line. undefined if not cut.
+   * @prop a  - RLine which cuts the extending point A of this RLine. undefined if not cut.
+   * @prop b  - RLine which cuts the extending point B of this RLine. undefined if not cut.
    */
-  protected __dependenciesCut: { a: Line | undefined; b: Line | undefined }
-  public get dependencies(): Shape[] {
+  protected __dependenciesCut: { a: RLine | undefined; b: RLine | undefined }
+  public get dependencies(): RShape[] {
     const d = this.__dependencies
     if (this.__dependenciesCut.a) d.push(this.__dependenciesCut.a)
     if (this.__dependenciesCut.b) d.push(this.__dependenciesCut.b)
     return d
   }
-  protected declare __prop: LineProp
+  protected declare __prop: RLineProp
 
-  constructor(dependencies: Shape[], prop: LineProp) {
-    super(dependencies, prop, 'Line')
+  constructor(dependencies: RShape[], prop: RLineProp) {
+    super(dependencies, prop, RLine.TYPE)
     this.__dependenciesCut = { a: undefined, b: undefined }
   }
 
   /**
-   * Resolves this Line to LineResolved without the cut.
+   * Resolves this RLine to RLineResolved without the cut.
    */
-  protected abstract preresolve(): LineResolved
+  protected abstract preresolve(): RLineResolved
 
   /**
-   * Resolves this Line to LineResolved with the cut.
+   * Resolves this RLine to RLineResolved with the cut.
    */
-  public resolve(): LineResolved {
+  public resolve(): RLineResolved {
     const preresolved = this.preresolve()
     if (preresolved.extendA && this.__prop.cutA) {
       const pointCutA = this.intersect(this.__dependenciesCut.a)
@@ -79,24 +79,24 @@ abstract class Line extends Shape {
   }
 
   /**
-   * Cuts this Line with the given Line.
-   * If this Line has been already cut, it will change the cutting line.
-   * @param line    - Line which cut.
+   * Cuts this RLine with the given RLine.
+   * If this RLine has been already cut, it will change the cutting line.
+   * @param rline    - RLine which cut.
    * @param selectA - True if cut extending point A; false if cut extending point B.
    */
-  public cut(line: Line, selectA: boolean) {
+  public cut(rline: RLine, selectA: boolean) {
     if (selectA) {
-      this.__dependenciesCut.a = line
+      this.__dependenciesCut.a = rline
       this.__prop.cutA = true
     } else if (!selectA) {
-      this.__dependenciesCut.b = line
+      this.__dependenciesCut.b = rline
       this.__prop.cutB = true
     }
   }
 
   /**
-   * Uncuts this Line.
-   * If this Line has not been cut, it will have no effect.
+   * Uncuts this RLine.
+   * If this RLine has not been cut, it will have no effect.
    * @param selectA - True if uncut extending point A; false if uncut extending point B.
    */
   public uncut(selectA: boolean) {
@@ -110,12 +110,12 @@ abstract class Line extends Shape {
   }
 
   /**
-   * Returns an intersection with another Line.
-   * @throws Throws an Error if two Lines are parallel.
+   * Returns an intersection with another RLine.
+   * @throws Throws an Error if two RLines are parallel.
    */
-  public intersect(line: Line) {
+  public intersect(rline: RLine) {
     const lResolved = this.preresolve()
-    const mResolved = line.preresolve()
+    const mResolved = rline.preresolve()
 
     const alpha1 = lResolved.a.x - lResolved.b.x
     const alpha2 = mResolved.a.x - mResolved.b.x
@@ -136,7 +136,7 @@ abstract class Line extends Shape {
       }
     } else if ((beta2 === 0 && beta1 === 0) || gamma1 === 0) {
       // m || l
-      throw ParallelLinesError(this.id, line.id)
+      throw ParallelLinesError(this.id, rline.id)
     } else {
       a = {
         x: lResolved.a.x - alpha1 * (gamma2 / gamma1), // div by 0 if l || m
@@ -148,4 +148,4 @@ abstract class Line extends Shape {
   }
 }
 
-export { LineResolved, LineProp, Line }
+export { RLineResolved, RLineProp, RLine }

@@ -1,0 +1,54 @@
+import { RLineProp, RLine } from './RLine'
+import { RPoint } from '../RPoint'
+import { DependeciesInitError } from '../Error'
+
+/**
+ * The properties of RLineTwoPointsProp. Sets RLineExtend explicitly.
+ * @prop extend - The extension of RLineTwoPoints.
+ */
+interface RLineTwoPointsProp extends RLineProp {
+  extendA?: boolean
+  extendB?: boolean
+}
+
+/**
+ * Represents lines as two points it passes through.
+ * @hierarchy RShape <- RLine <- RLineTwoPoints
+ */
+class RLineTwoPoints extends RLine {
+  protected declare __dependencies: RPoint[]
+  protected declare __prop: RLineTwoPointsProp
+
+  /**
+   * @throws Throws DependenciesInitError if given Dependencies are not of RPoint type or its length is not 2.
+   */
+  constructor(dependencies: RPoint[], prop: RLineTwoPointsProp) {
+    if (
+      dependencies.length !== 2 ||
+      !dependencies.every(i => i.type === RPoint.TYPE)
+    )
+      throw DependeciesInitError(
+        2,
+        RPoint.TYPE,
+        dependencies.map(i => i.id),
+      )
+    super(dependencies, prop)
+  }
+
+  /**
+   * Returns RLineResolved passing through two points.
+   */
+  preresolve() {
+    const aResolved = this.__dependencies[0].resolve()
+    const bResolved = this.__dependencies[1].resolve()
+
+    return {
+      a: aResolved,
+      b: bResolved,
+      extendA: this.__prop.extendA || false,
+      extendB: this.__prop.extendB || false,
+    }
+  }
+}
+
+export { RLineTwoPointsProp, RLineTwoPoints }

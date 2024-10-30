@@ -1,31 +1,31 @@
 import { DependeciesInitError } from '../Error'
-import { PointProp, Point } from './Point'
-import { Line } from '../Line'
+import { RPointProp, RPoint } from './RPoint'
+import { RLine } from '../RLine'
 
 /**
- * The properties of PointIntersection.
+ * The properties of RPointIntersection.
  */
-interface PointIntersectionProp extends PointProp {}
+interface RPointIntersectionProp extends RPointProp {}
 
 /**
  * Represents points as an intersection of two lines.
- * @hierarchy Shape <- Point <- PointIntersection
+ * @hierarchy RShape <- RPoint <- RPointIntersection
  */
-class PointIntersection extends Point {
-  protected declare __dependencies: Line[]
-  protected declare __prop: PointIntersectionProp
+class RPointIntersection extends RPoint {
+  protected declare __dependencies: RLine[]
+  protected declare __prop: RPointIntersectionProp
 
   /**
    * @throws Throws DependenciesInitError if given Dependencies are not of Line type or its length is not 2.
    */
-  constructor(dependencies: Line[], prop: PointIntersectionProp) {
+  constructor(dependencies: RLine[], prop: RPointIntersectionProp) {
     if (
       dependencies.length !== 2 ||
-      !dependencies.every(i => i.type === Line.TYPE)
+      !dependencies.every(i => i.type === RLine.TYPE)
     )
       throw DependeciesInitError(
         2,
-        Line.TYPE,
+        RLine.TYPE,
         dependencies.map(i => i.id),
       )
     super(dependencies, prop)
@@ -39,4 +39,4 @@ class PointIntersection extends Point {
   }
 }
 
-export { PointIntersectionProp, PointIntersection }
+export { RPointIntersectionProp, RPointIntersection }

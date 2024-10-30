@@ -1,22 +1,22 @@
 import { CoordPolar, Coords } from '../Coord'
-import { LabelProp, Label } from './Label'
-import { Point } from '../Point'
+import { RLabelProp, RLabel } from './RLabel'
+import { RPoint } from '../RPoint'
 import { DependeciesInitError } from '../Error'
 
-interface LabelOnPointProp extends LabelProp, CoordPolar {}
+interface RLabelOnPointProp extends RLabelProp, CoordPolar {}
 
-class LabelOnPoint extends Label {
-  protected declare __dependencies: Point[]
-  protected declare __prop: LabelOnPointProp
+class RLabelOnPoint extends RLabel {
+  protected declare __dependencies: RPoint[]
+  protected declare __prop: RLabelOnPointProp
 
-  constructor(dependencies: Point[], prop: LabelOnPointProp) {
+  constructor(dependencies: RPoint[], prop: RLabelOnPointProp) {
     if (
       dependencies.length !== 1 ||
-      !dependencies.every(i => i.type === Point.TYPE)
+      !dependencies.every(i => i.type === RPoint.TYPE)
     )
       throw DependeciesInitError(
         1,
-        Point.TYPE,
+        RPoint.TYPE,
         dependencies.map(i => i.id),
       )
     super(dependencies, prop)
@@ -33,4 +33,4 @@ class LabelOnPoint extends Label {
   }
 }
 
-export { LabelOnPointProp, LabelOnPoint }
+export { RLabelOnPointProp, RLabelOnPoint }

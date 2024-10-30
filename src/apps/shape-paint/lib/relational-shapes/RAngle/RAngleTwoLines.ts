@@ -1,24 +1,24 @@
 import { DependeciesInitError } from '../Error'
-import { Line } from '../Line'
-import { AngleProp, Angle } from './Angle'
+import { RLine } from '../RLine'
+import { RAngleProp, RAngle } from './RAngle'
 
-interface AngleTwoLinesProp extends AngleProp {
+interface RAngleTwoLinesProp extends RAngleProp {
   marker: string
   direction: number
 }
 
-class AngleTwoLines extends Angle {
-  protected declare __dependencies: Line[]
-  protected declare __prop: AngleTwoLinesProp
+class RAngleTwoLines extends RAngle {
+  protected declare __dependencies: RLine[]
+  protected declare __prop: RAngleTwoLinesProp
 
-  constructor(dependencies: Line[], prop: AngleTwoLinesProp) {
+  constructor(dependencies: RLine[], prop: RAngleTwoLinesProp) {
     if (
       dependencies.length !== 2 ||
-      !dependencies.every(i => i.type === Line.TYPE)
+      !dependencies.every(i => i.type === RLine.TYPE)
     )
       throw DependeciesInitError(
         2,
-        Line.TYPE,
+        RLine.TYPE,
         dependencies.map(i => i.id),
       )
     super(dependencies, prop)
@@ -65,4 +65,4 @@ class AngleTwoLines extends Angle {
   }
 }
 
-export { AngleTwoLinesProp, AngleTwoLines }
+export { RAngleTwoLinesProp, RAngleTwoLines }

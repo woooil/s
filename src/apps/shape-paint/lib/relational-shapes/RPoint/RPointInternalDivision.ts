@@ -1,33 +1,33 @@
 import { DependeciesInitError } from '../Error'
-import { PointProp, Point } from './Point'
+import { RPointProp, RPoint } from './RPoint'
 
 /**
- * The properties of PointInternalDivison.
+ * The properties of RPointInternalDivison.
  * @prop r - The division ratio.
  */
-interface PointInternalDivisionProp extends PointProp {
+interface RPointInternalDivisionProp extends RPointProp {
   r: number
 }
 
 /**
  * Represents points as internal divisions of two points.
- * @hierarchy Shape <- Point <- PointInternalDivision
+ * @hierarchy RShape <- RPoint <- RPointInternalDivision
  */
-class PointInternalDivision extends Point {
-  protected declare __dependencies: Point[]
-  protected declare __prop: PointInternalDivisionProp
+class RPointInternalDivision extends RPoint {
+  protected declare __dependencies: RPoint[]
+  protected declare __prop: RPointInternalDivisionProp
 
   /**
    * @throws Throws DependenciesInitError if given Dependencies are not of Point type or its length is not 2.
    */
-  constructor(dependencies: Point[], prop: PointInternalDivisionProp) {
+  constructor(dependencies: RPoint[], prop: RPointInternalDivisionProp) {
     if (
       dependencies.length !== 2 ||
-      !dependencies.every(i => i.type === Point.TYPE)
+      !dependencies.every(i => i.type === RPoint.TYPE)
     )
       throw DependeciesInitError(
         2,
-        Point.TYPE,
+        RPoint.TYPE,
         dependencies.map(i => i.id),
       )
     super(dependencies, prop)
@@ -47,4 +47,4 @@ class PointInternalDivision extends Point {
   }
 }
 
-export { PointInternalDivisionProp, PointInternalDivision }
+export { RPointInternalDivisionProp, RPointInternalDivision }

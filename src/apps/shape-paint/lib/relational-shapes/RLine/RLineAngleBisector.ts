@@ -1,46 +1,46 @@
 import { Coord } from '../Coord'
 import { DependeciesInitError } from '../Error'
-import { LineProp, Line } from './Line'
+import { RLineProp, RLine } from './RLine'
 
 /**
- * The properties of LineAngleBisectorProp. Chooses the direction of the angle to bisect.
- * @prop direction - The direction of the angle to bisect. Integers from 0 to 3 represents four possible angles made by two Lines defined as below. Any integer out of this range would be considered as its remainder divided by 4.
- *   @value 0 - The angle by two Lines extending towards +x direction.
- *   @value 1 - The angle by the first Line extending towards +x direction and the second Line extending towards -x direction.
- *   @value 2 - The angle by two Lines extending towards -x direction.
- *   @value 3 - The angle by the first Line extending towards -x direction and the second Line extending towards +x direction.
+ * The properties of RLineAngleBisectorProp. Chooses the direction of the angle to bisect.
+ * @prop direction - The direction of the angle to bisect. Integers from 0 to 3 represents four possible angles made by two RLines defined as below. Any integer out of this range would be considered as its remainder divided by 4.
+ *   @value 0 - The angle by two RLines extending towards +x direction.
+ *   @value 1 - The angle by the first RLine extending towards +x direction and the second RLine extending towards -x direction.
+ *   @value 2 - The angle by two RLines extending towards -x direction.
+ *   @value 3 - The angle by the first RLine extending towards -x direction and the second RLine extending towards +x direction.
  */
-interface LineAngleBisectorProp extends LineProp {
+interface RLineAngleBisectorProp extends RLineProp {
   direction: number
 }
 
 /**
  * Represents lines as angle bisectors of two lines.
- * @hierarchy Shape <- Line <- LineAngleBisector
+ * @hierarchy RShape <- RLine <- RLineAngleBisector
  */
-class LineAngleBisector extends Line {
-  protected declare __dependencies: Line[]
-  protected declare __prop: LineAngleBisectorProp
+class RLineAngleBisector extends RLine {
+  protected declare __dependencies: RLine[]
+  protected declare __prop: RLineAngleBisectorProp
 
   /**
-   * @throws Throws DependenciesInitError if given Dependencies are not of Line type or its length is not 2.
+   * @throws Throws DependenciesInitError if given Dependencies are not of RLine type or its length is not 2.
    */
-  constructor(dependencies: Line[], prop: LineAngleBisectorProp) {
+  constructor(dependencies: RLine[], prop: RLineAngleBisectorProp) {
     if (
       dependencies.length !== 2 ||
-      !dependencies.every(i => i.type === Line.TYPE)
+      !dependencies.every(i => i.type === RLine.TYPE)
     )
       throw DependeciesInitError(
         2,
-        Line.TYPE,
+        RLine.TYPE,
         dependencies.map(i => i.id),
       )
     super(dependencies, prop)
   }
 
   /**
-   * Calculates the angle bisector of two Lines mathematically.
-   * @throws Throws an Error if two Lines are parallel.
+   * Calculates the angle bisector of two RLines mathematically.
+   * @throws Throws an Error if two RLines are parallel.
    */
   preresolve() {
     const a = this.__dependencies[0].intersect(this.__dependencies[1]) // Throws an Error
@@ -95,4 +95,4 @@ class LineAngleBisector extends Line {
   }
 }
 
-export { LineAngleBisectorProp, LineAngleBisector }
+export { RLineAngleBisectorProp, RLineAngleBisector }
