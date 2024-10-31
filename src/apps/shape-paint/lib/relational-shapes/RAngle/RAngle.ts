@@ -64,8 +64,10 @@ abstract class RAngle extends RShape {
     if (sim(theta1, theta2)) {
       this.__dependenciesCongruent = rangle
       this.__prop.marker = marker
+      this.__prop.congruent = true
       rangle.__dependenciesCongruent = this
       rangle.__prop.marker = marker
+      rangle.__prop.congruent = true
     } else {
       throw NotEqualError(`RAngle ${this.id}`,`RAngle ${rangle.id}`)
     }

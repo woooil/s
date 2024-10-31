@@ -45,16 +45,16 @@ export default function App() {
       new RS.RLabelOnPoint([pointE], { r: 16, theta: 3.5, label: 'E' }),
     )
     const angleA = action.add(
-      new RS.RAngleTwoLines([lineA, lineD], { direction: [true, true], marker: '.' })
+      new RS.RAngleTwoLines([lineA, lineD], { direction: [true, true] })
     )
     const angleB = action.add(
-      new RS.RAngleTwoLines([lineC, lineD], { direction: [true, true], marker: '.' })
+      new RS.RAngleTwoLines([lineC, lineD], { direction: [true, true] })
     )
     const angleC = action.add(
-      new RS.RAngleTwoLines([lineA, lineE], { direction: [false, false], marker: '.' })
+      new RS.RAngleTwoLines([lineA, lineE], { direction: [false, false] })
     )
     const angleD = action.add(
-      new RS.RAngleTwoLines([lineC, lineE], { direction: [true, false], marker: '.' })
+      new RS.RAngleTwoLines([lineC, lineE], { direction: [true, false] })
     )
     action.congruentAngle(angleA, angleB, 'o')
     action.congruentAngle(angleC, angleD, 'x')

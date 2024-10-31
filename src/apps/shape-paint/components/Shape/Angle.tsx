@@ -90,13 +90,14 @@ function AngleDefault({
     rx: std.r,
     ry: std.r / std.scale,
     rotation: (resolved.theta0 + resolved.theta / 2) * 180 / Math.PI,
+    largeArcFlag: Math.abs(resolved.theta) > Math.PI ? 1 : 0,
     sweepFlag: resolved.theta > 0 ? 1 : 0,
     f: {
       x: resolved.x + std.r * Math.cos(resolved.theta + resolved.theta0),
       y: resolved.y + std.r * Math.sin(resolved.theta + resolved.theta0)
     }
   }
-  const d = `M ${p.i.x} ${p.i.y} A ${p.rx} ${p.ry} ${p.rotation} 0 ${p.sweepFlag} ${p.f.x} ${p.f.y}`
+  const d = `M ${p.i.x} ${p.i.y} A ${p.rx} ${p.ry} ${p.rotation} ${p.largeArcFlag} ${p.sweepFlag} ${p.f.x} ${p.f.y}`
   const attr = {
     d: d,
     fill: 'none',
