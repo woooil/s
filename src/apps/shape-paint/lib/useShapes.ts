@@ -1,17 +1,18 @@
 import * as React from 'react'
-import { RShape, RLine } from './relational-shapes'
+import * as RS from './relational-shapes'
 
 interface Action {
-  add: <T extends RShape>(shape: T) => T
-  delete: <T extends RShape>(shape: T, cacade?: boolean) => T
-  cutLine: (rline: RLine, cut: RLine, selectA: boolean) => RLine
-  uncutLine: (rline: RLine, selectA: boolean) => RLine
+  add: <T extends RS.RShape>(shape: T) => T
+  delete: <T extends RS.RShape>(shape: T, cacade?: boolean) => T
+  cutLine: (rline: RS.RLine, cut: RS.RLine, selectA: boolean) => RS.RLine
+  uncutLine: (rline: RS.RLine, selectA: boolean) => RS.RLine
+  equalAngle: (rangle: RS.RAngle, rangle2: RS.RAngle, marker: string) => RS.RAngle
 }
 
 function useShapes() {
-  const [shapes, setShapes] = React.useState<RShape[]>([])
+  const [shapes, setShapes] = React.useState<RS.RShape[]>([])
 
-  const addShape: <T extends RShape>(shape: T) => T = shape => {
+  const addShape: <T extends RS.RShape>(shape: T) => T = shape => {
     setShapes(i => {
       if (!shape.dependencies.every(j => i.includes(j))) {
         throw new Error('Dependencies are not in shapes.')
@@ -21,7 +22,7 @@ function useShapes() {
     return shape
   }
 
-  const deleteShape: <T extends RShape>(shape: T, cascade?: boolean) => T = (
+  const deleteShape: <T extends RS.RShape>(shape: T, cascade?: boolean) => T = (
     shape,
     cascade = true,
   ) => {
@@ -34,7 +35,7 @@ function useShapes() {
     return shape
   }
 
-  const cutLine = (rline: RLine, cut: RLine, selectA: boolean) => {
+  const cutLine = (rline: RS.RLine, cut: RS.RLine, selectA: boolean) => {
     setShapes(i => {
       if (!i.includes(rline)) throw new Error('No such shape in shapes')
       rline.cut(cut, selectA)
@@ -43,7 +44,7 @@ function useShapes() {
     return rline
   }
 
-  const uncutLine = (rline: RLine, selectA: boolean) => {
+  const uncutLine = (rline: RS.RLine, selectA: boolean) => {
     setShapes(i => {
       if (!i.includes(rline)) throw new Error('No such shape in shapes')
       rline.uncut(selectA)
@@ -52,11 +53,21 @@ function useShapes() {
     return rline
   }
 
+  const equalAngle = (rangle: RS.RAngle, rangle2: RS.RAngle, marker: string) => {
+    setShapes(i => {
+      if (!i.includes(rangle) || !i.includes(rangle2)) throw new Error('No such shape in shapes')
+      rangle.equal(rangle2, marker)
+      return [...i]
+    })
+    return rangle
+  }
+
   const action: Action = {
     add: addShape,
     delete: deleteShape,
     cutLine: cutLine,
     uncutLine: uncutLine,
+    equalAngle: equalAngle
   }
 
   return { shapes, action }

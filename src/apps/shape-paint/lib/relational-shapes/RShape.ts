@@ -15,12 +15,15 @@ interface RShapeResolved {}
  */
 type RShapeID = string
 
+type RShapeTypeL1 = string
+type RShapeTypeL2 = string
+
 /**
  * The type of RShape.
  */
-type RShapeType = string
+type RShapeType = [RShapeTypeL1, RShapeTypeL2]
 
-export { RShapeProp, RShapeResolved, RShapeID, RShapeType }
+export { RShapeProp, RShapeResolved, RShapeID, RShapeTypeL1, RShapeTypeL2, RShapeType }
 
 /**
  * Represents any shapes.
@@ -56,11 +59,15 @@ abstract class RShape {
     return this.__prop
   }
   /**
-   * The type of this RShape. For example, Point is one type of RShape.
+   * The L1 type of RShape. For example, 'Point' is one L1 type of RShape.
    */
-  public static TYPE: RShapeType
+  public static TYPEL1: RShapeTypeL1
   /**
-   * The type of this RShape. For example, Point is one type of RShape.
+   * The L2 type of RShape. For example, 'PointAbsoluteCoord' is one L2 type of RShape.
+   */
+  public static TYPEL2: RShapeTypeL2
+  /**
+   * The type of this RShape. For example, ['Point', 'PointAbsoluteCoord'] is one type of RShape.
    */
   readonly type: RShapeType
 

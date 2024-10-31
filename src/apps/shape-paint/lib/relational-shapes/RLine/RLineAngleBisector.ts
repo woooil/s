@@ -19,6 +19,7 @@ interface RLineAngleBisectorProp extends RLineProp {
  * @hierarchy RShape <- RLine <- RLineAngleBisector
  */
 class RLineAngleBisector extends RLine {
+  public static TYPEL2 = 'RLineAngleBisector'
   protected declare __dependencies: RLine[]
   protected declare __prop: RLineAngleBisectorProp
 
@@ -28,14 +29,14 @@ class RLineAngleBisector extends RLine {
   constructor(dependencies: RLine[], prop: RLineAngleBisectorProp) {
     if (
       dependencies.length !== 2 ||
-      !dependencies.every(i => i.type === RLine.TYPE)
+      !dependencies.every(i => i.type[0] === RLine.TYPEL1)
     )
       throw DependeciesInitError(
         2,
-        RLine.TYPE,
+        RLine.TYPEL1,
         dependencies.map(i => i.id),
       )
-    super(dependencies, prop)
+    super(dependencies, prop, RLineAngleBisector.TYPEL2)
   }
 
   /**

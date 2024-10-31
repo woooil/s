@@ -1,5 +1,5 @@
 import { Coord } from '../Coord'
-import { RShapeResolved, RShapeProp, RShape } from '../RShape'
+import { RShapeResolved, RShapeProp, RShapeTypeL2, RShape } from '../RShape'
 
 /**
  * The mathematical definition of RPoint. Equal to Coord.
@@ -21,10 +21,10 @@ abstract class RPoint extends RShape {
   /**
    * 'RPoint'.
    */
-  public static TYPE = 'RPoint'
+  public static TYPEL1 = 'RPoint'
 
-  constructor(dependencies: RShape[], prop: RPointProp) {
-    super(dependencies, prop, RPoint.TYPE)
+  constructor(dependencies: RShape[], prop: RPointProp, typel2: RShapeTypeL2) {
+    super(dependencies, prop, [RPoint.TYPEL1, typel2])
   }
 
   /**

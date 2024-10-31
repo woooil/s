@@ -8,20 +8,21 @@ interface RAngleTwoLinesProp extends RAngleProp {
 }
 
 class RAngleTwoLines extends RAngle {
+  public static TYPEL2 = 'RAngleTwoLines'
   protected declare __dependencies: RLine[]
   protected declare __prop: RAngleTwoLinesProp
 
   constructor(dependencies: RLine[], prop: RAngleTwoLinesProp) {
     if (
       dependencies.length !== 2 ||
-      !dependencies.every(i => i.type === RLine.TYPE)
+      !dependencies.every(i => i.type[0] === RLine.TYPEL1)
     )
       throw DependeciesInitError(
         2,
-        RLine.TYPE,
+        RLine.TYPEL1,
         dependencies.map(i => i.id),
       )
-    super(dependencies, prop)
+    super(dependencies, prop, RAngleTwoLines.TYPEL2)
   }
 
   resolve() {

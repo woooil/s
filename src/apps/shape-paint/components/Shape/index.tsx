@@ -12,29 +12,29 @@ import Label from './Label'
 import Angle from './Angle'
 
 export default function Shape({ shape, ...props }: { shape: RShape }) {
-  switch (shape.type) {
-    case RPoint.TYPE:
+  switch (shape.type[0]) {
+    case RPoint.TYPEL1:
       return (
         <Point
           resolved={(shape as RPoint).resolve()}
           {...props}
         />
       )
-    case RLine.TYPE:
+    case RLine.TYPEL1:
       return (
         <Line
           resolved={(shape as RLine).resolve()}
           {...props}
         />
       )
-    case RLabel.TYPE:
+    case RLabel.TYPEL1:
       return (
         <Label
           resolved={(shape as RLabel).resolve()}
           {...props}
         />
       )
-    case RAngle.TYPE:
+    case RAngle.TYPEL1:
       return (
         <Angle
           resolved={(shape as RAngle).resolve()}

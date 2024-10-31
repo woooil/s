@@ -14,6 +14,7 @@ interface RPointInternalDivisionProp extends RPointProp {
  * @hierarchy RShape <- RPoint <- RPointInternalDivision
  */
 class RPointInternalDivision extends RPoint {
+  public static TYPEL2 = 'RPointInternalDivision'
   protected declare __dependencies: RPoint[]
   protected declare __prop: RPointInternalDivisionProp
 
@@ -23,14 +24,14 @@ class RPointInternalDivision extends RPoint {
   constructor(dependencies: RPoint[], prop: RPointInternalDivisionProp) {
     if (
       dependencies.length !== 2 ||
-      !dependencies.every(i => i.type === RPoint.TYPE)
+      !dependencies.every(i => i.type[0] === RPoint.TYPEL1)
     )
       throw DependeciesInitError(
         2,
-        RPoint.TYPE,
+        RPoint.TYPEL1,
         dependencies.map(i => i.id),
       )
-    super(dependencies, prop)
+    super(dependencies, prop, RPointInternalDivision.TYPEL2)
   }
 
   /**

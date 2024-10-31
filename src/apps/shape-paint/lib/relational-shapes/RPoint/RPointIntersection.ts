@@ -12,6 +12,7 @@ interface RPointIntersectionProp extends RPointProp {}
  * @hierarchy RShape <- RPoint <- RPointIntersection
  */
 class RPointIntersection extends RPoint {
+  public static TYPEL2 = 'RPointIntersection'
   protected declare __dependencies: RLine[]
   protected declare __prop: RPointIntersectionProp
 
@@ -21,14 +22,14 @@ class RPointIntersection extends RPoint {
   constructor(dependencies: RLine[], prop: RPointIntersectionProp) {
     if (
       dependencies.length !== 2 ||
-      !dependencies.every(i => i.type === RLine.TYPE)
+      !dependencies.every(i => i.type[0] === RLine.TYPEL1)
     )
       throw DependeciesInitError(
         2,
-        RLine.TYPE,
+        RLine.TYPEL2,
         dependencies.map(i => i.id),
       )
-    super(dependencies, prop)
+    super(dependencies, prop, RPointIntersection.TYPEL2)
   }
 
   /**

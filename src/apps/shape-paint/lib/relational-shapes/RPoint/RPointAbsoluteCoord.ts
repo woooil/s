@@ -16,11 +16,12 @@ interface RPointAbsoluteCoordProp extends RPointProp {
  * @hierarchy RShape <- RPoint <- RPointAbsoluteCoord
  */
 class RPointAbsoluteCoord extends RPoint {
+  public static TYPEL2 = 'RPointAbsoluteCoord'
   protected declare __dependencies: RShape[]
   protected declare __prop: RPointAbsoluteCoordProp
 
   constructor(_: RShape[], prop: RPointAbsoluteCoordProp) {
-    super([], prop)
+    super([], prop, RPointAbsoluteCoord.TYPEL2)
   }
 
   /**

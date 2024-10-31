@@ -56,6 +56,8 @@ export default function App() {
     const angleD = action.add(
       new RS.RAngleTwoLines([lineC, lineE], { direction: 1, marker: '.' })
     )
+    action.equalAngle(angleA, angleB, 'o')
+    action.equalAngle(angleC, angleD, 'x')
   }, [])
 
   return (

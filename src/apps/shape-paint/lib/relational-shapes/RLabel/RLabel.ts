@@ -1,5 +1,5 @@
 import { Coord } from '../Coord'
-import { RShapeResolved, RShapeProp, RShape } from '../RShape'
+import { RShapeResolved, RShapeProp, RShapeTypeL2, RShape } from '../RShape'
 
 /**
  * The definition of RLabel.
@@ -27,10 +27,10 @@ abstract class RLabel extends RShape {
   /**
    * 'RLabel'.
    */
-  public static TYPE = 'RLabel'
+  public static TYPEL1 = 'RLabel'
 
-  constructor(dependencies: RShape[], prop: RLabelProp) {
-    super(dependencies, prop, RLabel.TYPE)
+  constructor(dependencies: RShape[], prop: RLabelProp, typel2: RShapeTypeL2) {
+    super(dependencies, prop, [RLabel.TYPEL1, typel2])
   }
 
   /**

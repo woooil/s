@@ -1,6 +1,6 @@
 import { Coord } from '../Coord'
 import { ParallelLinesError } from '../Error'
-import { RShapeResolved, RShapeProp, RShape } from '../RShape'
+import { RShapeResolved, RShapeProp, RShapeTypeL2, RShape } from '../RShape'
 
 /**
  * The mathematical definition of RLine. Defined by two points Line passes through.
@@ -34,7 +34,7 @@ abstract class RLine extends RShape {
   /**
    * 'RLine'.
    */
-  public static TYPE: string = 'RLine'
+  public static TYPEL1 = 'RLine'
 
   /**
    * The dependencies for the cut.
@@ -50,8 +50,8 @@ abstract class RLine extends RShape {
   }
   protected declare __prop: RLineProp
 
-  constructor(dependencies: RShape[], prop: RLineProp) {
-    super(dependencies, prop, RLine.TYPE)
+  constructor(dependencies: RShape[], prop: RLineProp, typel2: RShapeTypeL2) {
+    super(dependencies, prop, [RLine.TYPEL1, typel2])
     this.__dependenciesCut = { a: undefined, b: undefined }
   }
 

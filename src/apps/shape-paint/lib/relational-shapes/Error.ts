@@ -24,10 +24,24 @@ interface ParallelLinesError extends Error {
 
 function ParallelLinesError(line1: string, line2: string) {
   const error = new Error(
-    `Line ${line1} and Line ${line2} are parallel.`,
+    `RLine ${line1} and RLine ${line2} are parallel.`,
   ) as ParallelLinesError
   error.name = 'ParallelLinesError'
   return error
 }
 
-export { DependeciesInitError, ParallelLinesError }
+interface NotEqualError extends Error {
+  name: 'NotEqualError'
+  a: any
+  b: any
+}
+
+function NotEqualError(a: any, b: any) {
+  const error = new Error(
+    `${a} and ${b} are not equal.`,
+  ) as NotEqualError
+  error.name = 'NotEqualError'
+  return error
+}
+
+export { DependeciesInitError, ParallelLinesError, NotEqualError }

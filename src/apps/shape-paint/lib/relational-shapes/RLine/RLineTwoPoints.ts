@@ -16,6 +16,7 @@ interface RLineTwoPointsProp extends RLineProp {
  * @hierarchy RShape <- RLine <- RLineTwoPoints
  */
 class RLineTwoPoints extends RLine {
+  public static TYPEL2 = 'RLineTwoPoints'
   protected declare __dependencies: RPoint[]
   protected declare __prop: RLineTwoPointsProp
 
@@ -25,14 +26,14 @@ class RLineTwoPoints extends RLine {
   constructor(dependencies: RPoint[], prop: RLineTwoPointsProp) {
     if (
       dependencies.length !== 2 ||
-      !dependencies.every(i => i.type === RPoint.TYPE)
+      !dependencies.every(i => i.type[0] === RPoint.TYPEL1)
     )
       throw DependeciesInitError(
         2,
-        RPoint.TYPE,
+        RPoint.TYPEL1,
         dependencies.map(i => i.id),
       )
-    super(dependencies, prop)
+    super(dependencies, prop, RLineTwoPoints.TYPEL2)
   }
 
   /**
