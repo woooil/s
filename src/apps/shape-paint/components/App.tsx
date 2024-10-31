@@ -58,6 +58,9 @@ export default function App() {
     )
     action.congruentAngle(angleA, angleB, 'o')
     action.congruentAngle(angleC, angleD, 'x')
+    const lengthA = action.add(new RS.RLengthTwoPoints([pointB, pointC], { ny: true }))
+    const lengthB = action.add(new RS.RLengthTwoPoints([pointC, pointD], { ny: true }))
+    const lengthC = action.add(new RS.RLengthTwoPoints([pointB, pointA], {}))
   }, [])
 
   return (

@@ -4,12 +4,14 @@ import {
   RPoint,
   RLine,
   RLabel,
-  RAngle
+  RAngle,
+  RLength,
 } from '../../lib/relational-shapes'
 import Point from './Point'
 import Line from './Line'
 import Label from './Label'
 import Angle from './Angle'
+import Length from './Length'
 
 export default function Shape({ shape, ...props }: { shape: RShape }) {
   switch (shape.type[0]) {
@@ -38,6 +40,13 @@ export default function Shape({ shape, ...props }: { shape: RShape }) {
       return (
         <Angle
           resolved={(shape as RAngle).resolve()}
+          {...props}
+        />
+      )
+    case RLength.TYPEL1:
+      return (
+        <Length
+          resolved={(shape as RLength).resolve()}
           {...props}
         />
       )

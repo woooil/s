@@ -4,8 +4,8 @@ import { RShapeResolved, RShapeProp, RShapeTypeL2, RShape } from '../RShape'
 
 /**
  * The mathematical definition of RLine. Defined by two points Line passes through.
- * @prop a        - One Coord which this RLine passes through.
- * @prop b        - Another Coord which this RLine passes through.
+ * @prop a        - The first Coord which this RLine passes through.
+ * @prop b        - The second Coord which this RLine passes through.
  * @prop extendA  - Whether to extend point A or not.
  * @prop extendB  - Whether to extend point B or not.
  */
