@@ -1,4 +1,4 @@
-import { Coord } from '../Coord'
+import { Coord } from '../Tools'
 import { ParallelLinesError } from '../Error'
 import { RShapeResolved, RShapeProp, RShapeTypeL2, RShape } from '../RShape'
 

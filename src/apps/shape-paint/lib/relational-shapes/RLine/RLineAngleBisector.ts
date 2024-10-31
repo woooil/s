@@ -1,17 +1,12 @@
-import { Coord } from '../Coord'
+import { Coord, AngleIntersection } from '../Tools'
 import { DependeciesInitError } from '../Error'
 import { RLineProp, RLine } from './RLine'
 
 /**
  * The properties of RLineAngleBisectorProp. Chooses the direction of the angle to bisect.
- * @prop direction - The direction of the angle to bisect. Integers from 0 to 3 represents four possible angles made by two RLines defined as below. Any integer out of this range would be considered as its remainder divided by 4.
- *   @value 0 - The angle by two RLines extending towards +x direction.
- *   @value 1 - The angle by the first RLine extending towards +x direction and the second RLine extending towards -x direction.
- *   @value 2 - The angle by two RLines extending towards -x direction.
- *   @value 3 - The angle by the first RLine extending towards -x direction and the second RLine extending towards +x direction.
  */
 interface RLineAngleBisectorProp extends RLineProp {
-  direction: number
+  direction: AngleIntersection
 }
 
 /**
@@ -66,25 +61,21 @@ class RLineAngleBisector extends RLine {
 
     const c = 1 << 8
 
-    switch (this.__prop.direction % 4) {
-      case 0:
-        b.x += c
-        b.y += c * tan
-        break
-      case 1:
-        b.x += theta1 > theta2 ? -c * tan : c * tan
-        b.y += theta1 > theta2 ? c : -c
-        break
-      case 2:
-        b.x -= c
-        b.y -= c * tan
-        break
-      case 3:
-        b.x += theta1 > theta2 ? c * tan : -c * tan
-        b.y += theta1 > theta2 ? -c : c
-        break
-      default:
-        break
+    if (this.__prop.direction[0] && this.__prop.direction[1]) {
+      b.x += c
+      b.y += c * tan
+    }
+    else if (this.__prop.direction[0] && !this.__prop.direction[1]) {
+      b.x += theta1 > theta2 ? -c * tan : c * tan
+      b.y += theta1 > theta2 ? c : -c
+    }
+    else if (!this.__prop.direction[0] && !this.__prop.direction[1]) {
+      b.x -= c
+      b.y -= c * tan
+    }
+    else {
+      b.x += theta1 > theta2 ? c * tan : -c * tan
+      b.y += theta1 > theta2 ? -c : c
     }
 
     return {

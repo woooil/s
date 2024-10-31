@@ -1,17 +1,27 @@
+import { AngleIntersection } from '../Tools'
 import { DependeciesInitError } from '../Error'
 import { RLine } from '../RLine'
 import { RAngleProp, RAngle } from './RAngle'
 
+/**
+ * The properties of RAngleTwoLinesProp. Chooses the direction of the angle of the intersection of two RLines.
+ */
 interface RAngleTwoLinesProp extends RAngleProp {
-  marker: string
-  direction: number
+  direction: AngleIntersection
 }
 
+/**
+ * Represents angles formed by the intersection of two RLines.
+ * @hierarchy RShape <- RAngle <- RAngleTwoLines
+ */
 class RAngleTwoLines extends RAngle {
   public static TYPEL2 = 'RAngleTwoLines'
   protected declare __dependencies: RLine[]
   protected declare __prop: RAngleTwoLinesProp
 
+  /**
+   * @throws Throws DependenciesInitError if given Dependencies are not of RLine type or its length is not 2.
+   */
   constructor(dependencies: RLine[], prop: RAngleTwoLinesProp) {
     if (
       dependencies.length !== 2 ||
@@ -25,6 +35,10 @@ class RAngleTwoLines extends RAngle {
     super(dependencies, prop, RAngleTwoLines.TYPEL2)
   }
 
+  /**
+   * Calculates the angle formed by two RLines.
+   * @throws Throws an Error if two RLines are parallel.
+   */
   resolve() {
     const coord = this.__dependencies[0].intersect(this.__dependencies[1]) // Throws an Error
 
@@ -40,21 +54,16 @@ class RAngleTwoLines extends RAngle {
     const theta1 = Math.atan(beta2 / alpha2)
     let theta: number = theta1 - theta0
 
-    switch (this.__prop.direction % 4) {
-      case 0:
-        break
-      case 1:
-        theta += theta > 0 ? -Math.PI : Math.PI
-        break
-      case 2:
-        theta0 += Math.PI
-        break
-      case 3:
-        theta0 += Math.PI
-        theta += theta > 0 ? -Math.PI : Math.PI
-        break
-      default:
-        break
+    if (this.__prop.direction[0] && this.__prop.direction[1]) { }
+    else if (this.__prop.direction[0] && !this.__prop.direction[1]) {
+      theta += theta > 0 ? -Math.PI : Math.PI
+    }
+    else if (!this.__prop.direction[0] && !this.__prop.direction[1]) {
+      theta0 += Math.PI
+    }
+    else {
+      theta0 += Math.PI
+      theta += theta > 0 ? -Math.PI : Math.PI
     }
 
     return {

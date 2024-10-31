@@ -14,10 +14,14 @@ interface RShapeResolved {}
  * The identifier of RShape.
  */
 type RShapeID = string
-
+/**
+ * The L1 type of RShape.
+ */
 type RShapeTypeL1 = string
+/**
+ * The L2 type of RShape.
+ */
 type RShapeTypeL2 = string
-
 /**
  * The type of RShape.
  */

@@ -19,10 +19,10 @@ export default function App() {
     )
     const lineC = action.add(new RS.RLineTwoPoints([pointB, pointC], {}))
     const lineD = action.add(
-      new RS.RLineAngleBisector([lineA, lineC], { direction: 0 }),
+      new RS.RLineAngleBisector([lineA, lineC], { direction: [true, true] }),
     )
     const lineE = action.add(
-      new RS.RLineAngleBisector([lineA, lineC], { direction: 3 }),
+      new RS.RLineAngleBisector([lineA, lineC], { direction: [false, true] }),
     )
     const pointD = action.add(new RS.RPointIntersection([lineB, lineD], {}))
     const pointE = action.add(new RS.RPointIntersection([lineB, lineE], {}))
@@ -30,13 +30,13 @@ export default function App() {
     action.cutLine(lineB, lineE, false)
     action.cutLine(lineE, lineB, false)
     const labelA = action.add(
-      new RS.RLabelOnPoint([pointC], { r: 16, theta: RS.QUARTER.ny, label: 'A' }),
+      new RS.RLabelOnPoint([pointC], { r: 16, theta: RS.CARD.ny, label: 'A' }),
     )
     const labelB = action.add(
-      new RS.RLabelOnPoint([pointB], { r: 24, theta: RS.QUARTER.py, label: 'B' }),
+      new RS.RLabelOnPoint([pointB], { r: 24, theta: RS.CARD.py, label: 'B' }),
     )
     const labelC = action.add(
-      new RS.RLabelOnPoint([pointA], { r: 24, theta: RS.QUARTER.py, label: 'C' }),
+      new RS.RLabelOnPoint([pointA], { r: 24, theta: RS.CARD.py, label: 'C' }),
     )
     const labelD = action.add(
       new RS.RLabelOnPoint([pointD], { r: 20, theta: 6, label: 'D' }),
@@ -45,19 +45,19 @@ export default function App() {
       new RS.RLabelOnPoint([pointE], { r: 16, theta: 3.5, label: 'E' }),
     )
     const angleA = action.add(
-      new RS.RAngleTwoLines([lineA, lineD], { direction: 0, marker: '.' })
+      new RS.RAngleTwoLines([lineA, lineD], { direction: [true, true], marker: '.' })
     )
     const angleB = action.add(
-      new RS.RAngleTwoLines([lineC, lineD], { direction: 0, marker: '.' })
+      new RS.RAngleTwoLines([lineC, lineD], { direction: [true, true], marker: '.' })
     )
     const angleC = action.add(
-      new RS.RAngleTwoLines([lineA, lineE], { direction: 2, marker: '.' })
+      new RS.RAngleTwoLines([lineA, lineE], { direction: [false, false], marker: '.' })
     )
     const angleD = action.add(
-      new RS.RAngleTwoLines([lineC, lineE], { direction: 1, marker: '.' })
+      new RS.RAngleTwoLines([lineC, lineE], { direction: [true, false], marker: '.' })
     )
-    action.equalAngle(angleA, angleB, 'o')
-    action.equalAngle(angleC, angleD, 'x')
+    action.congruentAngle(angleA, angleB, 'o')
+    action.congruentAngle(angleC, angleD, 'x')
   }, [])
 
   return (

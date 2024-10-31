@@ -6,7 +6,7 @@ interface Action {
   delete: <T extends RS.RShape>(shape: T, cacade?: boolean) => T
   cutLine: (rline: RS.RLine, cut: RS.RLine, selectA: boolean) => RS.RLine
   uncutLine: (rline: RS.RLine, selectA: boolean) => RS.RLine
-  equalAngle: (rangle: RS.RAngle, rangle2: RS.RAngle, marker: string) => RS.RAngle
+  congruentAngle: (rangle: RS.RAngle, rangle2: RS.RAngle, marker: string) => RS.RAngle
 }
 
 function useShapes() {
@@ -53,10 +53,10 @@ function useShapes() {
     return rline
   }
 
-  const equalAngle = (rangle: RS.RAngle, rangle2: RS.RAngle, marker: string) => {
+  const congruentAngle = (rangle: RS.RAngle, rangle2: RS.RAngle, marker: string) => {
     setShapes(i => {
       if (!i.includes(rangle) || !i.includes(rangle2)) throw new Error('No such shape in shapes')
-      rangle.equal(rangle2, marker)
+      rangle.congruent(rangle2, marker)
       return [...i]
     })
     return rangle
@@ -67,7 +67,7 @@ function useShapes() {
     delete: deleteShape,
     cutLine: cutLine,
     uncutLine: uncutLine,
-    equalAngle: equalAngle
+    congruentAngle: congruentAngle,
   }
 
   return { shapes, action }

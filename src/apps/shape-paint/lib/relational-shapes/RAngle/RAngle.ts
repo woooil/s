@@ -1,24 +1,40 @@
-import { Coord } from '../Coord'
+import { Coord } from '../Tools'
 import { NotEqualError } from '../Error'
 import { RShapeResolved, RShapeProp, RShapeTypeL2, RShape } from '../RShape'
 
+/**
+ * The mathematical definition of RAngle.
+ * @prop x      - The x coordinate of the vertex.
+ * @prop y      - The y coordniate of the vertex.
+ * @prop theta0 - The start direction.
+ * @prop theta  - The (directional) angular measure. 
+ * @prop marker - The marker representing this RAngle.
+ */
 interface RAngleResolved extends RShapeResolved, Coord {
   theta0: number
   theta: number
   marker: string
 }
 
+/**
+ * The properties of RAngle.
+ * @prop marker     - The marker representing this RAngle.
+ * @prop congruent  - True if this is congruent to another RAngle.
+ */
 interface RAngleProp extends RShapeProp {
   marker?: string
-  equal?: boolean
+  congruent?: boolean
 }
 
 abstract class RAngle extends RShape {
   public static TYPEL1 = 'RAngle'
 
-  protected __dependenciesEqual: RAngle | undefined
+  /**
+   * The dependencies for the congruent. If exists, indicates the congruent RAngle to this RAngle.
+   */
+  protected __dependenciesCongruent: RAngle | undefined
   public get dependencies(): RShape[] {
-    if (this.__dependenciesEqual) return [...this.__dependencies, this.__dependenciesEqual]
+    if (this.__dependenciesCongruent) return [...this.__dependencies, this.__dependenciesCongruent]
     return this.__dependencies
   }
   protected declare __prop: RAngleProp
@@ -27,9 +43,18 @@ abstract class RAngle extends RShape {
     super(dependencies, prop, [RAngle.TYPEL1, typel2])
   }
 
+  /**
+   * Resolves this RAngle to RAngleResolved.
+   */
   public abstract resolve(): RAngleResolved
 
-  public equal(rangle: RAngle, marker: string) {
+  /**
+   * Makes this RAngle congruent to another.
+   * @param rangle  - The RAngle congruent to this RAngle.
+   * @param marker  - The marker representing the congruent RAngles.
+   * @throws Throws an Error if two RAngles are not actually congruent.
+   */
+  public congruent(rangle: RAngle, marker: string) {
     const sim = (a: number, b: number) => {
       const err = 1E-5
       return Math.abs(a - b) < err
@@ -37,9 +62,9 @@ abstract class RAngle extends RShape {
     const theta1 = Math.abs(this.resolve().theta)
     const theta2 = Math.abs(rangle.resolve().theta)
     if (sim(theta1, theta2)) {
-      this.__dependenciesEqual = rangle
+      this.__dependenciesCongruent = rangle
       this.__prop.marker = marker
-      rangle.__dependenciesEqual = this
+      rangle.__dependenciesCongruent = this
       rangle.__prop.marker = marker
     } else {
       throw NotEqualError(`RAngle ${this.id}`,`RAngle ${rangle.id}`)
