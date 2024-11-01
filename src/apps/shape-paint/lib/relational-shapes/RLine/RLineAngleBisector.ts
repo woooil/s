@@ -1,12 +1,15 @@
 import { checkDependenciesInitError } from '../Error'
-import { Coord, AngleIntersection } from '../Tools'
+import { Coords } from '../Tools'
 import { RLineProp, RLine } from './RLine'
 
 /**
- * The properties of RLineAngleBisectorProp. Chooses the direction of the angle to bisect.
+ * The properties of RLineAngleBisectorProp. 
+ * @prop reverseL - True if reverse the direction of the first RLine.
+ * @prop reverseM - True if reverse the direction of the second RLine.
  */
 interface RLineAngleBisectorProp extends RLineProp {
-  direction: AngleIntersection
+  reverseL?: boolean,
+  reverseM?: boolean,
 }
 
 /**
@@ -36,39 +39,15 @@ class RLineAngleBisector extends RLine {
     const lResolved = this.__dependencies[0].resolve()
     const mResolved = this.__dependencies[1].resolve()
 
-    const alpha1 = lResolved.a.x - lResolved.b.x
-    const alpha2 = mResolved.a.x - mResolved.b.x
-    const beta1 = lResolved.a.y - lResolved.b.y
-    const beta2 = mResolved.a.y - mResolved.b.y
-
-    const theta1 = Math.atan(beta1 / alpha1)
-    const theta2 = Math.atan(beta2 / alpha2)
-    const theta = (theta1 + theta2) / 2
-    const tan = Math.tan(theta)
-
-    let b: Coord = {
-      x: a.x,
-      y: a.y,
-    }
-
-    const c = 1 << 8
-
-    if (this.__prop.direction[0] && this.__prop.direction[1]) {
-      b.x += c
-      b.y += c * tan
-    }
-    else if (this.__prop.direction[0] && !this.__prop.direction[1]) {
-      b.x += theta1 > theta2 ? -c * tan : c * tan
-      b.y += theta1 > theta2 ? c : -c
-    }
-    else if (!this.__prop.direction[0] && !this.__prop.direction[1]) {
-      b.x -= c
-      b.y -= c * tan
-    }
-    else {
-      b.x += theta1 > theta2 ? c * tan : -c * tan
-      b.y += theta1 > theta2 ? -c : c
-    }
+    const { thetaMid: theta } = Coords.angleIntersect({ 
+        from: this.__prop.reverseL ? lResolved.b : lResolved.a, 
+        to:   this.__prop.reverseL ? lResolved.a : lResolved.b 
+      }, { 
+        from: this.__prop.reverseM ? mResolved.b : mResolved.a, 
+        to:   this.__prop.reverseM ? mResolved.a : mResolved.b 
+      })
+    
+    const b = Coords.addPolar(a, { r: 1 << 8, theta: theta })
 
     return {
       a: a,

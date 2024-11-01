@@ -19,10 +19,10 @@ export default function App() {
     )
     const lineC = action.add(new RS.RLineTwoPoints([pointB, pointC], {}))
     const lineD = action.add(
-      new RS.RLineAngleBisector([lineA, lineC], { direction: [true, true] }),
+      new RS.RLineAngleBisector([lineA, lineC], { reverseL: true })
     )
     const lineE = action.add(
-      new RS.RLineAngleBisector([lineA, lineC], { direction: [false, true] }),
+      new RS.RLineAngleBisector([lineA, lineC], { })
     )
     const pointD = action.add(new RS.RPointIntersection([lineB, lineD], { hide: true }))
     const pointE = action.add(new RS.RPointIntersection([lineB, lineE], { hide: true }))
@@ -45,16 +45,16 @@ export default function App() {
       new RS.RLabelOnPoint([pointE], { r: 16, theta: 3.5, label: 'E' }),
     )
     const angleA = action.add(
-      new RS.RAngleTwoLines([lineA, lineD], { direction: [true, true] })
+      new RS.RAngleTwoLines([lineA, lineD], { reverseL: true })
     )
     const angleB = action.add(
-      new RS.RAngleTwoLines([lineC, lineD], { direction: [true, true] })
+      new RS.RAngleTwoLines([lineC, lineD], { })
     )
     const angleC = action.add(
-      new RS.RAngleTwoLines([lineA, lineE], { direction: [false, false] })
+      new RS.RAngleTwoLines([lineA, lineE], { })
     )
     const angleD = action.add(
-      new RS.RAngleTwoLines([lineC, lineE], { direction: [true, false] })
+      new RS.RAngleTwoLines([lineC, lineE], { })
     )
     action.congruentAngle(angleA, angleB, 'o')
     action.congruentAngle(angleC, angleD, 'x')

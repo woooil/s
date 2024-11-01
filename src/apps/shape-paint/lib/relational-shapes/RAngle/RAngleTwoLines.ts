@@ -1,14 +1,16 @@
 import { checkDependenciesInitError } from '../Error'
-import { AngleIntersection } from '../Tools'
+import { Coords } from '../Tools'
 import { RAngleProp, RAngle } from './RAngle'
 import { RLine } from '../RLine'
 
 /**
  * The properties of RAngleTwoLinesProp. 
- * @prop direction - The direction of the angle of the intersection of two RLines.
+ * @prop reverseL - True if reverse the direction of the first RLine.
+ * @prop reverseM - True if reverse the direction of the second RLine.
  */
 interface RAngleTwoLinesProp extends RAngleProp {
-  direction: AngleIntersection
+  reverseL?: boolean,
+  reverseM?: boolean,
 }
 
 /**
@@ -38,26 +40,13 @@ class RAngleTwoLines extends RAngle {
     const lResolved = this.__dependencies[0].resolve()
     const mResolved = this.__dependencies[1].resolve()
 
-    const alpha1 = lResolved.a.x - lResolved.b.x
-    const alpha2 = mResolved.a.x - mResolved.b.x
-    const beta1 = lResolved.a.y - lResolved.b.y
-    const beta2 = mResolved.a.y - mResolved.b.y
-
-    let theta0 = Math.atan(beta1 / alpha1)
-    const theta1 = Math.atan(beta2 / alpha2)
-    let theta: number = theta1 - theta0
-
-    if (this.__prop.direction[0] && this.__prop.direction[1]) { }
-    else if (this.__prop.direction[0] && !this.__prop.direction[1]) {
-      theta += theta > 0 ? -Math.PI : Math.PI
-    }
-    else if (!this.__prop.direction[0] && !this.__prop.direction[1]) {
-      theta0 += Math.PI
-    }
-    else {
-      theta0 += Math.PI
-      theta += theta > 0 ? -Math.PI : Math.PI
-    }
+    const { theta0, theta } = Coords.angleIntersect({ 
+        from: this.__prop.reverseL ? lResolved.b : lResolved.a, 
+        to:   this.__prop.reverseL ? lResolved.a : lResolved.b 
+      }, { 
+        from: this.__prop.reverseM ? mResolved.b : mResolved.a, 
+        to:   this.__prop.reverseM ? mResolved.a : mResolved.b 
+      })
 
     return {
       ...coord,

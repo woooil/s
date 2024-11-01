@@ -41,6 +41,9 @@ class Coords {
     }
   }
 
+  /**
+   * Multiplies scalar to Coord.
+   */
   static scale(coord: Coord, scale: number): Coord {
     return {
       x: coord.x * scale,
@@ -48,6 +51,9 @@ class Coords {
     }
   }
 
+  /**
+   * Calculates the average of two Coords.
+   */
   static avg(coord1: Coord, coord2: Coord): Coord {
     return Coords.scale(Coords.add(coord1, coord2), 0.5)
   }
@@ -62,20 +68,36 @@ class Coords {
     }
   }
   
+  /**
+   * Calculates the angle in range (- PI, PI] of the line from coord1 to coord2.
+   */
   static theta2(coord1: Coord, coord2: Coord): number {
     return Math.atan2(coord2.y - coord1.y, coord2.x - coord1.x)
   }
 
+  /**
+   * Adds CoordPolar to Coord.
+   */
   static addPolar(coord: Coord, polar: CoordPolar): Coord {
     return Coords.add(coord, Coords.toCartesian(polar))
   }
+
+  /**
+   * Calculates the angle made by two rays.
+   */
+  static angleIntersect(ray1: { from: Coord, to: Coord }, ray2: { from: Coord, to: Coord }): { theta: number, theta0: number, thetaMid: number } {
+    let theta1 = Coords.theta2(ray1.from, ray1.to)
+    const theta2 = Coords.theta2(ray2.from, ray2.to)
+    let theta = theta2 - theta1
+    if (theta > Math.PI) theta -= 2 * Math.PI
+    else if (theta < -Math.PI) theta += 2 * Math.PI
+    const thetaMid = (theta1 + theta2 + Math.PI * 2) / 2 - Math.PI // (-PI, PI]
+    return { 
+      theta: theta,
+      theta0: theta1,
+      thetaMid: thetaMid
+    }
+  }
 }
 
-/**
- * The direction of the angle formed by the intersection of two lines. 
- * @value 0th element - True if selects the first line extending towards +x direction. False if selects the first line extending towards -x direction.
- * @value 1st element - True if selects the second line extending towards +x direction. False if selects the second line extending towards -x direction.
- */
-type AngleIntersection = [boolean, boolean]
-
-export { Coord, CoordPolar, Coords, CARD, AngleIntersection }
+export { Coord, CoordPolar, Coords, CARD }
