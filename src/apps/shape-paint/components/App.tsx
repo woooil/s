@@ -64,6 +64,10 @@ export default function App() {
     const labelF = action.add(new RS.RLabelOnLength([lengthA], { label: '4 cm' }))
     const labelG = action.add(new RS.RLabelOnLength([lengthB], { label: '2 cm' }))
     const labelH = action.add(new RS.RLabelOnLength([lengthC], { label: '8 cm' }))
+    const pointF = action.add(new RS.RPointOnLine([lineA], { section: 2, r: 200 }))
+    const labelI = action.add(
+      new RS.RLabelOnPoint([pointF], { r: 24, theta: RS.CARD.py, label: 'F' }),
+    )
   }, [])
 
   return (
