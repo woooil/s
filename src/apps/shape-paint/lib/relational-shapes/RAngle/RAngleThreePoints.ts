@@ -26,12 +26,12 @@ class RAngleThreePoints extends RAngle {
   }
 
   resolve() {
-    const resolvedA = this.__dependencies[0].resolve()
-    const resolvedB = this.__dependencies[1].resolve()
-    const resolvedC = this.__dependencies[2].resolve()
+    const aResolved = this.__dependencies[0].resolve()
+    const bResolved = this.__dependencies[1].resolve()
+    const cResolved = this.__dependencies[2].resolve()
     
-    const theta0 = Math.atan2(resolvedA.y - resolvedB.y, resolvedA.x - resolvedB.x)
-    const theta1 = Math.atan2(resolvedC.y - resolvedB.y, resolvedC.x - resolvedB.x)
+    const theta0 = Math.atan2(aResolved.y - bResolved.y, aResolved.x - bResolved.x)
+    const theta1 = Math.atan2(cResolved.y - bResolved.y, cResolved.x - bResolved.x)
 
     let theta = theta1 - theta0
 

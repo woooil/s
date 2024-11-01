@@ -7,18 +7,14 @@ export default function Length({
   ...props
 }: Props<RLabelResolved, SVGPathElement>) {
   const theta = Math.atan2(resolved.b.y - resolved.a.y, resolved.b.x - resolved.a.x)
-  const length = Math.sqrt(Math.pow(resolved.b.y - resolved.a.y, 2) + Math.pow(resolved.b.x - resolved.a.x, 2))
-  const maxD = 50
-  const co = 3
-  const dist = length > maxD * co ? maxD : length / co
   const p = {
     M: {
       x: resolved.a.x,
       y: resolved.a.y,
     }, 
     QC: {
-      x: (resolved.a.x + resolved.b.x) / 2 + (resolved.ny ? 1 : -1) * dist * Math.sin(theta),
-      y: (resolved.a.y + resolved.b.y) / 2 - (resolved.ny ? 1 : -1) * dist * Math.cos(theta),
+      x: (resolved.a.x + resolved.b.x) / 2 + (resolved.ny ? 1 : -1) * resolved.r * 2* Math.sin(theta),
+      y: (resolved.a.y + resolved.b.y) / 2 - (resolved.ny ? 1 : -1) * resolved.r * 2 * Math.cos(theta),
     },
     QF: {
       x: resolved.b.x,

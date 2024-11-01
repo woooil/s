@@ -61,6 +61,9 @@ export default function App() {
     const lengthA = action.add(new RS.RLengthTwoPoints([pointB, pointC], { ny: true }))
     const lengthB = action.add(new RS.RLengthTwoPoints([pointC, pointD], { ny: true }))
     const lengthC = action.add(new RS.RLengthTwoPoints([pointB, pointA], {}))
+    const labelF = action.add(new RS.RLabelOnLength([lengthA], { label: '4 cm' }))
+    const labelG = action.add(new RS.RLabelOnLength([lengthB], { label: '2 cm' }))
+    const labelH = action.add(new RS.RLabelOnLength([lengthC], { label: '8 cm' }))
   }, [])
 
   return (
@@ -71,7 +74,7 @@ export default function App() {
         xmlns="http://www.w3.org/2000/svg"
         version="1.1"
         width="800px"
-        height="500px"
+        height="600px"
         style={{ border: '1px solid blue' }}>
         {shapes.map((i: RS.RShape) => (
           <Shape

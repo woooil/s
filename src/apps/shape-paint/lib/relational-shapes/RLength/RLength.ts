@@ -10,7 +10,8 @@ import { RShapeResolved, RShapeProp, RShapeTypeL2, RShape } from '../RShape'
 interface RLengthResolved extends RShapeResolved {
   a: Coord,
   b: Coord,
-  ny?: boolean
+  r: number,
+  ny?: boolean,
 }
 
 interface RLengthProp extends RShapeProp {
@@ -24,7 +25,17 @@ abstract class RLength extends RShape {
     super(dependencies, prop, [RLength.TYPEL1, typel2])
   }
 
-  public abstract resolve(): RLengthResolved
+  protected abstract preresolve(): RLengthResolved
+
+  public resolve(): RLengthResolved {
+    const preresolved = this.preresolve()
+    const length = Math.sqrt(Math.pow(preresolved.b.y - preresolved.a.y, 2) + Math.pow(preresolved.b.x - preresolved.a.x, 2))
+    const maxR = 28
+    const co = 4
+    const r = length > maxR * co ? maxR : length / co
+    preresolved.r = r
+    return preresolved
+  }
 }
 
 export { RLengthResolved, RLengthProp, RLength }
