@@ -10,7 +10,7 @@ export default function Point({
     cx: resolved.x,
     cy: resolved.y,
     r: 3,
-    fill: 'black',
+    fill: resolved.hide ? 'none' : 'black',
   }
 
   return (

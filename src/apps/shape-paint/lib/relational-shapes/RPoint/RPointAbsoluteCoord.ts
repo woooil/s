@@ -31,6 +31,7 @@ class RPointAbsoluteCoord extends RPoint {
     return {
       x: this.__prop.x,
       y: this.__prop.y,
+      hide: this.__prop.hide
     }
   }
 }

@@ -36,7 +36,12 @@ class RPointIntersection extends RPoint {
    * Calculates the intersection of two Lines.
    */
   resolve() {
-    return this.__dependencies[0].intersect(this.__dependencies[1])
+    const intersect = this.__dependencies[0].intersect(this.__dependencies[1])
+    return {
+      x: intersect.x,
+      y: intersect.y,
+      hide: this.__prop.hide,
+    }
   }
 }
 

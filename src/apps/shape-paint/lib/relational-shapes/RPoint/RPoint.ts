@@ -6,12 +6,16 @@ import { RShapeResolved, RShapeProp, RShapeTypeL2, RShape } from '../RShape'
  * @prop x - The x coordinate.
  * @prop y - The y coordinate.
  */
-interface RPointResolved extends RShapeResolved, Coord {}
+interface RPointResolved extends RShapeResolved, Coord {
+  hide?: boolean
+}
 
 /**
  * The properties of RPoint.
  */
-interface RPointProp extends RShapeProp {}
+interface RPointProp extends RShapeProp {
+  hide?: boolean
+}
 
 /**
  * Represents points.

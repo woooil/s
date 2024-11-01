@@ -8,9 +8,9 @@ export default function App() {
   const { shapes, action } = useShapes()
 
   React.useEffect(() => {
-    const pointA = action.add(new RS.RPointAbsoluteCoord([], { x: 700, y: 450 }))
-    const pointB = action.add(new RS.RPointAbsoluteCoord([], { x: 300, y: 450 }))
-    const pointC = action.add(new RS.RPointAbsoluteCoord([], { x: 500, y: 300 }))
+    const pointA = action.add(new RS.RPointAbsoluteCoord([], { x: 700, y: 450, hide: true }))
+    const pointB = action.add(new RS.RPointAbsoluteCoord([], { x: 300, y: 450, hide: true }))
+    const pointC = action.add(new RS.RPointAbsoluteCoord([], { x: 500, y: 300, hide: true }))
     const lineA = action.add(
       new RS.RLineTwoPoints([pointA, pointB], { extendB: true }),
     )
@@ -24,8 +24,8 @@ export default function App() {
     const lineE = action.add(
       new RS.RLineAngleBisector([lineA, lineC], { direction: [false, true] }),
     )
-    const pointD = action.add(new RS.RPointIntersection([lineB, lineD], {}))
-    const pointE = action.add(new RS.RPointIntersection([lineB, lineE], {}))
+    const pointD = action.add(new RS.RPointIntersection([lineB, lineD], { hide: true }))
+    const pointE = action.add(new RS.RPointIntersection([lineB, lineE], { hide: true }))
     action.cutLine(lineD, lineB, false)
     action.cutLine(lineB, lineE, false)
     action.cutLine(lineE, lineB, false)

@@ -53,7 +53,11 @@ class RPointOnLine extends RPoint {
         coord.y = resolved.b.y + this.__prop.r * Math.sin(theta)
         break
     }
-    return coord
+    return {
+      x: coord.x,
+      y: coord.y,
+      hide: this.__prop.hide,
+    }
   }
 }
 

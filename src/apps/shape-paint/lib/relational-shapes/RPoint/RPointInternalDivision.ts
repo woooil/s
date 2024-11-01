@@ -44,6 +44,7 @@ class RPointInternalDivision extends RPoint {
     return {
       x: aResolved.x * (1 - this.__prop.r) + bResolved.x * this.__prop.r,
       y: aResolved.y * (1 - this.__prop.r) + bResolved.y * this.__prop.r,
+      hide: this.__prop.hide,
     }
   }
 }
