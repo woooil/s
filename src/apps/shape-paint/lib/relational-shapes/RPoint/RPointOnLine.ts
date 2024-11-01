@@ -1,5 +1,5 @@
 import { checkDependenciesInitError } from '../Error'
-import { Coord, Coords } from '../Tools'
+import { Coord, Coords, Angles } from '../Tools'
 import { RPointProp, RPoint } from './RPoint'
 import { RLine } from '../RLine'
 
@@ -35,7 +35,7 @@ class RPointOnLine extends RPoint {
    */
   resolve() {
     const resolved = this.__dependencies[0].resolve()
-    const theta = Coords.theta2(resolved.a, resolved.b)
+    const theta = Angles.theta(resolved.a, resolved.b)
     let coord: Coord
     switch (this.__prop.section % 3) {
       case 0:

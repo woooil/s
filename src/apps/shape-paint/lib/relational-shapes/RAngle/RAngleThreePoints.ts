@@ -1,5 +1,5 @@
 import { checkDependenciesInitError } from '../Error'
-import { Coords } from '../Tools'
+import { Coords, Angles } from '../Tools'
 import { RAngleProp, RAngle } from './RAngle'
 import { RPoint } from '../RPoint'
 
@@ -35,17 +35,17 @@ class RAngleThreePoints extends RAngle {
     const aResolved = this.__dependencies[0].resolve()
     const bResolved = this.__dependencies[1].resolve()
     const cResolved = this.__dependencies[2].resolve()
-    
-    const theta0 = Coords.theta2(bResolved, aResolved)
-    const theta1 = Coords.theta2(bResolved, cResolved)
 
-    let theta = theta1 - theta0
+    const theta0 = Angles.theta(Coords.substract(aResolved, bResolved))
+    const theta1 = Angles.theta(Coords.substract(cResolved, bResolved))
 
-    if (this.__prop.reflex) theta += Math.PI * 2
+    let theta = Angles.substract(theta1, theta0)
+
+    if (this.__prop.reflex) theta = Angles.flip(theta)
 
     return {
-      x: resolvedB.x,
-      y: resolvedB.y,
+      x: bResolved.x,
+      y: bResolved.y,
       theta0: theta0,
       theta: theta,
       marker: this.__prop.marker

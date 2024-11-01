@@ -1,5 +1,5 @@
 import { checkDependenciesInitError } from '../Error'
-import { Coords } from '../Tools'
+import { Coords, Angles } from '../Tools'
 import { RLineProp, RLine } from './RLine'
 
 /**
@@ -39,7 +39,7 @@ class RLineAngleBisector extends RLine {
     const lResolved = this.__dependencies[0].resolve()
     const mResolved = this.__dependencies[1].resolve()
 
-    const { thetaMid: theta } = Coords.angleIntersect({ 
+    const { thetaMid: theta } = Angles.intersect({ 
         from: this.__prop.reverseL ? lResolved.b : lResolved.a, 
         to:   this.__prop.reverseL ? lResolved.a : lResolved.b 
       }, { 

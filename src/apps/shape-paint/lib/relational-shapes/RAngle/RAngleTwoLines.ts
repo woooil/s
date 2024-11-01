@@ -1,5 +1,5 @@
 import { checkDependenciesInitError } from '../Error'
-import { Coords } from '../Tools'
+import { Angles } from '../Tools'
 import { RAngleProp, RAngle } from './RAngle'
 import { RLine } from '../RLine'
 
@@ -40,7 +40,7 @@ class RAngleTwoLines extends RAngle {
     const lResolved = this.__dependencies[0].resolve()
     const mResolved = this.__dependencies[1].resolve()
 
-    const { theta0, theta } = Coords.angleIntersect({ 
+    const { theta0, theta } = Angles.intersect({ 
         from: this.__prop.reverseL ? lResolved.b : lResolved.a, 
         to:   this.__prop.reverseL ? lResolved.a : lResolved.b 
       }, { 

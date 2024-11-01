@@ -1,5 +1,5 @@
 import { checkDependenciesInitError } from '../Error'
-import { Coords } from '../Tools'
+import { Coords, Angles } from '../Tools'
 import { RLabelProp, RLabel } from './RLabel'
 import { RLength } from '../RLength'
 
@@ -30,7 +30,7 @@ class RLabelOnLength extends RLabel {
    */
   resolve() {
     const resolved = this.__dependencies[0].resolve()
-    const theta = Coords.theta2(resolved.a, resolved.b)
+    const theta = Angles.theta(resolved.a, resolved.b)
     const coord = Coords.addPolar(Coords.avg(resolved.a, resolved.b), {
       r: resolved.ny ? resolved.r : -resolved.r,
       theta: theta - Math.PI / 2
