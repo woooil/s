@@ -1,6 +1,6 @@
+import { checkDependenciesInitError } from '../Error'
 import { RLineProp, RLine } from './RLine'
 import { RPoint } from '../RPoint'
-import { DependeciesInitError } from '../Error'
 
 /**
  * The properties of RLineTwoPointsProp. Sets RLineExtend explicitly.
@@ -24,15 +24,7 @@ class RLineTwoPoints extends RLine {
    * @throws Throws DependenciesInitError if given Dependencies are not of RPoint type or its length is not 2.
    */
   constructor(dependencies: RPoint[], prop: RLineTwoPointsProp) {
-    if (
-      dependencies.length !== 2 ||
-      !dependencies.every(i => i.type[0] === RPoint.TYPEL1)
-    )
-      throw DependeciesInitError(
-        2,
-        RPoint.TYPEL1,
-        dependencies.map(i => i.id),
-      )
+    checkDependenciesInitError(dependencies, [RPoint.TYPEL1, RPoint.TYPEL1])
     super(dependencies, prop, RLineTwoPoints.TYPEL2)
   }
 

@@ -1,4 +1,4 @@
-import { DependeciesInitError } from '../Error'
+import { checkDependenciesInitError } from '../Error'
 import { RPointProp, RPoint } from './RPoint'
 import { RLine } from '../RLine'
 
@@ -20,15 +20,7 @@ class RPointIntersection extends RPoint {
    * @throws Throws DependenciesInitError if given Dependencies are not of Line type or its length is not 2.
    */
   constructor(dependencies: RLine[], prop: RPointIntersectionProp) {
-    if (
-      dependencies.length !== 2 ||
-      !dependencies.every(i => i.type[0] === RLine.TYPEL1)
-    )
-      throw DependeciesInitError(
-        2,
-        RLine.TYPEL2,
-        dependencies.map(i => i.id),
-      )
+    checkDependenciesInitError(dependencies, [RLine.TYPEL1, RLine.TYPEL1])
     super(dependencies, prop, RPointIntersection.TYPEL2)
   }
 

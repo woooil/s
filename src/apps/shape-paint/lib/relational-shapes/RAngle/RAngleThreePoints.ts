@@ -1,6 +1,6 @@
-import { DependeciesInitError } from '../Error'
-import { RPoint } from '../RPoint'
+import { checkDependenciesInitError } from '../Error'
 import { RAngleProp, RAngle } from './RAngle'
+import { RPoint } from '../RPoint'
 
 /**
  * The properties of RAngleThreePointsProp. 
@@ -23,15 +23,7 @@ class RAngleThreePoints extends RAngle {
    * @throws Throws DependenciesInitError if given Dependencies are not of RPoint type or its length is not 3.
    */
   constructor(dependencies: RPoint[], prop: RAngleThreePointsProp) {
-    if (
-      dependencies.length !== 3 ||
-      !dependencies.every(i => i.type[0] === RPoint.TYPEL1)
-    )
-      throw DependeciesInitError(
-        3,
-        RPoint.TYPEL1,
-        dependencies.map(i => i.id),
-      )
+    checkDependenciesInitError(dependencies, [RPoint.TYPEL1, RPoint.TYPEL1, RPoint.TYPEL1])
     super(dependencies, prop, RAngleThreePoints.TYPEL2)
   }
 

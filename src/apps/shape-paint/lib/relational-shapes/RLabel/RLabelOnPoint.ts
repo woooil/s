@@ -1,10 +1,10 @@
+import { checkDependenciesInitError } from '../Error'
 import { CoordPolar, Coords } from '../Tools'
 import { RLabelProp, RLabel } from './RLabel'
 import { RPoint } from '../RPoint'
-import { DependeciesInitError } from '../Error'
 
 /**
- * The properties of RLabelOnPointProp
+ * The properties of RLabelOnPointProp.
  * @prop r      - The radial coordinate relative to RPoint.
  * @prop theta  - The angular coordinate relative to RPoint.
  */
@@ -23,15 +23,7 @@ class RLabelOnPoint extends RLabel {
    * @throws Throws DependenciesInitError if given Dependencies are not of Point type or its length is not 1.
    */
   constructor(dependencies: RPoint[], prop: RLabelOnPointProp) {
-    if (
-      dependencies.length !== 1 ||
-      !dependencies.every(i => i.type[0] === RPoint.TYPEL1)
-    )
-      throw DependeciesInitError(
-        1,
-        RPoint.TYPEL1,
-        dependencies.map(i => i.id),
-      )
+    checkDependenciesInitError(dependencies, [RPoint.TYPEL1])
     super(dependencies, prop, RLabelOnPoint.TYPEL2)
   }
 

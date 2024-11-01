@@ -1,5 +1,5 @@
+import { checkDependenciesInitError } from '../Error'
 import { Coord, AngleIntersection } from '../Tools'
-import { DependeciesInitError } from '../Error'
 import { RLineProp, RLine } from './RLine'
 
 /**
@@ -22,15 +22,7 @@ class RLineAngleBisector extends RLine {
    * @throws Throws DependenciesInitError if given Dependencies are not of RLine type or its length is not 2.
    */
   constructor(dependencies: RLine[], prop: RLineAngleBisectorProp) {
-    if (
-      dependencies.length !== 2 ||
-      !dependencies.every(i => i.type[0] === RLine.TYPEL1)
-    )
-      throw DependeciesInitError(
-        2,
-        RLine.TYPEL1,
-        dependencies.map(i => i.id),
-      )
+    checkDependenciesInitError(dependencies, [RLine.TYPEL1, RLine.TYPEL1])
     super(dependencies, prop, RLineAngleBisector.TYPEL2)
   }
 

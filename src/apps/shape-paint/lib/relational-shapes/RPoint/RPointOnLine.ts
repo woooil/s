@@ -1,9 +1,11 @@
-import { DependeciesInitError } from '../Error'
+import { checkDependenciesInitError } from '../Error'
 import { RPointProp, RPoint } from './RPoint'
 import { RLine } from '../RLine'
 
 /**
  * The properties of RPointOnLine.
+ * @prop section  - 0 for the section of the first Coord, 1 for the inside of the two Coords, 2 for the section of the second Coord.
+ * @prop r        - The distance from the first/second Coord along the RLine if the section is 0 or 2. The ratio of the internal division if the section is 1.
  */
 interface RPointOnLineProp extends RPointProp {
   section: number
@@ -23,18 +25,13 @@ class RPointOnLine extends RPoint {
    * @throws Throws DependenciesInitError if given Dependencies are not of Line type or its length is not 1.
    */
   constructor(dependencies: RLine[], prop: RPointOnLineProp) {
-    if (
-      dependencies.length !== 1 ||
-      !dependencies.every(i => i.type[0] === RLine.TYPEL1)
-    )
-      throw DependeciesInitError(
-        1,
-        RLine.TYPEL2,
-        dependencies.map(i => i.id),
-      )
+    checkDependenciesInitError(dependencies, [RLine.TYPEL1])
     super(dependencies, prop, RPointOnLine.TYPEL2)
   }
 
+  /**
+   * Calculates the distance from the RLine.
+   */
   resolve() {
     const resolved = this.__dependencies[0].resolve()
     const theta = Math.atan2(resolved.b.y - resolved.a.y, resolved.b.x - resolved.a.x)

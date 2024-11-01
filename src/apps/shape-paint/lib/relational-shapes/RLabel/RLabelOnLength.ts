@@ -1,27 +1,32 @@
+import { checkDependenciesInitError } from '../Error'
 import { RLabelProp, RLabel } from './RLabel'
 import { RLength } from '../RLength'
-import { DependeciesInitError } from '../Error'
 
+/**
+ * The properties of RLableOnLength.
+ */
 interface RLabelOnLengthProp extends RLabelProp {}
 
+/**
+ * Represents labels on length markers, typically representing their length.
+ * @hierarchy RShape <- RLabel <- RLabelOnLength
+ */
 class RLabelOnLength extends RLabel {
   public static TYPEL2 = 'RLabelOnLength'
   protected declare __dependencies: RLength[]
   protected declare __prop: RLabelOnLengthProp
 
+  /**
+   * @throws Throws DependenciesInitError if given Dependencies are not of RLength type or its length is not 1.
+   */
   constructor(dependencies: RLength[], prop: RLabelOnLengthProp) {
-    if (
-      dependencies.length !== 1 ||
-      !dependencies.every(i => i.type[0] === RLength.TYPEL1)
-    )
-      throw DependeciesInitError(
-        1,
-        RLength.TYPEL1,
-        dependencies.map(i => i.id),
-      )
+    checkDependenciesInitError(dependencies, [RLength.TYPEL1])
     super(dependencies, prop, RLabelOnLength.TYPEL2)
   }
 
+  /**
+   * Calculates the midpoint of RLength and give some offsets.
+   */
   resolve() {
     const resolved = this.__dependencies[0].resolve()
     const theta = Math.atan2(resolved.b.y - resolved.a.y, resolved.b.x - resolved.a.x)

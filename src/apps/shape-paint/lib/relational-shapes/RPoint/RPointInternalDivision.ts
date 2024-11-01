@@ -1,4 +1,4 @@
-import { DependeciesInitError } from '../Error'
+import { checkDependenciesInitError } from '../Error'
 import { RPointProp, RPoint } from './RPoint'
 
 /**
@@ -22,15 +22,7 @@ class RPointInternalDivision extends RPoint {
    * @throws Throws DependenciesInitError if given Dependencies are not of Point type or its length is not 2.
    */
   constructor(dependencies: RPoint[], prop: RPointInternalDivisionProp) {
-    if (
-      dependencies.length !== 2 ||
-      !dependencies.every(i => i.type[0] === RPoint.TYPEL1)
-    )
-      throw DependeciesInitError(
-        2,
-        RPoint.TYPEL1,
-        dependencies.map(i => i.id),
-      )
+    checkDependenciesInitError(dependencies, [RPoint.TYPEL1, RPoint.TYPEL1])
     super(dependencies, prop, RPointInternalDivision.TYPEL2)
   }
 
