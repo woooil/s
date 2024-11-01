@@ -41,6 +41,17 @@ class Coords {
     }
   }
 
+  static scale(coord: Coord, scale: number): Coord {
+    return {
+      x: coord.x * scale,
+      y: coord.y * scale,
+    }
+  }
+
+  static avg(coord1: Coord, coord2: Coord): Coord {
+    return Coords.scale(Coords.add(coord1, coord2), 0.5)
+  }
+
   /**
    * Converts CoordPolar to Coord.
    */
@@ -49,6 +60,14 @@ class Coords {
       x: polar.r * Math.cos(polar.theta),
       y: polar.r * Math.sin(polar.theta),
     }
+  }
+  
+  static theta2(coord1: Coord, coord2: Coord): number {
+    return Math.atan2(coord2.y - coord1.y, coord2.x - coord1.x)
+  }
+
+  static addPolar(coord: Coord, polar: CoordPolar): Coord {
+    return Coords.add(coord, Coords.toCartesian(polar))
   }
 }
 

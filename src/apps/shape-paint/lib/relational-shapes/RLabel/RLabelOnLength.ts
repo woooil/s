@@ -1,4 +1,5 @@
 import { checkDependenciesInitError } from '../Error'
+import { Coords } from '../Tools'
 import { RLabelProp, RLabel } from './RLabel'
 import { RLength } from '../RLength'
 
@@ -29,11 +30,11 @@ class RLabelOnLength extends RLabel {
    */
   resolve() {
     const resolved = this.__dependencies[0].resolve()
-    const theta = Math.atan2(resolved.b.y - resolved.a.y, resolved.b.x - resolved.a.x)
-    const coord = {
-      x: (resolved.a.x + resolved.b.x) / 2 + (resolved.ny ? 1 : -1) * resolved.r * Math.sin(theta),
-      y: (resolved.a.y + resolved.b.y) / 2 - (resolved.ny ? 1 : -1) * resolved.r * Math.cos(theta),
-    }
+    const theta = Coords.theta2(resolved.a, resolved.b)
+    const coord = Coords.addPolar(Coords.avg(resolved.a, resolved.b), {
+      r: resolved.ny ? resolved.r : -resolved.r,
+      theta: theta - Math.PI / 2
+    })
     return {
       ...coord,
       label: this.__prop.label

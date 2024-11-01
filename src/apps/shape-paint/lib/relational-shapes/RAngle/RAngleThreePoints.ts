@@ -1,4 +1,5 @@
 import { checkDependenciesInitError } from '../Error'
+import { Coords } from '../Tools'
 import { RAngleProp, RAngle } from './RAngle'
 import { RPoint } from '../RPoint'
 
@@ -35,8 +36,8 @@ class RAngleThreePoints extends RAngle {
     const bResolved = this.__dependencies[1].resolve()
     const cResolved = this.__dependencies[2].resolve()
     
-    const theta0 = Math.atan2(aResolved.y - bResolved.y, aResolved.x - bResolved.x)
-    const theta1 = Math.atan2(cResolved.y - bResolved.y, cResolved.x - bResolved.x)
+    const theta0 = Coords.theta2(bResolved, aResolved)
+    const theta1 = Coords.theta2(bResolved, cResolved)
 
     let theta = theta1 - theta0
 

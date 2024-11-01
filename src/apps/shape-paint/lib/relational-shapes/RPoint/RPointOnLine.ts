@@ -1,4 +1,5 @@
 import { checkDependenciesInitError } from '../Error'
+import { Coord, Coords } from '../Tools'
 import { RPointProp, RPoint } from './RPoint'
 import { RLine } from '../RLine'
 
@@ -34,20 +35,18 @@ class RPointOnLine extends RPoint {
    */
   resolve() {
     const resolved = this.__dependencies[0].resolve()
-    const theta = Math.atan2(resolved.b.y - resolved.a.y, resolved.b.x - resolved.a.x)
-    const coord = { x: 0, y: 0 }
+    const theta = Coords.theta2(resolved.a, resolved.b)
+    let coord: Coord
     switch (this.__prop.section % 3) {
       case 0:
-        coord.x = resolved.a.x - this.__prop.r * Math.cos(theta)
-        coord.y = resolved.a.y - this.__prop.r * Math.sin(theta)
+        coord = Coords.addPolar(resolved.a, { r: this.__prop.r, theta: theta })
         break
       case 1:
         coord.x = resolved.a.x * (1 - this.__prop.r) + resolved.b.x * this.__prop.r
         coord.y = resolved.a.y * (1 - this.__prop.r) + resolved.b.y * this.__prop.r
         break
       case 2:
-        coord.x = resolved.b.x + this.__prop.r * Math.cos(theta)
-        coord.y = resolved.b.y + this.__prop.r * Math.sin(theta)
+        coord = Coords.addPolar(resolved.b, { r: this.__prop.r, theta: theta })
         break
     }
     return {
