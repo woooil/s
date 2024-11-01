@@ -5,7 +5,7 @@ import { RLabelResolved } from '../../lib/relational-shapes'
 export default function Label({
   resolved,
   ...props
-}: Props<RLabelResolved, SVGTextElement>) {
+}: Props<RLabelResolved, SVGGElement>) {
   const attr = {
     x: resolved.x,
     y: resolved.y,
@@ -15,11 +15,20 @@ export default function Label({
     fontSize: '24px',
   }
 
+  const strokeAttr = {
+    stroke: 'white',
+    strokeWidth: '0.3em',
+    strokeLinejoin: 'round'
+  }
+
   return (
-    <text
-      {...attr}
-      {...props}>
-      {resolved.label}
-    </text>
+    <g {...props}>
+      <text {...attr} {...strokeAttr}>
+        {resolved.label}
+      </text>
+      <text {...attr}>
+        {resolved.label}
+      </text>
+    </g>
   )
 }
