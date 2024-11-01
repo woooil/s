@@ -30,7 +30,7 @@ type RShapeType = [RShapeTypeL1, RShapeTypeL2]
 export { RShapeProp, RShapeResolved, RShapeID, RShapeTypeL1, RShapeTypeL2, RShapeType }
 
 /**
- * Represents any shapes.
+ * Represents any shapes by the definition related to other shapes.
  * @hierarchy RShape
  */
 abstract class RShape {

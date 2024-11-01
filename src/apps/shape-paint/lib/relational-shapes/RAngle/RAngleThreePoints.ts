@@ -1,17 +1,27 @@
-import { Coords } from '../Tools'
 import { DependeciesInitError } from '../Error'
 import { RPoint } from '../RPoint'
 import { RAngleProp, RAngle } from './RAngle'
 
+/**
+ * The properties of RAngleThreePointsProp. 
+ * @prop reflex - True if to choose the angle larger than PI.
+ */
 interface RAngleThreePointsProp extends RAngleProp {
-  large: boolean
+  reflex: boolean
 }
 
+/**
+ * Represents angles formed by three points. The second point is its vertex.
+ * @hierarchy RShape <- RAngle <- RAngleThreePoints
+ */
 class RAngleThreePoints extends RAngle {
   public static TYPEL2 = 'RAngleThreePoints'
   protected declare __dependencies: RPoint[]
   protected declare __prop: RAngleThreePointsProp
 
+  /**
+   * @throws Throws DependenciesInitError if given Dependencies are not of RPoint type or its length is not 3.
+   */
   constructor(dependencies: RPoint[], prop: RAngleThreePointsProp) {
     if (
       dependencies.length !== 3 ||
@@ -25,6 +35,9 @@ class RAngleThreePoints extends RAngle {
     super(dependencies, prop, RAngleThreePoints.TYPEL2)
   }
 
+  /**
+   * Calculates the angle formed by three RPoints.
+   */
   resolve() {
     const aResolved = this.__dependencies[0].resolve()
     const bResolved = this.__dependencies[1].resolve()
@@ -35,7 +48,7 @@ class RAngleThreePoints extends RAngle {
 
     let theta = theta1 - theta0
 
-    if (this.__prop.large) theta += Math.PI * 2
+    if (this.__prop.reflex) theta += Math.PI * 2
 
     return {
       x: resolvedB.x,

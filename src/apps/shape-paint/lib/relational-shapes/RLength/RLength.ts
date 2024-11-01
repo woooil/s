@@ -14,19 +14,36 @@ interface RLengthResolved extends RShapeResolved {
   ny?: boolean,
 }
 
+/**
+ * The properties of RPoint.
+ * @prop ny - True if this RLength should lay on -y direction when rotated to be aligned to +x direction. False if this RLength should lay on +y direction.
+ */
 interface RLengthProp extends RShapeProp {
   ny?: boolean
 }
 
+/**
+ * Represents length markers (of segments, typically.)
+ * @hierarchy RShape <- RLength
+ */
 abstract class RLength extends RShape {
+  /**
+   * 'RLength'.
+   */
   public static TYPEL1 = 'RLength'
 
   constructor(dependencies: RShape[], prop: RLengthProp, typel2: RShapeTypeL2) {
     super(dependencies, prop, [RLength.TYPEL1, typel2])
   }
 
+  /**
+   * Resolves this RLength into RLengthResolved without calculated r.
+   */
   protected abstract preresolve(): RLengthResolved
 
+  /**
+   * Resolves this RLength into RLengthResolved with calculated r.
+   */
   public resolve(): RLengthResolved {
     const preresolved = this.preresolve()
     const length = Math.sqrt(Math.pow(preresolved.b.y - preresolved.a.y, 2) + Math.pow(preresolved.b.x - preresolved.a.x, 2))

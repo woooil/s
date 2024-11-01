@@ -26,7 +26,14 @@ interface RAngleProp extends RShapeProp {
   congruent?: boolean
 }
 
+/**
+ * Represents angle markers.
+ * @hierarchy RShape <- RLength
+ */
 abstract class RAngle extends RShape {
+  /**
+   * 'RAngle'
+   */
   public static TYPEL1 = 'RAngle'
 
   /**

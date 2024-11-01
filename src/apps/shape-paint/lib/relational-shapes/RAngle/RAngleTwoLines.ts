@@ -4,7 +4,8 @@ import { RLine } from '../RLine'
 import { RAngleProp, RAngle } from './RAngle'
 
 /**
- * The properties of RAngleTwoLinesProp. Chooses the direction of the angle of the intersection of two RLines.
+ * The properties of RAngleTwoLinesProp. 
+ * @prop direction - The direction of the angle of the intersection of two RLines.
  */
 interface RAngleTwoLinesProp extends RAngleProp {
   direction: AngleIntersection
