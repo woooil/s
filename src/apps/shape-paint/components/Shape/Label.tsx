@@ -58,6 +58,7 @@ export default function Label({
     textAnchor: 'middle',
     dominantBaseline: 'middle',
     fontFamily: 'Latin Modern',
+    fontStyle: styles?.italic ? 'italic' : '',
     fontSize: '24px',
     stroke: 'white',
     strokeWidth: '0.3em',

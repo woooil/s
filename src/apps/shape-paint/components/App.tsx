@@ -9,8 +9,18 @@ export default function App() {
   const { shapes: s2, action: a2 } = useShapes()
 
   React.useEffect(() => {
-    const lineL = a2.add(new RS.RLineHorizontal([], { y: 80 }))
-    const lineM = a2.add(new RS.RLineVertical([], { x: 250 }))
+    const lineL = a2.add(new RS.RLineHorizontal([], { y: 100 }, { width: 2 }))
+    const lineM = a2.add(new RS.RLineHorizontal([], { y: 250 }, { width: 2 }))
+    const lineN = a2.add(new RS.RLineHorizontal([], { y: 400 }, { width: 2 }))
+    const pointA = a2.add(new RS.RPointAbsoluteCoord([], { x: 500, y: 200 }, { hide: true }))
+    const line4 = a2.add(new RS.RLineDirectional([pointA], { theta: new RS.ThetaMinimum(0.6) }))
+    const line5 = a2.add(new RS.RLineDirectional([pointA], { theta: new RS.ThetaMinimum(-1) }))
+    const pointB = a2.add(new RS.RPointIntersection([lineL, line4], {}, { hide: true }))
+    const length = a2.add(new RS.RLengthTwoPoints([pointA, pointB], { ny: true }))
+    const label = a2.add(new RS.RLabelOnLength([length], { label: 'x' }, { italic: true }))
+    const labelL = a2.add(new RS.RLabelOnLine([lineL], { section: 2, r: 780, label: 'l' }, { italic: true }))
+    const labelM = a2.add(new RS.RLabelOnLine([lineM], { section: 2, r: 780, label: 'm' }, { italic: true }))
+    const labelN = a2.add(new RS.RLabelOnLine([lineN], { section: 2, r: 780,label: 'n' }, { italic: true }))
   }, [])
 
   React.useEffect(() => {

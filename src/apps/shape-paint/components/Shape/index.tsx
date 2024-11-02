@@ -37,7 +37,7 @@ export default function Shape({ shape, ...props }: { shape: RShape }) {
       return (
         <Label
           resolved={(shape as RLabel).resolve()}
-          styles={(shape as RPoint).style}
+          styles={(shape as RLabel).style}
           {...props}
         />
       )

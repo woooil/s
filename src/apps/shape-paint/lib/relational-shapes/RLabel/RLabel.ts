@@ -25,8 +25,11 @@ interface RLabelProp extends RShapeProp {
 
 /**
  * The style of RLabel.
+ * @prop italic - Uses italic font if true.
  */
-interface RLabelStyle extends RShapeStyle {}
+interface RLabelStyle extends RShapeStyle {
+  italic?: boolean
+}
 
 /**
  * Represents text labels, fixed (usually to another RShape) to represent a specific meaning.
