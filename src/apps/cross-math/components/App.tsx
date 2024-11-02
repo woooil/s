@@ -253,7 +253,7 @@ export default function App() {
   }, [option])
 
   return (
-    <div className="content">
+    <div className="cross-math content">
       <div className="container">
         <div className="dashboard">
           <h1 className="title">가로세로 연산</h1>
