@@ -1,5 +1,5 @@
 import { Coord } from '../Coord'
-import { RShapeResolved, RShapeProp, RShapeTypeL2, RShape } from '../RShape'
+import { RShapeResolved, RShapeProp, RShapeStyle, RShapeTypeL2, RShape } from '../RShape'
 
 /**
  * The mathematical definition of RLength. Defined by two endpoints and which side this RLength should lay.
@@ -22,6 +22,8 @@ interface RLengthProp extends RShapeProp {
   ny?: boolean
 }
 
+interface RLengthStyle extends RShapeStyle {}
+
 /**
  * Represents length markers (of segments, typically.)
  * @hierarchy RShape <- RLength
@@ -32,8 +34,8 @@ abstract class RLength extends RShape {
    */
   public static TYPEL1 = 'RLength'
 
-  constructor(dependencies: RShape[], prop: RLengthProp, typel2: RShapeTypeL2) {
-    super(dependencies, prop, [RLength.TYPEL1, typel2])
+  constructor(dependencies: RShape[], prop: RLengthProp, style: RLengthStyle, typel2: RShapeTypeL2) {
+    super(dependencies, prop, style, [RLength.TYPEL1, typel2])
   }
 
   /**
@@ -55,4 +57,4 @@ abstract class RLength extends RShape {
   }
 }
 
-export { RLengthResolved, RLengthProp, RLength }
+export { RLengthResolved, RLengthProp, RLengthStyle, RLength }

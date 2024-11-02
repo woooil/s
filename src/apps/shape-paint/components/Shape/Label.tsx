@@ -1,11 +1,12 @@
 import * as React from 'react'
 import { Props } from './Props'
-import { RLabelResolved } from '../../lib/relational-shapes'
+import { RLabelResolved, RLabelStyle } from '../../lib/relational-shapes'
 
 export default function Label({
   resolved,
+  styles,
   ...props
-}: Props<RLabelResolved, SVGGElement>) {
+}: Props<RLabelResolved, RLabelStyle, SVGGElement>) {
   const attr = {
     x: resolved.coord.x,
     y: resolved.coord.y,

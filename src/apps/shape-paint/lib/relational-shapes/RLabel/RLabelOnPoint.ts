@@ -1,6 +1,6 @@
 import { checkDependenciesInitError } from '../Error'
 import { Coord, CoordPolar } from '../Coord'
-import { RLabelProp, RLabel } from './RLabel'
+import { RLabelProp, RLabelStyle, RLabel } from './RLabel'
 import { RPoint } from '../RPoint'
 
 /**
@@ -23,9 +23,9 @@ class RLabelOnPoint extends RLabel {
   /**
    * @throws Throws DependenciesInitError if given Dependencies are not of Point type or its length is not 1.
    */
-  constructor(dependencies: RPoint[], prop: RLabelOnPointProp) {
+  constructor(dependencies: RPoint[], prop: RLabelOnPointProp, style?: RLabelStyle) {
     checkDependenciesInitError(dependencies, [RPoint.TYPEL1])
-    super(dependencies, prop, RLabelOnPoint.TYPEL2)
+    super(dependencies, prop, style, RLabelOnPoint.TYPEL2)
   }
 
   /**

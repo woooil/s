@@ -19,6 +19,7 @@ export default function Shape({ shape, ...props }: { shape: RShape }) {
       return (
         <Point
           resolved={(shape as RPoint).resolve()}
+          styles={(shape as RPoint).style}
           {...props}
         />
       )
@@ -26,6 +27,7 @@ export default function Shape({ shape, ...props }: { shape: RShape }) {
       return (
         <Line
           resolved={(shape as RLine).resolve()}
+          styles={(shape as RPoint).style}
           {...props}
         />
       )
@@ -33,6 +35,7 @@ export default function Shape({ shape, ...props }: { shape: RShape }) {
       return (
         <Label
           resolved={(shape as RLabel).resolve()}
+          styles={(shape as RPoint).style}
           {...props}
         />
       )
@@ -40,6 +43,7 @@ export default function Shape({ shape, ...props }: { shape: RShape }) {
       return (
         <Angle
           resolved={(shape as RAngle).resolve()}
+          styles={(shape as RAngle).style}
           {...props}
         />
       )
@@ -47,6 +51,7 @@ export default function Shape({ shape, ...props }: { shape: RShape }) {
       return (
         <Length
           resolved={(shape as RLength).resolve()}
+          styles={(shape as RLength).style}
           {...props}
         />
       )

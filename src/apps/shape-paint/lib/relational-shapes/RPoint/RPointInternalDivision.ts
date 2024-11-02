@@ -1,6 +1,6 @@
 import { checkDependenciesInitError } from '../Error'
 import { Coord } from '../Coord'
-import { RPointProp, RPoint } from './RPoint'
+import { RPointProp, RPointStyle, RPoint } from './RPoint'
 
 /**
  * The properties of RPointInternalDivison.
@@ -22,9 +22,9 @@ class RPointInternalDivision extends RPoint {
   /**
    * @throws Throws DependenciesInitError if given Dependencies are not of Point type or its length is not 2.
    */
-  constructor(dependencies: RPoint[], prop: RPointInternalDivisionProp) {
+  constructor(dependencies: RPoint[], prop: RPointInternalDivisionProp, style?: RPointStyle) {
     checkDependenciesInitError(dependencies, [RPoint.TYPEL1, RPoint.TYPEL1])
-    super(dependencies, prop, RPointInternalDivision.TYPEL2)
+    super(dependencies, prop, style, RPointInternalDivision.TYPEL2)
   }
 
   /**
@@ -36,7 +36,6 @@ class RPointInternalDivision extends RPoint {
 
     return {
       coord: Coord.add(Coord.scale(aResolved.coord, 1 - this.__prop.r), Coord.scale(bResolved.coord, this.__prop.r)),
-      hide: this.__prop.hide,
     }
   }
 }

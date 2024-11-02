@@ -1,6 +1,6 @@
 import { checkDependenciesInitError } from '../Error'
 import { Theta } from '../Theta'
-import { RAngleProp, RAngle } from './RAngle'
+import { RAngleProp, RAngleStyle, RAngle } from './RAngle'
 import { RLine } from '../RLine'
 
 /**
@@ -25,9 +25,9 @@ class RAngleTwoLines extends RAngle {
   /**
    * @throws Throws DependenciesInitError if given Dependencies are not of RLine type or its length is not 2.
    */
-  constructor(dependencies: RLine[], prop: RAngleTwoLinesProp) {
+  constructor(dependencies: RLine[], prop: RAngleTwoLinesProp, style?: RAngleStyle) {
     checkDependenciesInitError(dependencies, [RLine.TYPEL1, RLine.TYPEL1])
-    super(dependencies, prop, RAngleTwoLines.TYPEL2)
+    super(dependencies, prop, style, RAngleTwoLines.TYPEL2)
   }
 
   /**

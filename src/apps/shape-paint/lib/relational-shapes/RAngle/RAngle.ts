@@ -1,7 +1,7 @@
 import { NotEqualError } from '../Error'
 import { Coord } from '../Coord'
 import { Theta, ThetaMinimum } from '../Theta'
-import { RShapeResolved, RShapeProp, RShapeTypeL2, RShape } from '../RShape'
+import { RShapeResolved, RShapeProp, RShapeStyle, RShapeTypeL2, RShape } from '../RShape'
 
 /**
  * The mathematical definition of RAngle.
@@ -27,6 +27,8 @@ interface RAngleProp extends RShapeProp {
   congruent?: boolean
 }
 
+interface RAngleStyle extends RShapeStyle {}
+
 /**
  * Represents angle markers.
  * @hierarchy RShape <- RLength
@@ -47,8 +49,8 @@ abstract class RAngle extends RShape {
   }
   protected declare __prop: RAngleProp
 
-  constructor(dependencies: RShape[], prop: RAngleProp, typel2: RShapeTypeL2) {
-    super(dependencies, prop, [RAngle.TYPEL1, typel2])
+  constructor(dependencies: RShape[], prop: RAngleProp, style: RAngleStyle, typel2: RShapeTypeL2) {
+    super(dependencies, prop, style, [RAngle.TYPEL1, typel2])
   }
 
   /**
@@ -82,4 +84,4 @@ abstract class RAngle extends RShape {
   }
 }
 
-export { RAngleResolved, RAngleProp, RAngle }
+export { RAngleResolved, RAngleProp, RAngleStyle, RAngle }

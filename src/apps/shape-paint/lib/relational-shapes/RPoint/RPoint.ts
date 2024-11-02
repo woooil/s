@@ -1,5 +1,5 @@
 import { Coord } from '../Coord'
-import { RShapeResolved, RShapeProp, RShapeTypeL2, RShape } from '../RShape'
+import { RShapeResolved, RShapeProp, RShapeStyle, RShapeTypeL2, RShape } from '../RShape'
 
 /**
  * The mathematical definition of RPoint. 
@@ -8,13 +8,14 @@ import { RShapeResolved, RShapeProp, RShapeTypeL2, RShape } from '../RShape'
  */
 interface RPointResolved extends RShapeResolved {
   coord: Coord
-  hide?: boolean
 }
 
 /**
  * The properties of RPoint.
  */
-interface RPointProp extends RShapeProp {
+interface RPointProp extends RShapeProp { }
+
+interface RPointStyle extends RShapeStyle {
   hide?: boolean
 }
 
@@ -28,8 +29,8 @@ abstract class RPoint extends RShape {
    */
   public static TYPEL1 = 'RPoint'
 
-  constructor(dependencies: RShape[], prop: RPointProp, typel2: RShapeTypeL2) {
-    super(dependencies, prop, [RPoint.TYPEL1, typel2])
+  constructor(dependencies: RShape[], prop: RPointProp, style: RPointStyle, typel2: RShapeTypeL2) {
+    super(dependencies, prop, style, [RPoint.TYPEL1, typel2])
   }
 
   /**
@@ -38,4 +39,4 @@ abstract class RPoint extends RShape {
   public abstract resolve(): RPointResolved
 }
 
-export { RPointResolved, RPointProp, RPoint }
+export { RPointResolved, RPointProp, RPointStyle, RPoint }

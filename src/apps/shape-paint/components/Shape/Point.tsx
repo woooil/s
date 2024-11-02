@@ -1,16 +1,17 @@
 import * as React from 'react'
 import { Props } from './Props'
-import { RPointResolved } from '../../lib/relational-shapes'
+import { RPointResolved, RPointStyle } from '../../lib/relational-shapes'
 
 export default function Point({
   resolved,
+  styles,
   ...props
-}: Props<RPointResolved, SVGCircleElement>) {
+}: Props<RPointResolved, RPointStyle, SVGCircleElement>) {
   const attr = {
     cx: resolved.coord.x,
     cy: resolved.coord.y,
     r: 3,
-    fill: resolved.hide ? 'none' : 'black',
+    fill: styles?.hide ? 'none' : 'black',
   }
   
   return (

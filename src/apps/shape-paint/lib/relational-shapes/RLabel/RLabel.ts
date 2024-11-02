@@ -1,5 +1,5 @@
 import { Coord } from '../Coord'
-import { RShapeResolved, RShapeProp, RShapeTypeL2, RShape } from '../RShape'
+import { RShapeResolved, RShapeProp, RShapeStyle, RShapeTypeL2, RShape } from '../RShape'
 
 /**
  * The definition of RLabel.
@@ -19,6 +19,8 @@ interface RLabelProp extends RShapeProp {
   label: string
 }
 
+interface RLabelStyle extends RShapeStyle {}
+
 /**
  * Represents text labels, fixed (usually to another RShape) to represent a specific meaning.
  * @hierarchy RShape <- RLabel
@@ -29,8 +31,8 @@ abstract class RLabel extends RShape {
    */
   public static TYPEL1 = 'RLabel'
 
-  constructor(dependencies: RShape[], prop: RLabelProp, typel2: RShapeTypeL2) {
-    super(dependencies, prop, [RLabel.TYPEL1, typel2])
+  constructor(dependencies: RShape[], prop: RLabelProp, style: RLabelStyle, typel2: RShapeTypeL2) {
+    super(dependencies, prop, style, [RLabel.TYPEL1, typel2])
   }
 
   /**
@@ -39,4 +41,4 @@ abstract class RLabel extends RShape {
   public abstract resolve(): RLabelResolved
 }
 
-export { RLabelResolved, RLabelProp, RLabel }
+export { RLabelResolved, RLabelProp, RLabelStyle, RLabel }

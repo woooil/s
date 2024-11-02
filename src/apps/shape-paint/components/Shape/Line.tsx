@@ -1,11 +1,12 @@
 import * as React from 'react'
 import { Props } from './Props'
-import { RLineResolved, Coord } from '../../lib/relational-shapes'
+import { RLineResolved, RLineStyle, Coord } from '../../lib/relational-shapes'
 
 export default function Line({
   resolved,
+  styles,
   ...props
-}: Props<RLineResolved, SVGLineElement>) {
+}: Props<RLineResolved, RLineStyle, SVGLineElement>) {
   const extend = (coord: Coord, ref: Coord) => {
     return new Coord(
       coord.x + (coord.x - ref.x) * (2 << 10),
@@ -23,7 +24,7 @@ export default function Line({
     x2: resolved.b.x,
     y2: resolved.b.y,
     stroke: 'black',
-    strokeWidth: 2,
+    strokeWidth: styles?.width || 2,
   }
 
   return (

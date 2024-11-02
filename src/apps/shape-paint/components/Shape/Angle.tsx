@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Props } from './Props'
-import { RAngleResolved } from '../../lib/relational-shapes'
+import { RAngleResolved, RAngleStyle } from '../../lib/relational-shapes'
 
 function getStandard(theta: number) {
   const mag = 2
@@ -15,8 +15,9 @@ function getStandard(theta: number) {
 
 function AngleO({
   resolved,
+  styles,
   ...props
-}: Props<RAngleResolved, SVGCircleElement>) {
+}: Props<RAngleResolved, RAngleStyle, SVGCircleElement>) {
   const std = getStandard(resolved.theta.t)
   const thetaMid = resolved.theta.t / 2 + resolved.theta0.t
 
@@ -37,8 +38,9 @@ function AngleO({
 
 function AngleX({
   resolved,
+  styles,
   ...props
-}: Props<RAngleResolved, SVGPathElement>) {
+}: Props<RAngleResolved, RAngleStyle, SVGPathElement>) {
   const std = getStandard(resolved.theta.t)
   const theta = resolved.theta.t / 2 + resolved.theta0.t
   const phi = Math.PI / 4 - theta.t
@@ -79,8 +81,9 @@ function AngleX({
 
 function AngleDefault({
   resolved,
+  styles,
   ...props
-}: Props<RAngleResolved, SVGPathElement>) {
+}: Props<RAngleResolved, RAngleStyle, SVGPathElement>) {
   const std = getStandard(resolved.theta.t)
   const p = {
     i: {
@@ -114,9 +117,9 @@ function AngleDefault({
 }
 
 export default function Angle({
-  resolved,
+  resolved, 
   ...props
-}: Props<RAngleResolved, SVGGeometryElement>) {
+}: Props<RAngleResolved, RAngleStyle, SVGGeometryElement>) {
   switch (resolved.marker) {
     case 'o':
       return (

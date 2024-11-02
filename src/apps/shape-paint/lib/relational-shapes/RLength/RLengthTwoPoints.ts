@@ -1,5 +1,5 @@
 import { checkDependenciesInitError } from '../Error'
-import { RLengthProp, RLength } from './RLength'
+import { RLengthProp, RLengthStyle, RLength } from './RLength'
 import { RPoint } from '../RPoint'
 
 /**
@@ -19,9 +19,9 @@ class RLengthTwoPoints extends RLength {
   /**
    * @throws Throws DependenciesInitError if given Dependencies are not of Point type or its length is not 2.
    */
-  constructor(dependencies: RPoint[], prop: RLengthTwoPointsProp) {
+  constructor(dependencies: RPoint[], prop: RLengthTwoPointsProp, style?: RLengthStyle) {
     checkDependenciesInitError(dependencies, [RPoint.TYPEL1, RPoint.TYPEL1])
-    super(dependencies, prop, RLengthTwoPoints.TYPEL2)
+    super(dependencies, prop, style, RLengthTwoPoints.TYPEL2)
   }
 
   /**

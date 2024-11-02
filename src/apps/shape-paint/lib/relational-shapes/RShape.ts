@@ -10,6 +10,8 @@ interface RShapeProp {}
  */
 interface RShapeResolved {}
 
+interface RShapeStyle {}
+
 /**
  * The identifier of RShape.
  */
@@ -27,7 +29,7 @@ type RShapeTypeL2 = string
  */
 type RShapeType = [RShapeTypeL1, RShapeTypeL2]
 
-export { RShapeProp, RShapeResolved, RShapeID, RShapeTypeL1, RShapeTypeL2, RShapeType }
+export { RShapeProp, RShapeResolved, RShapeStyle, RShapeID, RShapeTypeL1, RShapeTypeL2, RShapeType }
 
 /**
  * Represents any shapes by the definition related to other shapes.
@@ -62,6 +64,7 @@ abstract class RShape {
   public get prop() {
     return this.__prop
   }
+  public style?: RShapeStyle
   /**
    * The L1 type of RShape. For example, 'Point' is one L1 type of RShape.
    */
@@ -83,10 +86,11 @@ abstract class RShape {
   /**
    * Assigns properties to this RShape. id is auto-generated using uuid().
    */
-  constructor(dependencies: RShape[], prop: RShapeProp, type: RShapeType) {
+  constructor(dependencies: RShape[], prop: RShapeProp, style: RShapeStyle, type: RShapeType) {
     this.id = `${RShape.ID_PREFIX}${uuid()}`
     this.__dependencies = dependencies
     this.__prop = prop
+    this.style = style
     this.type = type
   }
 }

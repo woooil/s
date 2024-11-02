@@ -1,6 +1,6 @@
 import { Coord } from '../Coord'
 import { ParallelLinesError } from '../Error'
-import { RShapeResolved, RShapeProp, RShapeTypeL2, RShape } from '../RShape'
+import { RShapeResolved, RShapeProp, RShapeStyle, RShapeTypeL2, RShape } from '../RShape'
 
 /**
  * The mathematical definition of RLine. Defined by two points Line passes through.
@@ -24,6 +24,10 @@ interface RLineResolved extends RShapeResolved {
 interface RLineProp extends RShapeProp {
   cutA?: boolean
   cutB?: boolean
+}
+
+interface RLineStyle extends RShapeStyle {
+  width?: number
 }
 
 /**
@@ -50,8 +54,8 @@ abstract class RLine extends RShape {
   }
   protected declare __prop: RLineProp
 
-  constructor(dependencies: RShape[], prop: RLineProp, typel2: RShapeTypeL2) {
-    super(dependencies, prop, [RLine.TYPEL1, typel2])
+  constructor(dependencies: RShape[], prop: RLineProp, style: RLineStyle, typel2: RShapeTypeL2) {
+    super(dependencies, prop, style, [RLine.TYPEL1, typel2])
     this.__dependenciesCut = { a: undefined, b: undefined }
   }
 
@@ -148,4 +152,4 @@ abstract class RLine extends RShape {
   }
 }
 
-export { RLineResolved, RLineProp, RLine }
+export { RLineResolved, RLineProp, RLineStyle, RLine }

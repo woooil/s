@@ -1,7 +1,7 @@
 import { checkDependenciesInitError } from '../Error'
 import { Coord, CoordPolar } from '../Coord'
 import { Theta } from '../Theta'
-import { RPointProp, RPoint } from './RPoint'
+import { RPointProp, RPointStyle, RPoint } from './RPoint'
 import { RLine } from '../RLine'
 
 /**
@@ -26,9 +26,9 @@ class RPointOnLine extends RPoint {
   /**
    * @throws Throws DependenciesInitError if given Dependencies are not of Line type or its length is not 1.
    */
-  constructor(dependencies: RLine[], prop: RPointOnLineProp) {
+  constructor(dependencies: RLine[], prop: RPointOnLineProp, style?: RPointStyle) {
     checkDependenciesInitError(dependencies, [RLine.TYPEL1])
-    super(dependencies, prop, RPointOnLine.TYPEL2)
+    super(dependencies, prop, style, RPointOnLine.TYPEL2)
   }
 
   /**

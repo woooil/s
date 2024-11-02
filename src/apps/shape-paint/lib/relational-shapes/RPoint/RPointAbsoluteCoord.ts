@@ -1,5 +1,5 @@
 import { Coord } from '../Coord'
-import { RPointProp, RPoint } from './RPoint'
+import { RPointProp, RPointStyle, RPoint } from './RPoint'
 import { RShape } from '../RShape'
 
 /**
@@ -21,8 +21,8 @@ class RPointAbsoluteCoord extends RPoint {
   protected declare __dependencies: RShape[]
   protected declare __prop: RPointAbsoluteCoordProp
 
-  constructor(_: RShape[], prop: RPointAbsoluteCoordProp) {
-    super([], prop, RPointAbsoluteCoord.TYPEL2)
+  constructor(_: RShape[], prop: RPointAbsoluteCoordProp, style?: RPointStyle) {
+    super([], prop, style, RPointAbsoluteCoord.TYPEL2)
   }
 
   /**
@@ -31,7 +31,6 @@ class RPointAbsoluteCoord extends RPoint {
   resolve() {
     return {
       coord: new Coord(this.__prop.x, this.__prop.y),
-      hide: this.__prop.hide
     }
   }
 }

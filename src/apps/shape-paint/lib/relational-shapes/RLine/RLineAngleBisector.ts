@@ -1,7 +1,7 @@
 import { checkDependenciesInitError } from '../Error'
 import { Coord, CoordPolar } from '../Coord'
 import { Theta } from '../Theta'
-import { RLineProp, RLine } from './RLine'
+import { RLineProp, RLineStyle, RLine } from './RLine'
 
 /**
  * The properties of RLineAngleBisectorProp. 
@@ -25,9 +25,9 @@ class RLineAngleBisector extends RLine {
   /**
    * @throws Throws DependenciesInitError if given Dependencies are not of RLine type or its length is not 2.
    */
-  constructor(dependencies: RLine[], prop: RLineAngleBisectorProp) {
+  constructor(dependencies: RLine[], prop: RLineAngleBisectorProp, style?: RLineStyle) {
     checkDependenciesInitError(dependencies, [RLine.TYPEL1, RLine.TYPEL1])
-    super(dependencies, prop, RLineAngleBisector.TYPEL2)
+    super(dependencies, prop, style, RLineAngleBisector.TYPEL2)
   }
 
   /**
