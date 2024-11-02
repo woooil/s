@@ -6,12 +6,14 @@ import {
   RLabel,
   RAngle,
   RLength,
+  RMarker,
 } from '../../lib/relational-shapes'
 import Point from './Point'
 import Line from './Line'
 import Label from './Label'
 import Angle from './Angle'
 import Length from './Length'
+import Marker from './Marker'
 
 export default function Shape({ shape, ...props }: { shape: RShape }) {
   switch (shape.type[0]) {
@@ -52,6 +54,14 @@ export default function Shape({ shape, ...props }: { shape: RShape }) {
         <Length
           resolved={(shape as RLength).resolve()}
           styles={(shape as RLength).style}
+          {...props}
+        />
+      )
+    case RMarker.TYPEL1:
+      return (
+        <Marker
+          resolved={(shape as RMarker).resolve()}
+          styles={(shape as RMarker).style}
           {...props}
         />
       )

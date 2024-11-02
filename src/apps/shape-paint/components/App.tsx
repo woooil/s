@@ -6,6 +6,20 @@ import '../styles/App.css'
 
 export default function App() {
   const { shapes, action } = useShapes()
+  const { shapes: s2, action: a2 } = useShapes()
+
+  React.useEffect(() => {
+    const pointA = a2.add(new RS.RPointAbsoluteCoord([], { x: 500, y: 200 }, { hide: true }))
+    const pointB = a2.add(new RS.RPointAbsoluteCoord([], { x: 200, y: 500 }, { hide: true }))
+    const pointC = a2.add(new RS.RPointAbsoluteCoord([], { x: 600, y: 500 }, { hide: true }))
+    const labelA = a2.add(new RS.RLabelOnPoint([pointA], { offset: new RS.CoordPolar(16, RS.Theta.ny()), label: 'A' }))
+    const labelB = a2.add(new RS.RLabelOnPoint([pointB], { offset: new RS.CoordPolar(20, RS.Theta.py()), label: 'B' }))
+    const labelC = a2.add(new RS.RLabelOnPoint([pointC], { offset: new RS.CoordPolar(20, RS.Theta.py()), label: 'C' }))
+    const lineAB = a2.add(new RS.RLineTwoPoints([pointA, pointB], {}, { width: 2 }))
+    const lineBC = a2.add(new RS.RLineTwoPoints([pointB, pointC], {}, { width: 2 }))
+    const lineCA = a2.add(new RS.RLineTwoPoints([pointC, pointA], {}, { width: 2 }))
+    const markerCA = a2.add(new RS.RMarkerOnLine([lineCA], { marker: '<' }))
+  }, [])
 
   React.useEffect(() => {
     const pointA = action.add(new RS.RPointAbsoluteCoord([], { x: 500, y: 350 }, { hide: true }))
@@ -48,6 +62,19 @@ export default function App() {
     <div>
       <div>THIS IS SHAPE PAINT APP</div>
       <div className="test-field"></div>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        version="1.1"
+        width="800px"
+        height="600px"
+        style={{ border: '1px solid blue' }}>
+        {s2.map((i: RS.RShape) => (
+          <Shape
+            shape={i}
+            key={i.id}
+          />
+        ))}
+      </svg>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         version="1.1"
