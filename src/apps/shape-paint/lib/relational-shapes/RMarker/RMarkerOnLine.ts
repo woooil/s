@@ -1,17 +1,23 @@
-import { checkDependenciesInitError } from '../Error'
+import { checkDependenciesInitError, NotEqualError } from '../Error'
 import { Coord } from '../Coord'
-import { Theta } from '../Theta'
+import { Theta, ThetaMinimum } from '../Theta'
+import { sim } from '../tools'
 import { RMarkerProp, RMarkerStyle, RMarker } from './RMarker'
 import { RLine } from '../RLine'
 
 interface RMarkerOnLineProp extends RMarkerProp {
   r?: number
   reverse?: boolean
+  dual?: boolean
 }
 
 class RMarkerOnLine extends RMarker {
   public static TYPEL2 = 'RMarkerOnLine'
-  protected declare __dependencies: RLine[]
+  protected __dependenciesDual: RLine | undefined
+  public get dependencies(): RShape[] {
+    if (this.__dependenciesDual) return [...this.__dependencies, this.__dependenciesDual]
+    return this.__dependencies
+  }
   protected declare __prop: RMarkerOnLineProp
 
   /**
@@ -32,6 +38,23 @@ class RMarkerOnLine extends RMarker {
       coord,
       theta,
       marker: this.__prop.marker
+    }
+  }
+
+  public parallel(rmarker: RMarkerOnLine, marker: string) {
+    const lResolved = this.__dependencies[0].resolve()
+    const mResolved = rmarker.__dependencies[0].resolve()
+    const lTheta = Theta.fromCoord(lResolved.a, lResolved.b)
+    const mTheta = Theta.fromCoord(mResolved.a, mResolved.b)
+    if (sim(lTheta.t, mTheta.t) || sim(lTheta.t, ThetaMinimum.add(mTheta, Theta.nx()).t)) {
+      this.__dependenciesDual = rmarker
+      this.__prop.marker = marker
+      this.__prop.dual = true
+      rmarker.__dependenciesDual = this
+      rmarker.__prop.marker = marker
+      rmarker.__prop.dual = true
+    } else {
+      throw NotEqualError(`the direction of ${this.id}`, `the direction of ${rmarker.id}`)
     }
   }
 }

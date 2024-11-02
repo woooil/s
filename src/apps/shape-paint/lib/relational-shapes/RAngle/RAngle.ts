@@ -1,5 +1,6 @@
 import { NotEqualError } from '../Error'
 import { Coord } from '../Coord'
+import { sim } from '../tools'
 import { Theta, ThetaMinimum } from '../Theta'
 import { RShapeResolved, RShapeProp, RShapeStyle, RShapeTypeL2, RShape } from '../RShape'
 
@@ -14,7 +15,7 @@ interface RAngleResolved extends RShapeResolved {
   coord: Coord
   theta0: ThetaMinimum
   theta: Theta
-  marker: string
+  marker?: string
 }
 
 /**
@@ -24,7 +25,7 @@ interface RAngleResolved extends RShapeResolved {
  */
 interface RAngleProp extends RShapeProp {
   marker?: string
-  congruent?: boolean
+  dual?: boolean
 }
 
 interface RAngleStyle extends RShapeStyle {}
@@ -42,9 +43,9 @@ abstract class RAngle extends RShape {
   /**
    * The dependencies for the congruent. If exists, indicates the congruent RAngle to this RAngle.
    */
-  protected __dependenciesCongruent: RAngle | undefined
+  protected __dependenciesDual: RAngle | undefined
   public get dependencies(): RShape[] {
-    if (this.__dependenciesCongruent) return [...this.__dependencies, this.__dependenciesCongruent]
+    if (this.__dependenciesDual) return [...this.__dependencies, this.__dependenciesDual]
     return this.__dependencies
   }
   protected declare __prop: RAngleProp
@@ -65,19 +66,15 @@ abstract class RAngle extends RShape {
    * @throws Throws an Error if two RAngles are not actually congruent.
    */
   public congruent(rangle: RAngle, marker: string) {
-    const sim = (a: number, b: number) => {
-      const err = 1E-5
-      return Math.abs(a - b) < err
-    }
     const theta1 = this.resolve().theta.size
     const theta2 = rangle.resolve().theta.size
     if (sim(theta1, theta2)) {
-      this.__dependenciesCongruent = rangle
+      this.__dependenciesDual = rangle
       this.__prop.marker = marker
-      this.__prop.congruent = true
-      rangle.__dependenciesCongruent = this
+      this.__prop.dual = true
+      rangle.__dependenciesDual = this
       rangle.__prop.marker = marker
-      rangle.__prop.congruent = true
+      rangle.__prop.dual = true
     } else {
       throw NotEqualError(`RAngle ${this.id}`,`RAngle ${rangle.id}`)
     }

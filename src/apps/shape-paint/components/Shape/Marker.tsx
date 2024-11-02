@@ -3,10 +3,24 @@ import { v4 as uuid } from 'uuid'
 import { Props } from './Props'
 import { RMarkerResolved, RMarkerStyle } from '../../lib/relational-shapes'
 
+// width: 16
+// height: 8
+// center: { x: 8, y: 4 }
 function Path({ marker }: { marker: string }) {
-  return (
-    <path d="M 0 0 L 10 4 0 8 0 4 Z" fill="black"/>
-  )
+  switch (marker) {
+    case '<':
+      return (
+        <path d='M 4 0 L 14 4 4 8 6 4 Z' fill='black'/>
+      )
+    case '<<':
+      return (
+        <path d='M 0 0 L 10 4 0 8 2 4 Z M 6 0 L 16 4 6 8 8 4 Z' fill='black'/>
+      )
+    default:
+      return (
+        <path d='M 5 0 L 5 10' stroke='black' strokeWidth='1' />
+      )
+  }
 }
 
 export default function Marker({
@@ -36,7 +50,7 @@ export default function Marker({
   return (
     <g {...props}>
       <defs>
-        <marker id={id} markerWidth="10" markerHeight="8" refX="5" refY="4" orient="auto">
+        <marker id={id} markerWidth='16' markerHeight='8' refX='8' refY='4' orient='auto'>
           <Path marker={resolved.marker} />
         </marker>
       </defs>

@@ -1,0 +1,41 @@
+import { checkDependenciesInitError } from '../Error'
+import { Coord, CoordPolar } from '../Coord'
+import { Theta } from '../Theta'
+import { RLineResolved, RLineProp, RLineStyle, RLine } from './RLine'
+import { RPoint } from '../RPoint'
+import { RShape } from '../RShape'
+
+interface RLineParallelProp extends RLineProp {
+  extendA?: boolean
+  reverse?: boolean
+}
+
+class RLineParallel extends RLine {
+  public static TYPEL2 = 'RLineParallel'
+  protected declare __dependencies: RShape[]
+  protected declare __prop: RLineParallelProp
+
+  /**
+   * @throws Throws DependenciesInitError if given Dependencies are not of [RPoint, RLine] or its length is not 2.
+   */
+  constructor(dependencies: RShape[], prop: RLineParallelProp, style?: RLineStyle) {
+    checkDependenciesInitError(dependencies, [RPoint.TYPEL1, RLine.TYPEL1])
+    super(dependencies, prop, style, RLineParallel.TYPEL2)
+  }
+
+  preresolve() {
+    const aResolved = this.__dependencies[0].resolve()
+    const lResolved = this.__dependencies[1].resolve()
+    const theta = this.__prop.reverse ? Theta.fromCoord(lResolved.b, lResolved.a) : Theta.fromCoord(lResolved.a, lResolved.b)
+    const b = Coord.addPolar(aResolved.coord, new CoordPolar(10, theta))
+
+    return {
+      a: aResolved.coord,
+      b: b,
+      extendA: this.__prop.extendA || false,
+      extendB: true,
+    }
+  }
+}
+
+export { RLineParallelProp, RLineParallel }

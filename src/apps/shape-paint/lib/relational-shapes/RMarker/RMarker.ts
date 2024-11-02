@@ -5,11 +5,11 @@ import { RShapeResolved, RShapeProp, RShapeStyle, RShapeTypeL2, RShape } from '.
 interface RMarkerResolved extends RShapeResolved {
   coord: Coord
   theta: ThetaMinimum
-  marker: string
+  marker?: string
 }
 
 interface RMarkerProp extends RShapeProp {
-  marker: string
+  marker?: string
 }
 
 interface RMarkerStyle extends RShapeStyle {}
