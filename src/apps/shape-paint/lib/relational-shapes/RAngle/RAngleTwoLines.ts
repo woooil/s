@@ -1,5 +1,5 @@
 import { checkDependenciesInitError } from '../Error'
-import { Angles } from '../Tools'
+import { Theta } from '../Theta'
 import { RAngleProp, RAngle } from './RAngle'
 import { RLine } from '../RLine'
 
@@ -31,7 +31,7 @@ class RAngleTwoLines extends RAngle {
   }
 
   /**
-   * Calculates the angle formed by two RLines.
+   * Calculates the angle in MINIMUM_RANGE formed by two RLines.
    * @throws Throws an Error if two RLines are parallel.
    */
   resolve() {
@@ -40,7 +40,7 @@ class RAngleTwoLines extends RAngle {
     const lResolved = this.__dependencies[0].resolve()
     const mResolved = this.__dependencies[1].resolve()
 
-    const { theta0, theta } = Angles.intersect({ 
+    const { theta0, theta } = Theta.intersect({ 
         from: this.__prop.reverseL ? lResolved.b : lResolved.a, 
         to:   this.__prop.reverseL ? lResolved.a : lResolved.b 
       }, { 
@@ -49,7 +49,7 @@ class RAngleTwoLines extends RAngle {
       })
 
     return {
-      ...coord,
+      coord: coord,
       theta0: theta0,
       theta: theta,
       marker: this.__prop.marker

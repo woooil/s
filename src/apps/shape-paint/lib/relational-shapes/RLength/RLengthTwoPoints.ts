@@ -32,8 +32,8 @@ class RLengthTwoPoints extends RLength {
     const bResolved = this.__dependencies[1].resolve()
 
     return {
-      a: aResolved,
-      b: bResolved,
+      a: aResolved.coord,
+      b: bResolved.coord,
       r: 0,
       ny: this.__prop.ny,
     }

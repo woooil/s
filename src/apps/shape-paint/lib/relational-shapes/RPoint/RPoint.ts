@@ -1,12 +1,13 @@
-import { Coord } from '../Tools'
+import { Coord } from '../Coord'
 import { RShapeResolved, RShapeProp, RShapeTypeL2, RShape } from '../RShape'
 
 /**
- * The mathematical definition of RPoint. Equal to Coord.
- * @prop x - The x coordinate.
- * @prop y - The y coordinate.
+ * The mathematical definition of RPoint. 
+ * @prop coord  - The coordinates.
+ * @prop hide   - True if this RPoint is invisible.
  */
-interface RPointResolved extends RShapeResolved, Coord {
+interface RPointResolved extends RShapeResolved {
+  coord: Coord
   hide?: boolean
 }
 

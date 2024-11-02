@@ -1,4 +1,4 @@
-import { Coord } from '../Tools'
+import { Coord } from '../Coord'
 import { ParallelLinesError } from '../Error'
 import { RShapeResolved, RShapeProp, RShapeTypeL2, RShape } from '../RShape'
 
@@ -113,7 +113,7 @@ abstract class RLine extends RShape {
    * Returns an intersection with another RLine.
    * @throws Throws an Error if two RLines are parallel.
    */
-  public intersect(rline: RLine) {
+  public intersect(rline: RLine): Coord {
     const lResolved = this.preresolve()
     const mResolved = rline.preresolve()
 
@@ -130,18 +130,18 @@ abstract class RLine extends RShape {
 
     if (beta2 === 0 && beta1 !== 0) {
       // m || x-axis
-      a = {
-        x: lResolved.a.x + alpha1 * (beta3 / beta1),
-        y: lResolved.a.y + beta3,
-      }
+      a = new Coord(
+        lResolved.a.x + alpha1 * (beta3 / beta1),
+        lResolved.a.y + beta3,
+      )
     } else if ((beta2 === 0 && beta1 === 0) || gamma1 === 0) {
       // m || l
       throw ParallelLinesError(this.id, rline.id)
     } else {
-      a = {
-        x: lResolved.a.x - alpha1 * (gamma2 / gamma1), // div by 0 if l || m
-        y: lResolved.a.y - beta1 * (gamma2 / gamma1), // div by 0 if l || m
-      }
+      a = new Coord(
+        lResolved.a.x - alpha1 * (gamma2 / gamma1), // div by 0 if l || m
+        lResolved.a.y - beta1 * (gamma2 / gamma1), // div by 0 if l || m
+      )
     }
 
     return a

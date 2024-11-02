@@ -1,5 +1,6 @@
 import { checkDependenciesInitError } from '../Error'
-import { Coords, Angles } from '../Tools'
+import { Coord } from '../Coord'
+import { Theta } from '../Theta'
 import { RAngleProp, RAngle } from './RAngle'
 import { RPoint } from '../RPoint'
 
@@ -29,23 +30,22 @@ class RAngleThreePoints extends RAngle {
   }
 
   /**
-   * Calculates the angle formed by three RPoints.
+   * Calculates the angle in TRAVLE_RANGE formed by three RPoints.
    */
   resolve() {
     const aResolved = this.__dependencies[0].resolve()
     const bResolved = this.__dependencies[1].resolve()
     const cResolved = this.__dependencies[2].resolve()
 
-    const theta0 = Angles.theta(Coords.substract(aResolved, bResolved))
-    const theta1 = Angles.theta(Coords.substract(cResolved, bResolved))
+    const theta0 = Theta.fromCoord(Coord.substract(aResolved.coord, bResolved.coord))
+    const theta1 = Theta.fromCoord(Coord.substract(cResolved.coord, bResolved.coord))
 
-    let theta = Angles.substract(theta1, theta0)
+    let theta = Theta.substract(theta1, theta0)
 
-    if (this.__prop.reflex) theta = Angles.flip(theta)
+    if (this.__prop.reflex) theta = Theta.flip(theta)
 
     return {
-      x: bResolved.x,
-      y: bResolved.y,
+      coord: bResolved.coord,
       theta0: theta0,
       theta: theta,
       marker: this.__prop.marker

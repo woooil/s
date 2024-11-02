@@ -1,5 +1,6 @@
 import { checkDependenciesInitError } from '../Error'
-import { Coord, Coords, Angles } from '../Tools'
+import { Coord, CoordPolar } from '../Coord'
+import { Theta } from '../Theta'
 import { RPointProp, RPoint } from './RPoint'
 import { RLine } from '../RLine'
 
@@ -35,23 +36,24 @@ class RPointOnLine extends RPoint {
    */
   resolve() {
     const resolved = this.__dependencies[0].resolve()
-    const theta = Angles.theta(resolved.a, resolved.b)
+    const theta = Theta.fromCoord(resolved.a, resolved.b)
     let coord: Coord
     switch (this.__prop.section % 3) {
       case 0:
-        coord = Coords.addPolar(resolved.a, { r: this.__prop.r, theta: theta })
+        coord = Coord.addPolar(resolved.a, new CoordPolar(this.__prop.r, theta))
         break
       case 1:
-        coord.x = resolved.a.x * (1 - this.__prop.r) + resolved.b.x * this.__prop.r
-        coord.y = resolved.a.y * (1 - this.__prop.r) + resolved.b.y * this.__prop.r
+        coord = new Coord(
+          resolved.a.x * (1 - this.__prop.r) + resolved.b.x * this.__prop.r,
+          resolved.a.y * (1 - this.__prop.r) + resolved.b.y * this.__prop.r
+        )
         break
       case 2:
-        coord = Coords.addPolar(resolved.b, { r: this.__prop.r, theta: theta })
+        coord = Coord.addPolar(resolved.b, new CoordPolar(this.__prop.r, theta))
         break
     }
     return {
-      x: coord.x,
-      y: coord.y,
+      coord: coord,
       hide: this.__prop.hide,
     }
   }

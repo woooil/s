@@ -8,11 +8,6 @@ export default function App() {
   const { shapes, action } = useShapes()
 
   React.useEffect(() => {
-    console.log("cp1")
-    console.log(1.501 % 1.5)
-    console.log(2.999 % 1.5)
-    console.log(-1.501 % 1.5)
-    console.log(-2.999 % 1.5)
     const pointA = action.add(new RS.RPointAbsoluteCoord([], { x: 700, y: 450, hide: true }))
     const pointB = action.add(new RS.RPointAbsoluteCoord([], { x: 300, y: 450, hide: true }))
     const pointC = action.add(new RS.RPointAbsoluteCoord([], { x: 500, y: 300, hide: true }))
@@ -26,11 +21,11 @@ export default function App() {
     action.cutLine(lineD, lineB, false)
     action.cutLine(lineB, lineE, false)
     action.cutLine(lineE, lineB, false)
-    const labelA = action.add(new RS.RLabelOnPoint([pointC], { r: 16, theta: RS.CARD.ny, label: 'A' }))
-    const labelB = action.add(new RS.RLabelOnPoint([pointB], { r: 24, theta: RS.CARD.py, label: 'B' }))
-    const labelC = action.add(new RS.RLabelOnPoint([pointA], { r: 24, theta: RS.CARD.py, label: 'C' }))
-    const labelD = action.add(new RS.RLabelOnPoint([pointD], { r: 20, theta: 6, label: 'D' }))
-    const labelE = action.add(new RS.RLabelOnPoint([pointE], { r: 16, theta: 3.5, label: 'E' }))
+    const labelA = action.add(new RS.RLabelOnPoint([pointC], { offset: new RS.CoordPolar(16, RS.Theta.ny()), label: 'A' }))
+    const labelB = action.add(new RS.RLabelOnPoint([pointB], { offset: new RS.CoordPolar(24, RS.Theta.py()), label: 'B' }))
+    const labelC = action.add(new RS.RLabelOnPoint([pointA], { offset: new RS.CoordPolar(24, RS.Theta.py()), label: 'C' }))
+    const labelD = action.add(new RS.RLabelOnPoint([pointD], { offset: new RS.CoordPolar(20, new RS.Theta(6)), label: 'D' }))
+    const labelE = action.add(new RS.RLabelOnPoint([pointE], { offset: new RS.CoordPolar(16, new RS.Theta(3.5)), label: 'E' }))
     const angleA = action.add(new RS.RAngleTwoLines([lineA, lineD], { reverseL: true }))
     const angleB = action.add(new RS.RAngleTwoLines([lineC, lineD], { }))
     const angleC = action.add(new RS.RAngleTwoLines([lineA, lineE], { }))
@@ -44,7 +39,7 @@ export default function App() {
     const labelG = action.add(new RS.RLabelOnLength([lengthB], { label: '2 cm' }))
     const labelH = action.add(new RS.RLabelOnLength([lengthC], { label: '8 cm' }))
     const pointF = action.add(new RS.RPointOnLine([lineA], { section: 2, r: 200 }))
-    const labelI = action.add(new RS.RLabelOnPoint([pointF], { r: 24, theta: RS.CARD.py, label: 'F' }))
+    const labelI = action.add(new RS.RLabelOnPoint([pointF], { offset: new RS.CoordPolar(24, RS.Theta.py()), label: 'F' }))
   }, [])
 
   return (

@@ -7,8 +7,8 @@ export default function Label({
   ...props
 }: Props<RLabelResolved, SVGGElement>) {
   const attr = {
-    x: resolved.x,
-    y: resolved.y,
+    x: resolved.coord.x,
+    y: resolved.coord.y,
     textAnchor: 'middle',
     dominantBaseline: 'middle',
     fontFamily: 'Latin Modern',

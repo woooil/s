@@ -1,13 +1,13 @@
-import { Coord } from '../Tools'
+import { Coord } from '../Coord'
 import { RShapeResolved, RShapeProp, RShapeTypeL2, RShape } from '../RShape'
 
 /**
  * The definition of RLabel.
- * @prop x      - The x coordinate where this RLabel should be.
- * @prop y      - The y coordinate where this RLabel should be.
+ * @prop coord  - The coordinates where this RLabel should be.
  * @prop label  - The label string to be displayed.
  */
-interface RLabelResolved extends RShapeResolved, Coord {
+interface RLabelResolved extends RShapeResolved {
+  coord: Coord
   label: string
 }
 

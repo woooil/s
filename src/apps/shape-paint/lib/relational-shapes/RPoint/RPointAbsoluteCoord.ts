@@ -1,3 +1,4 @@
+import { Coord } from '../Coord'
 import { RPointProp, RPoint } from './RPoint'
 import { RShape } from '../RShape'
 
@@ -29,8 +30,7 @@ class RPointAbsoluteCoord extends RPoint {
    */
   resolve() {
     return {
-      x: this.__prop.x,
-      y: this.__prop.y,
+      coord: new Coord(this.__prop.x, this.__prop.y),
       hide: this.__prop.hide
     }
   }

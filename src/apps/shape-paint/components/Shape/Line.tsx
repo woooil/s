@@ -1,16 +1,16 @@
 import * as React from 'react'
 import { Props } from './Props'
-import { RLineResolved } from '../../lib/relational-shapes'
+import { RLineResolved, Coord } from '../../lib/relational-shapes'
 
 export default function Line({
   resolved,
   ...props
 }: Props<RLineResolved, SVGLineElement>) {
-  const extend = (coord: RS.Coord, ref: RS.Coord) => {
-    return {
-      x: coord.x + (coord.x - ref.x) * (2 << 10),
-      y: coord.y + (coord.y - ref.y) * (2 << 10),
-    }
+  const extend = (coord: Coord, ref: Coord) => {
+    return new Coord(
+      coord.x + (coord.x - ref.x) * (2 << 10),
+      coord.y + (coord.y - ref.y) * (2 << 10),
+    )
   }
 
   const tempA = resolved.extendA ? extend(resolved.a, resolved.b) : resolved.a

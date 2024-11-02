@@ -17,12 +17,12 @@ function AngleO({
   resolved,
   ...props
 }: Props<RAngleResolved, SVGCircleElement>) {
-  const std = getStandard(resolved.theta)
-  const thetaMid = resolved.theta / 2 + resolved.theta0
+  const std = getStandard(resolved.theta.t)
+  const thetaMid = resolved.theta.t / 2 + resolved.theta0.t
 
   const attr = {
-    cx: resolved.x + std.r * Math.cos(thetaMid),
-    cy: resolved.y + std.r * Math.sin(thetaMid),
+    cx: resolved.coord.x + std.r * Math.cos(thetaMid),
+    cy: resolved.coord.y + std.r * Math.sin(thetaMid),
     r: std.size / 4,
     fill: 'black',
   }
@@ -39,21 +39,21 @@ function AngleX({
   resolved,
   ...props
 }: Props<RAngleResolved, SVGPathElement>) {
-  const std = getStandard(resolved.theta)
-  const theta = resolved.theta / 2 + resolved.theta0
-  const phi = Math.PI / 4 - theta
+  const std = getStandard(resolved.theta.t)
+  const theta = resolved.theta.t / 2 + resolved.theta0.t
+  const phi = Math.PI / 4 - theta.t
   const p = {
     M0: {
-      x: resolved.x + std.r * Math.cos(theta) - std.size / 2 * Math.cos(phi),
-      y: resolved.y + std.r * Math.sin(theta) + std.size / 2 * Math.sin(phi),
+      x: resolved.coord.x + std.r * Math.cos(theta) - std.size / 2 * Math.cos(phi),
+      y: resolved.coord.y + std.r * Math.sin(theta) + std.size / 2 * Math.sin(phi),
     },
     l1: {
       x: std.size * Math.cos(phi),
       y: -std.size * Math.sin(phi),
     },
     M2: {
-      x: resolved.x + std.r * Math.cos(theta) - std.size / 2* Math.sin(phi),
-      y: resolved.y + std.r * Math.sin(theta) - std.size / 2 * Math.cos(phi),
+      x: resolved.coord.x + std.r * Math.cos(theta) - std.size / 2 * Math.sin(phi),
+      y: resolved.coord.y + std.r * Math.sin(theta) - std.size / 2 * Math.cos(phi),
     },
     l2: {
       x: std.size * Math.sin(phi),
@@ -81,20 +81,20 @@ function AngleDefault({
   resolved,
   ...props
 }: Props<RAngleResolved, SVGPathElement>) {
-  const std = getStandard(resolved.theta)
+  const std = getStandard(resolved.theta.t)
   const p = {
     i: {
-      x: resolved.x + std.r * Math.cos(resolved.theta0),
-      y: resolved.y + std.r * Math.sin(resolved.theta0)
+      x: resolved.coord.x + std.r * Math.cos(resolved.theta0.t),
+      y: resolved.coord.y + std.r * Math.sin(resolved.theta0.t)
     },
     rx: std.r,
     ry: std.r / std.scale,
-    rotation: (resolved.theta0 + resolved.theta / 2) * 180 / Math.PI,
-    largeArcFlag: Math.abs(resolved.theta) > Math.PI ? 1 : 0,
-    sweepFlag: resolved.theta > 0 ? 1 : 0,
+    rotation: (resolved.theta0.t + resolved.theta.t / 2) * 180 / Math.PI,
+    largeArcFlag: Math.abs(resolved.theta.t) > Math.PI ? 1 : 0,
+    sweepFlag: resolved.theta.t > 0 ? 1 : 0,
     f: {
-      x: resolved.x + std.r * Math.cos(resolved.theta + resolved.theta0),
-      y: resolved.y + std.r * Math.sin(resolved.theta + resolved.theta0)
+      x: resolved.coord.x + std.r * Math.cos(resolved.theta.t + resolved.theta0.t),
+      y: resolved.coord.y + std.r * Math.sin(resolved.theta.t + resolved.theta0.t)
     }
   }
   const d = `M ${p.i.x} ${p.i.y} A ${p.rx} ${p.ry} ${p.rotation} ${p.largeArcFlag} ${p.sweepFlag} ${p.f.x} ${p.f.y}`

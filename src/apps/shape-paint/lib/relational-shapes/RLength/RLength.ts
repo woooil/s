@@ -1,4 +1,4 @@
-import { Coord } from '../Tools'
+import { Coord } from '../Coord'
 import { RShapeResolved, RShapeProp, RShapeTypeL2, RShape } from '../RShape'
 
 /**

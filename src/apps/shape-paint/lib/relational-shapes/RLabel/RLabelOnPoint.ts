@@ -1,14 +1,15 @@
 import { checkDependenciesInitError } from '../Error'
-import { CoordPolar, Coords } from '../Tools'
+import { Coord, CoordPolar } from '../Coord'
 import { RLabelProp, RLabel } from './RLabel'
 import { RPoint } from '../RPoint'
 
 /**
  * The properties of RLabelOnPointProp.
- * @prop r      - The radial coordinate relative to RPoint.
- * @prop theta  - The angular coordinate relative to RPoint.
+ * @prop offset - The polar coordinate relative to RPoint.
  */
-interface RLabelOnPointProp extends RLabelProp, CoordPolar {}
+interface RLabelOnPointProp extends RLabelProp {
+  offset: CoordPolar
+}
 
 /**
  * Represents labels on points, typically representing their name.
@@ -32,10 +33,9 @@ class RLabelOnPoint extends RLabel {
    */
   resolve() {
     const aResolved = this.__dependencies[0].resolve()
-    const offsetCoord = Coords.toCartesian(this.__prop)
 
     return {
-      ...Coords.add(aResolved, offsetCoord),
+      coord: Coord.addPolar(aResolved.coord, this.__prop.offset),
       label: this.__prop.label,
     }
   }

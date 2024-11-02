@@ -7,12 +7,12 @@ export default function Point({
   ...props
 }: Props<RPointResolved, SVGCircleElement>) {
   const attr = {
-    cx: resolved.x,
-    cy: resolved.y,
+    cx: resolved.coord.x,
+    cy: resolved.coord.y,
     r: 3,
     fill: resolved.hide ? 'none' : 'black',
   }
-
+  
   return (
     <circle
       {...attr}

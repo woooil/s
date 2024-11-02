@@ -30,8 +30,7 @@ class RPointIntersection extends RPoint {
   resolve() {
     const intersect = this.__dependencies[0].intersect(this.__dependencies[1])
     return {
-      x: intersect.x,
-      y: intersect.y,
+      coord: intersect,
       hide: this.__prop.hide,
     }
   }
