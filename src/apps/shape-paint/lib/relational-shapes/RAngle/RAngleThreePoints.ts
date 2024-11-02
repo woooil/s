@@ -1,6 +1,6 @@
 import { checkDependenciesInitError } from '../Error'
 import { Coord } from '../Coord'
-import { Theta } from '../Theta'
+import { Theta, ThetaMinimum } from '../Theta'
 import { RAngleProp, RAngleStyle, RAngle } from './RAngle'
 import { RPoint } from '../RPoint'
 
@@ -40,7 +40,7 @@ class RAngleThreePoints extends RAngle {
     const theta0 = Theta.fromCoord(Coord.substract(aResolved.coord, bResolved.coord))
     const theta1 = Theta.fromCoord(Coord.substract(cResolved.coord, bResolved.coord))
 
-    let theta: Theta = Theta.substract(theta1, theta0)
+    let theta: Theta = ThetaMinimum.substract(theta1, theta0)
 
     if (this.__prop.reflex) theta = Theta.flip(theta)
 

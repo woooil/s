@@ -89,10 +89,15 @@ class Theta {
    * @return  thetaMid  - The middle direction.
    */
   static intersect(ray1: { from: Coord, to: Coord }, ray2: { from: Coord, to: Coord }): { theta: ThetaMinimum, theta0: ThetaMinimum, thetaMid: ThetaMinimum } {
-    let theta1 = Theta.fromCoord(ray1.from, ray1.to)
+    const theta1 = Theta.fromCoord(ray1.from, ray1.to)
     const theta2 = Theta.fromCoord(ray2.from, ray2.to)
-    const theta = ThetaMinimum.substract(theta2, theta1)
-    const thetaMid = new ThetaMinimum((theta1.t + theta2.t + Math.PI * 2) / 2 - Math.PI)
+    const thetaSub = Theta.substract(theta2, theta1)
+    let theta = new ThetaMinimum(thetaSub.t)
+    let thetaMid = new ThetaMinimum((theta1.t + theta2.t) / 2)
+    if (thetaSub.size > Math.PI) {
+      thetaMid = ThetaMinimum.substract(thetaMid, Theta.nx())
+      theta = ThetaMinimum.substract(theta, Theta.nx())
+    }
     return { 
       theta: theta,
       theta0: theta1,
