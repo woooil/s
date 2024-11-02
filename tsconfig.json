@@ -3,11 +3,12 @@
     "outDir": "./dist/",
     "baseUrl": ".",
     "noImplicitAny": true,
-    "module": "es6",
-    "target": "es5",
+    "module": "es2017",
+    "target": "es2017",
     "jsx": "react",
     "allowJs": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "useDefineForClassFields": "false"
   },
   "include": ["src"]
 }
