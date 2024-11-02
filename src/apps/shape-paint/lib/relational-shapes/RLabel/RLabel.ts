@@ -1,4 +1,4 @@
-import { Coord } from '../Coord'
+import { Coord, CoordPolar } from '../Coord'
 import { RShapeResolved, RShapeProp, RShapeStyle, RShapeTypeL2, RShape } from '../RShape'
 
 /**
@@ -9,6 +9,7 @@ import { RShapeResolved, RShapeProp, RShapeStyle, RShapeTypeL2, RShape } from '.
 interface RLabelResolved extends RShapeResolved {
   coord: Coord
   label: string
+  offsite?: CoordPolar
 }
 
 /**
@@ -17,6 +18,7 @@ interface RLabelResolved extends RShapeResolved {
  */
 interface RLabelProp extends RShapeProp {
   label: string
+  offsite?: CoordPolar
 }
 
 interface RLabelStyle extends RShapeStyle {}

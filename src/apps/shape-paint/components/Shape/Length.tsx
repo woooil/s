@@ -14,7 +14,7 @@ export default function Length({
       y: resolved.a.y,
     }, 
     QC: {
-      x: (resolved.a.x + resolved.b.x) / 2 + (resolved.ny ? 1 : -1) * resolved.r * 2* Math.sin(theta),
+      x: (resolved.a.x + resolved.b.x) / 2 + (resolved.ny ? 1 : -1) * resolved.r * 2 * Math.sin(theta),
       y: (resolved.a.y + resolved.b.y) / 2 - (resolved.ny ? 1 : -1) * resolved.r * 2 * Math.cos(theta),
     },
     QF: {

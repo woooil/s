@@ -43,7 +43,7 @@ function AngleX({
 }: Props<RAngleResolved, RAngleStyle, SVGPathElement>) {
   const std = getStandard(resolved.theta.t)
   const theta = resolved.theta.t / 2 + resolved.theta0.t
-  const phi = Math.PI / 4 - theta.t
+  const phi = Math.PI / 4 - theta
   const p = {
     M0: {
       x: resolved.coord.x + std.r * Math.cos(theta) - std.size / 2 * Math.cos(phi),

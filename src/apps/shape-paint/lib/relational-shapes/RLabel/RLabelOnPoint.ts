@@ -37,6 +37,7 @@ class RLabelOnPoint extends RLabel {
     return {
       coord: Coord.addPolar(aResolved.coord, this.__prop.offset),
       label: this.__prop.label,
+      offsite: this.__prop.offsite,
     }
   }
 }

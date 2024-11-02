@@ -38,7 +38,8 @@ class RLabelOnLength extends RLabel {
     ))
     return {
       coord: coord,
-      label: this.__prop.label
+      label: this.__prop.label,
+      offsite: this.__prop.offsite
     }
   }
 }
