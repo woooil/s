@@ -1,18 +1,18 @@
 import { NotEqualError } from '../Error'
 import { Coord } from '../Coord'
-import { Theta } from '../Theta'
+import { Theta, ThetaMinimum } from '../Theta'
 import { RShapeResolved, RShapeProp, RShapeTypeL2, RShape } from '../RShape'
 
 /**
  * The mathematical definition of RAngle.
  * @prop coord  - The coordinates of the vertex.
- * @prop theta0 - The start direction in MINIMUM_RANGE.
- * @prop theta  - The (directional) angular measure in FULL_RANGE. 
+ * @prop theta0 - The start direction in ThetaMinimum.
+ * @prop theta  - The (directional) angular measure in Theta. 
  * @prop marker - The marker representing this RAngle.
  */
 interface RAngleResolved extends RShapeResolved {
   coord: Coord
-  theta0: Theta
+  theta0: ThetaMinimum
   theta: Theta
   marker: string
 }
@@ -67,8 +67,8 @@ abstract class RAngle extends RShape {
       const err = 1E-5
       return Math.abs(a - b) < err
     }
-    const theta1 = Math.abs(this.resolve().theta.t)
-    const theta2 = Math.abs(rangle.resolve().theta.t)
+    const theta1 = this.resolve().theta.size
+    const theta2 = rangle.resolve().theta.size
     if (sim(theta1, theta2)) {
       this.__dependenciesCongruent = rangle
       this.__prop.marker = marker

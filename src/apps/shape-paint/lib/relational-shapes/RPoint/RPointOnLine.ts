@@ -43,10 +43,7 @@ class RPointOnLine extends RPoint {
         coord = Coord.addPolar(resolved.a, new CoordPolar(this.__prop.r, theta))
         break
       case 1:
-        coord = new Coord(
-          resolved.a.x * (1 - this.__prop.r) + resolved.b.x * this.__prop.r,
-          resolved.a.y * (1 - this.__prop.r) + resolved.b.y * this.__prop.r
-        )
+        coord = Coord.add(Coord.scale(resolved.a, 1 - this.__prop.r), Coord.scale(resolved.b, this.__prop.r))
         break
       case 2:
         coord = Coord.addPolar(resolved.b, new CoordPolar(this.__prop.r, theta))

@@ -1,103 +1,98 @@
 import { Coord } from './Coord'
 
 /**
- * Facilitates manipulation of angles.
+ * Facilitates manipulation of angles of full range: (-INFINITY, INFIINITY)
  * @prop t - The angle in radians.
  */
 class Theta {
-  t: number
+  protected __t: number
+  public set t(value: number) {
+    this.__t = value
+  }
+  public get t() {
+    return this.__t
+  }
+
+  /**
+   * Returns the unsigned angle.
+   */
+  public get size() {
+    return Math.abs(this.__t)
+  }
 
   constructor(t: number) {
-    this.t = t
+    this.__t = t
   }
 
   /**
-   * (-PI, PI]. The minimum range to cover all directions.
+   * The +x direction. Equals to 0.
    */
-  static MINIMUM_RANGE = '(-PI, PI]'
-  /**
-   * (-PI * 2, PI * 2). The range to travel all directions around.
-   */
-  static TRAVEL_RANGE = '(-PI * 2, PI * 2)'
-  /**
-   * (-INFINITY, INFINITY). The full range accepting multiple rotations.
-   */
-  static FULL_RANGE = '(-INFINITY, INFINITY)'
-
   static px() {
-    return new Theta(0)
+    return new ThetaMinimum(0)
   }
+  /**
+   * The +y direction. Equals to PI / 2.
+   */
   static py() {
-    return new Theta(Math.PI / 2)
+    return new ThetaMinimum(Math.PI / 2)
   }
+  /**
+   * The -x direction. Equals to PI.
+   */
   static nx() {
     return new Theta(Math.PI)
   }
+  /**
+   * The -y direction. Equals to -PI / 2.
+   */
   static ny() {
-    return new Theta(Math.PI * 3 / 2)
+    return new ThetaMinimum(-Math.PI / 2)
   }
 
   /**
-   * Calculates the angle in MINIMUM_RANGE of the line from coord1 to coord2. If coord2 is not given, calculates the angle of the line from the origin to coord1.
+   * Calculates the ThetaMinimum of the line from coord1 to coord2. If coord2 is not given, calculates the angle of the line from the origin to coord1.
    */
-  static fromCoord(coord1: Coord, coord2?: Coord): Theta {
-    if (coord2) return new Theta(Math.atan2(coord2.y - coord1.y, coord2.x - coord1.x))
-    return new Theta(Math.atan2(coord1.y, coord1.x))
+  static fromCoord(coord1: Coord, coord2?: Coord): ThetaMinimum {
+    if (coord2) return new ThetaMinimum(Math.atan2(coord2.y - coord1.y, coord2.x - coord1.x))
+    return new ThetaMinimum(Math.atan2(coord1.y, coord1.x))
   }
 
   /**
-   * Reduces the angle into TRAVEL_RANGE.
+   * Flips the direction of the angle, results in ThetaTravel. For instance, PI / 4 will flipped into - 3 PI / 4.
    */
-  static travel(theta: Theta): Theta {
-    return new Theta(theta.t % (Math.PI * 2))
+  static flip(theta: Theta): ThetaTravel {
+    const reduced = new ThetaTravel(theta.t)
+    if (reduced.t >= 0) return new ThetaTravel(reduced.t - Math.PI * 2)
+    return new ThetaTravel(reduced.t + Math.PI * 2)
   }
 
   /**
-   * Reduces the angle into MINIMUM_RANGE.
-   */
-  static minimize(theta: Theta): Theta {
-    let travel = Theta.travel(theta)
-    if (travel.t > Math.PI) travel.t -= Math.PI * 2
-    else if (travel.t <= -Math.PI) travel.t += Math.PI * 2
-    return travel
-  }
-
-  /**
-   * Flips the direction of the angle, results in the angle in TRAVLE_RANGE. For instance, PI / 4 will flipped into - 3 PI / 4.
-   */
-  static flip(theta: Theta): Theta {
-    const reduced = Theta.travel(theta)
-    if (reduced.t >= 0) return new Theta(reduced.t - Math.PI * 2)
-    return new Theta(reduced.t + Math.PI * 2)
-  }
-
-  /**
-   * Adds two angles, results in the angle in MINIMUM_RANGE.
+   * Adds two angles, results in Theta.
    */
   static add(theta1: Theta, theta2: Theta): Theta {
-    return Theta.minimize(new Theta(theta1.t + theta2.t))
+    return new Theta(theta1.t + theta2.t)
   }
 
   /**
-   * Substracts one angle from another, results in the angle in MINIMUM_RANGE.
+   * Substracts one angle from another, results in Theta.
    */
   static substract(theta1: Theta, theta2: Theta): Theta {
-    return Theta.minimize(new Theta(theta1.t - theta2.t))
+    return new Theta(theta1.t - theta2.t)
   }
 
   /**
-   * Calculates the angle in MINIMUM_RANGE made by two rays.
+   * Investigates ThetaMinimum made by two rays.
    * @param   ray1      - The first ray which makes the angle.
    * @param   ray2      - The second ray which makes the angle.
-   * @return  theta     - The (directional) angular measure in MINIMUM_RANGE.
-   * @return  theta0    - The start direction in range in MINIMUM_RANGE.
-   * @return  thetaMid  - The middle direction of the angle in MINIMUM_RANGE.
+   * @return  theta     - The (directional) angular measure.
+   * @return  theta0    - The start direction.
+   * @return  thetaMid  - The middle direction.
    */
-  static intersect(ray1: { from: Coord, to: Coord }, ray2: { from: Coord, to: Coord }): { theta: Theta, theta0: Theta, thetaMid: Theta } {
+  static intersect(ray1: { from: Coord, to: Coord }, ray2: { from: Coord, to: Coord }): { theta: ThetaMinimum, theta0: ThetaMinimum, thetaMid: ThetaMinimum } {
     let theta1 = Theta.fromCoord(ray1.from, ray1.to)
     const theta2 = Theta.fromCoord(ray2.from, ray2.to)
-    const theta = Theta.substract(theta2, theta1)
-    const thetaMid = new Theta((theta1.t + theta2.t + Math.PI * 2) / 2 - Math.PI)
+    const theta = ThetaMinimum.substract(theta2, theta1)
+    const thetaMid = new ThetaMinimum((theta1.t + theta2.t + Math.PI * 2) / 2 - Math.PI)
     return { 
       theta: theta,
       theta0: theta1,
@@ -106,4 +101,99 @@ class Theta {
   }
 }
 
-export { Theta }
+/**
+ * Facilitates manipulation of angles of the minimum range: (-PI / 2, PI / 2], which barely covers all directions.
+ * @prop t - The angle in radians. Only accepts values in (-PI / 2, PI / 2]
+ */
+class ThetaMinimum extends Theta {
+  protected declare __t: number
+  public set t(value: number) {
+    this.__t = ThetaMinimum.intoRange(value)
+  }
+  public get t() {
+    return this.__t
+  }
+
+  /**
+   * Checks if the given t is in the minimum range.
+   */
+  protected static checkRange(t: number) {
+    return -Math.PI < t && t <= Math.PI
+  }
+
+  /**
+   * Converts any angle into the minimum range.
+   */
+  protected static intoRange(t: number) {
+    let travel = t % (Math.PI * 2)
+    if (travel > Math.PI) travel -= Math.PI * 2
+    else if (travel <= -Math.PI) travel += Math.PI * 2
+    return travel
+  }
+
+  constructor(t: number) {
+    super(ThetaMinimum.intoRange(t))
+  }
+
+  /**
+   * Adds two angles, results in ThetaMinimum.
+   */
+  public static add(theta1: Theta, theta2: Theta): ThetaMinimum {
+    return new ThetaMinimum(theta1.t + theta2.t)
+  }
+
+  /**
+   * Substracts two angles, results in ThetaMinimum.
+   */
+  public static substract(theta1: Theta, theta2: Theta): ThetaMinimum {
+    return new ThetaMinimum(theta1.t - theta2.t)
+  }
+}
+
+/**
+ * Facilitates manipulation of angles of the travel range: (-PI * 2, PI * 2), which represents the directional angles of all directions.
+ * @prop t - The angle in radians. Only accepts values in (-PI * 2, PI * 2)
+ */
+class ThetaTravel extends Theta {
+  protected declare __t: number
+  public set t(value: number) {
+    this.__t = ThetaTravel.intoRange(value)
+  }
+  public get t() {
+    return this.__t
+  }
+
+  /**
+   * Checks if the given t is in the travel range.
+   */
+  protected static checkRange(t: number) {
+    return -Math.PI * 2 < t && t < Math.PI * 2
+  }
+
+  /**
+   * Converts any angle into the travel range.
+   */
+  protected static intoRange(t: number) {
+    return t % (Math.PI * 2)
+  }
+
+  constructor(t: number) {
+    super(ThetaTravel.intoRange(t))
+  }
+
+  /**
+   * Adds two angles, results in ThetaTravel.
+   */
+  public static add(theta1: Theta, theta2: Theta): ThetaTravel {
+    return new ThetaTravel(theta1.t + theta2.t)
+  }
+
+  /**
+   * Substract two angles, results in ThetaTravel.
+   */
+  public static substract(theta1: Theta, theta2: Theta): ThetaTravel {
+    return new ThetaTravel(theta1.t - theta2.t)
+  }
+}
+
+export { Theta, ThetaMinimum, ThetaTravel }

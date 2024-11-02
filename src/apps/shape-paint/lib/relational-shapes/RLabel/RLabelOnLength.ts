@@ -33,8 +33,8 @@ class RLabelOnLength extends RLabel {
     const resolved = this.__dependencies[0].resolve()
     const theta = Theta.fromCoord(resolved.a, resolved.b)
     const coord = Coord.addPolar(Coord.avg(resolved.a, resolved.b), new CoordPolar(
-      resolved.ny ? resolved.r : -resolved.r,
-      new Theta(theta.t - Math.PI / 2)
+      resolved.r,
+      Theta.add(theta, resolved.ny ? Theta.ny() : Theta.py())
     ))
     return {
       coord: coord,

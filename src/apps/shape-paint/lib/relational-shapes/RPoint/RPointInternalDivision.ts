@@ -1,5 +1,5 @@
-import { Coord } from '../Coord'
 import { checkDependenciesInitError } from '../Error'
+import { Coord } from '../Coord'
 import { RPointProp, RPoint } from './RPoint'
 
 /**
@@ -35,10 +35,7 @@ class RPointInternalDivision extends RPoint {
     const bResolved = this.__dependencies[1].resolve()
 
     return {
-      coord: new Coord(
-        aResolved.coord.x * (1 - this.__prop.r) + bResolved.coord.x * this.__prop.r,
-        aResolved.coord.y * (1 - this.__prop.r) + bResolved.coord.y * this.__prop.r,
-      ),
+      coord: Coord.add(Coord.scale(aResolved.coord, 1 - this.__prop.r), Coord.scale(bResolved.coord, this.__prop.r)),
       hide: this.__prop.hide,
     }
   }

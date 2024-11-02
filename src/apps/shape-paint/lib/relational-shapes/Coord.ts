@@ -81,6 +81,13 @@ class Coord {
   static addPolar(coord: Coord, polar: CoordPolar): Coord {
     return Coord.add(coord, polar.toCoord())
   }
+
+  /**
+   * Calculates the distance from coord1 to coord2.
+   */
+  static distance(coord1: Coord, coord2: Coord): number {
+    return Math.sqrt((coord2.x - coord1.x) * (coord2.x - coord1.x) + (coord2.y - coord1.y) * (coord2.y - coord1.y))
+  }
 }
 
 
