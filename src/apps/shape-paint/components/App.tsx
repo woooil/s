@@ -9,7 +9,8 @@ export default function App() {
   const { shapes: s2, action: a2 } = useShapes()
 
   React.useEffect(() => {
-    
+    const lineL = a2.add(new RS.RLineHorizontal([], { y: 80 }))
+    const lineM = a2.add(new RS.RLineVertical([], { x: 250 }))
   }, [])
 
   React.useEffect(() => {
