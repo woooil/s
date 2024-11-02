@@ -3,8 +3,9 @@ import { RShapeResolved, RShapeProp, RShapeStyle, RShapeTypeL2, RShape } from '.
 
 /**
  * The definition of RLabel.
- * @prop coord  - The coordinates where this RLabel should be.
- * @prop label  - The label string to be displayed.
+ * @prop coord    - The coordinates where this RLabel should be.
+ * @prop label    - The label string to be displayed.
+ * @prop offsite  - The offset off-site from coord if exists.
  */
 interface RLabelResolved extends RShapeResolved {
   coord: Coord
@@ -14,13 +15,17 @@ interface RLabelResolved extends RShapeResolved {
 
 /**
  * The properties of RLabel.
- * @prop label  - The label string to be displayed.
+ * @prop label    - The label string to be displayed.
+ * @prop offsite  - The offset off-site from coord if exists.
  */
 interface RLabelProp extends RShapeProp {
   label: string
   offsite?: CoordPolar
 }
 
+/**
+ * The style of RLabel.
+ */
 interface RLabelStyle extends RShapeStyle {}
 
 /**

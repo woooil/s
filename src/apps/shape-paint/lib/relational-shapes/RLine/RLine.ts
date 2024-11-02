@@ -26,6 +26,10 @@ interface RLineProp extends RShapeProp {
   cutB?: boolean
 }
 
+/**
+ * The style of RLine.
+ * @prop width  - The width.
+ */
 interface RLineStyle extends RShapeStyle {
   width?: number
 }

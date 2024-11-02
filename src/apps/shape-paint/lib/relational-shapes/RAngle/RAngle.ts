@@ -28,6 +28,9 @@ interface RAngleProp extends RShapeProp {
   dual?: boolean
 }
 
+/**
+ * The style of RAngle
+ */
 interface RAngleStyle extends RShapeStyle {}
 
 /**

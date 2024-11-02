@@ -1,15 +1,24 @@
 import { checkDependenciesInitError } from '../Error'
 import { Coord, CoordPolar } from '../Coord'
 import { Theta } from '../Theta'
-import { RLineResolved, RLineProp, RLineStyle, RLine } from './RLine'
+import { RLineProp, RLineStyle, RLine } from './RLine'
 import { RPoint } from '../RPoint'
 import { RShape } from '../RShape'
 
+/**
+ * The properties of RLineParallel.
+ * @prop extendA  - Extends RPoint if true.
+ * @prop reverse  - Use the reversed direction of RLine if true.
+ */
 interface RLineParallelProp extends RLineProp {
   extendA?: boolean
   reverse?: boolean
 }
 
+/**
+ * Represents lines which is parallel to another line and passes through one point.
+ * @hierarchy RShape <- RLine <- RLineParallel
+ */
 class RLineParallel extends RLine {
   public static TYPEL2 = 'RLineParallel'
   protected declare __dependencies: RShape[]
@@ -23,6 +32,9 @@ class RLineParallel extends RLine {
     super(dependencies, prop, style, RLineParallel.TYPEL2)
   }
 
+  /**
+   * Returns RLineResolved which is parallel to one line and passes thorugh one point.
+   */
   preresolve() {
     const aResolved = this.__dependencies[0].resolve()
     const lResolved = this.__dependencies[1].resolve()

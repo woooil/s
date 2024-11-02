@@ -15,6 +15,10 @@ interface RPointResolved extends RShapeResolved {
  */
 interface RPointProp extends RShapeProp { }
 
+/**
+ * The style of RPoint.
+ * @prop hide - Make this RPoint invisible if true.
+ */
 interface RPointStyle extends RShapeStyle {
   hide?: boolean
 }

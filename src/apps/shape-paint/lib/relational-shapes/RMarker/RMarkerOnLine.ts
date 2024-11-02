@@ -5,15 +5,27 @@ import { sim } from '../tools'
 import { RMarkerProp, RMarkerStyle, RMarker } from './RMarker'
 import { RLine } from '../RLine'
 
+/**
+ * The properties of RMarkerOnLine.
+ * @prop r  - The ratio of the internal division which this RMarkerOnLine makes. Uses 0.5 if not provided.
+ * @prop reverse  - Reverses the direction of this RMarkerOnLine if true.
+ */
 interface RMarkerOnLineProp extends RMarkerProp {
   r?: number
   reverse?: boolean
-  dual?: boolean
 }
 
+/**
+ * Represents markers on lines.
+ * @hierarchy RShape <- RMarker <- RMarkerOnLine
+ */
 class RMarkerOnLine extends RMarker {
   public static TYPEL2 = 'RMarkerOnLine'
-  protected __dependenciesDual: RLine | undefined
+
+  /**
+   * The dependencies for the dual. If exists, indicates the dual RMarkerOnLine to this RMarker.
+   */
+  protected __dependenciesDual: RMarkerOnLine | undefined
   public get dependencies(): RShape[] {
     if (this.__dependenciesDual) return [...this.__dependencies, this.__dependenciesDual]
     return this.__dependencies
@@ -28,6 +40,9 @@ class RMarkerOnLine extends RMarker {
     super(dependencies, prop, style, RMarkerOnLine.TYPEL2)
   }
 
+  /**
+   * Calculates the coord and the direction.
+   */
   resolve() {
     const resolved = this.__dependencies[0].resolve()
     const r = this.__prop.r || 0.5
@@ -41,6 +56,12 @@ class RMarkerOnLine extends RMarker {
     }
   }
 
+  /**
+   * Makes this RMarkerOnLine represents a parallel line to another which is represented by another RMarkerOnLine.
+   * @param rmarker - The RMarkerOnLine parallel to this RMarkerOnLine.
+   * @param marker  - The marker.
+   * @throws Throws an Error if the lines two RMarkerOnLine represents are not actually parallel.
+   */
   public parallel(rmarker: RMarkerOnLine, marker: string) {
     const lResolved = this.__dependencies[0].resolve()
     const mResolved = rmarker.__dependencies[0].resolve()
@@ -49,10 +70,8 @@ class RMarkerOnLine extends RMarker {
     if (sim(lTheta.t, mTheta.t) || sim(lTheta.t, ThetaMinimum.add(mTheta, Theta.nx()).t)) {
       this.__dependenciesDual = rmarker
       this.__prop.marker = marker
-      this.__prop.dual = true
       rmarker.__dependenciesDual = this
       rmarker.__prop.marker = marker
-      rmarker.__prop.dual = true
     } else {
       throw NotEqualError(`the direction of ${this.id}`, `the direction of ${rmarker.id}`)
     }
