@@ -17,6 +17,9 @@ export default function App() {
     const point6 = a2.add(new RS.RPointAbsoluteCoord([], { x: 330, y: 410 }, { hide: true }))
     const polygon = a2.add(new RS.RPolygonPoints([point1, point2, point3, point4, point5, point6], {}, { width: 2 }))
     const angle612 = a2.add(new RS.RAngleThreePoints([point6, point1, point2], {}))
+    const label612 = a2.add(new RS.RLabelOnAngle([angle612], { r: 28, label: '44°' }))
+    const angle234 = a2.add(new RS.RAngleThreePoints([point2, point3, point4], {}))
+    const label234 = a2.add(new RS.RLabelOnAngle([angle234], { r: 18, offsite: new RS.CoordPolar(40, new RS.Theta(-0.3)), label: '30°' }))
   }, [])
 
   React.useEffect(() => {

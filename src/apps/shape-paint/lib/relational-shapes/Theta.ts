@@ -153,6 +153,13 @@ class ThetaMinimum extends Theta {
   public static substract(theta1: Theta, theta2: Theta): ThetaMinimum {
     return new ThetaMinimum(theta1.t - theta2.t)
   }
+  
+  /**
+   * Halves the angle, results in ThetaMinimum
+   */
+  public static half(theta: ThetaMinimum): ThetaMinimum {
+    return new ThetaMinimum(theta.t / 2)
+  }
 }
 
 /**
@@ -198,6 +205,13 @@ class ThetaTravel extends Theta {
    */
   public static substract(theta1: Theta, theta2: Theta): ThetaTravel {
     return new ThetaTravel(theta1.t - theta2.t)
+  }
+
+  /**
+   * Halves the angle, results in ThetaTravel
+   */
+  public static half(theta: ThetaTravel): ThetaTravel {
+    return new ThetaTravel(theta.t / 2)
   }
 }
 
