@@ -1,5 +1,4 @@
 import { NotEqualError } from '../Error'
-import { Coord } from '../Coord'
 import { Theta, ThetaMinimum } from '../Theta'
 import { sim } from '../tools'
 import { RMarkerProp, RMarkerStyle, RMarker } from './RMarker'
@@ -43,7 +42,7 @@ class RMarkerOnLine extends RMarker {
   resolve() {
     const resolved = this.__dependencies[0].resolve()
     const r = this.__prop.r || 0.5
-    const coord = Coord.add(Coord.scale(resolved.a, 1 - r), Coord.scale(resolved.b, r))
+    const coord = resolved.a.divideInternal(resolved.b, r)
     const theta = this.__prop.reverse ? Theta.fromCoord(resolved.b, resolved.a) :  Theta.fromCoord(resolved.a, resolved.b)
 
     return {
@@ -64,7 +63,7 @@ class RMarkerOnLine extends RMarker {
     const mResolved = rmarker.__dependencies[0].resolve()
     const lTheta = Theta.fromCoord(lResolved.a, lResolved.b)
     const mTheta = Theta.fromCoord(mResolved.a, mResolved.b)
-    if (sim(lTheta.t, mTheta.t) || sim(lTheta.t, ThetaMinimum.add(mTheta, Theta.nx()).t)) {
+    if (sim(lTheta.t, mTheta.t) || sim(lTheta.t, mTheta.add(Theta.nx()).t)) {
       this.__dependenciesDual = rmarker
       this.__prop.marker = marker
       rmarker.__dependenciesDual = this

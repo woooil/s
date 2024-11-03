@@ -1,4 +1,4 @@
-import { Coord, CoordPolar } from '../Coord'
+import { CoordPolar } from '../Coord'
 import { Theta, ThetaMinimum } from '../Theta'
 import { RLineProp, RLineStyle, RLine } from './RLine'
 import { RPoint } from '../RPoint'
@@ -34,8 +34,8 @@ class RLinePerpendicular extends RLine {
     const aResolved = this.__dependencies[0].resolve()
     const lResolved = this.__dependencies[1].resolve()
     const theta = this.__prop.reverse ? Theta.fromCoord(lResolved.b, lResolved.a) : Theta.fromCoord(lResolved.a, lResolved.b)
-    const phi = ThetaMinimum.add(theta, Theta.py())
-    const b = Coord.addPolar(aResolved.coord, new CoordPolar(10, phi))
+    const phi = theta.add(Theta.py())
+    const b = aResolved.coord.addPolar(new CoordPolar(10, phi))
 
     return {
       a: aResolved.coord,

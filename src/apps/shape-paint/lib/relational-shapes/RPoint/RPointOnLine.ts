@@ -35,13 +35,13 @@ class RPointOnLine extends RPoint {
     let coord: Coord
     switch (this.__prop.section % 3) {
       case 0:
-        coord = Coord.addPolar(resolved.a, new CoordPolar(this.__prop.r, theta))
+        coord = resolved.a.addPolar(new CoordPolar(this.__prop.r, theta))
         break
       case 1:
-        coord = Coord.add(Coord.scale(resolved.a, 1 - this.__prop.r), Coord.scale(resolved.b, this.__prop.r))
+        coord = resolved.a.divideInternal(resolved.b, this.__prop.r)
         break
       case 2:
-        coord = Coord.addPolar(resolved.b, new CoordPolar(this.__prop.r, theta))
+        coord = resolved.b.addPolar(new CoordPolar(this.__prop.r, theta))
         break
     }
     return {

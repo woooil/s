@@ -1,4 +1,3 @@
-import { checkDependenciesInitError } from '../Error'
 import { Coord, CoordPolar } from '../Coord'
 import { Theta } from '../Theta'
 import { RLineProp, RLineStyle, RLine } from './RLine'
@@ -44,7 +43,7 @@ class RLineAngleBisector extends RLine {
         to:   this.__prop.reverseM ? mResolved.a : mResolved.b 
       })
     
-    const b = Coord.addPolar(a, new CoordPolar(1 << 8, theta))
+    const b = a.addPolar(new CoordPolar(1 << 8, theta))
 
     return {
       a: a,

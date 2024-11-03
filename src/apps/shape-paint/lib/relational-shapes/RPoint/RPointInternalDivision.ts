@@ -1,4 +1,3 @@
-import { Coord } from '../Coord'
 import { RPointProp, RPointStyle, RPoint } from './RPoint'
 
 /**
@@ -30,7 +29,7 @@ class RPointInternalDivision extends RPoint {
     const bResolved = this.__dependencies[1].resolve()
 
     return {
-      coord: Coord.add(Coord.scale(aResolved.coord, 1 - this.__prop.r), Coord.scale(bResolved.coord, this.__prop.r)),
+      coord: aResolved.coord.divideInternal(bResolved.coord, this.__prop.r)
     }
   }
 }

@@ -58,7 +58,7 @@ export default function App() {
     const labelAB = action.add(new RS.RLabelOnLength([lengthAB], { label: '4 cm' }))
     const lengthBC = action.add(new RS.RLengthTwoPoints([pointB, pointC], {}))
     const labelBC = action.add(new RS.RLabelOnLength([lengthBC], { label: '8 cm' }))
-    const lengthAD = action.add(new RS.RLengthTwoPoints([pointA, pointD], { ny: true }))
+    const lengthAD = action.add(new RS.RLengthTwoPoints([pointA, pointD], { reverse: true }))
     const labelAD = action.add(new RS.RLabelOnLength([lengthAD], { label: '2 cm', offsite: new RS.CoordPolar(40, new RS.Theta(-0.3)) }))
   }, [])
 

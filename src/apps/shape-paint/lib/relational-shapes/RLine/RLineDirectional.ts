@@ -1,4 +1,4 @@
-import { Coord, CoordPolar } from '../Coord'
+import { CoordPolar } from '../Coord'
 import { ThetaMinimum } from '../Theta'
 import { RLineProp, RLineStyle, RLine } from './RLine'
 import { RPoint } from '../RPoint'
@@ -33,7 +33,7 @@ class RLineDirectional extends RLine {
     const resolved = this.__dependencies[0].resolve()
     return {
       a: resolved.coord,
-      b: Coord.addPolar(resolved.coord, new CoordPolar(1, this.__prop.theta)),
+      b: resolved.coord.addPolar(new CoordPolar(1, this.__prop.theta)),
       extendA: this.__prop.extendA || false,
       extendB: true,
     }

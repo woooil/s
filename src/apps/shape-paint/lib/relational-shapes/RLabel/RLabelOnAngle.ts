@@ -29,8 +29,8 @@ class RLabelOnAngle extends RLabel {
    */
   resolve() {
     const resolved = this.__dependencies[0].resolve()
-    const theta = ThetaMinimum.add(resolved.theta0, ThetaTravel.half(resolved.theta))
-    const coord = Coord.addPolar(resolved.coord, new CoordPolar(28 + (this.__prop.r || 0), theta))
+    const theta = resolved.theta0.add(resolved.theta.half())
+    const coord = resolved.coord.addPolar(new CoordPolar(28 + (this.__prop.r || 0), theta))
 
     return {
       coord: coord,

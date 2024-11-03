@@ -6,8 +6,8 @@ import { Theta } from './Theta'
  * @prop y - The y coordinate.
  */
 class Coord {
-  x: number
-  y: number
+  readonly x: number
+  readonly y: number
 
   constructor(x: number, y: number) {
     this.x = x
@@ -17,76 +17,50 @@ class Coord {
   /**
    * Adds another Coord.
    */
-  add(coord: Coord) {
-    this.x += coord.x
-    this.y += coord.y
-  }
-  
-  /**
-   * Adds two Coords.
-   */
-  static add(coord1: Coord, coord2: Coord): Coord {
-    return new Coord(
-      coord1.x + coord2.x,
-      coord1.y + coord2.y,
-    )
+  add(coord: Coord): Coord {
+    return new Coord(this.x + coord.x, this.y + coord.y)
   }
 
   /**
    * Substract another Coord.
    */
-  substract(coord: Coord) {
-    this.x -= coord.x
-    this.y -= coord.y
-  }
-
-  /**
-   * Substract one Coord from another.
-   */
-  static substract(coord1: Coord, coord2: Coord): Coord {
-    return new Coord(
-      coord1.x - coord2.x,
-      coord1.y - coord2.y,
-    )
+  substract(coord: Coord): Coord {
+    return new Coord(this.x - coord.x, this.y - coord.y)
   }
 
   /**
    * Scales by a given scalar.
    */
-  scale(scale: number) {
-    this.x *= scale
-    this.y *= scale
+  scale(scale: number): Coord {
+    return new Coord(this.x * scale, this.y * scale)
   }
 
   /**
-   * Multiplies scalar to Coord.
+   * Calulates the average with another coord.
    */
-  static scale(coord: Coord, scale: number): Coord {
-    return new Coord(
-      coord.x * scale,
-      coord.y * scale,
-    )
+  avg(coord: Coord): Coord {
+    return this.add(coord).scale(0.5)
   }
 
   /**
-   * Calculates the average of two Coords.
+   * Adds CoordPolar.
    */
-  static avg(coord1: Coord, coord2: Coord): Coord {
-    return Coord.scale(Coord.add(coord1, coord2), 0.5)
+  addPolar(polar: CoordPolar): Coord {
+    return this.add(polar.toCoord())
   }
 
   /**
-   * Adds CoordPolar to Coord.
+   * Calculates the distance to another Coord.
    */
-  static addPolar(coord: Coord, polar: CoordPolar): Coord {
-    return Coord.add(coord, polar.toCoord())
+  distance(coord: Coord): number {
+    return Math.sqrt((coord.x - this.x) * (coord.x - this.x) + (coord.y - this.y) * (coord.y - this.y))
   }
 
   /**
-   * Calculates the distance from coord1 to coord2.
+   * Calulates the interal division with another Coord.
    */
-  static distance(coord1: Coord, coord2: Coord): number {
-    return Math.sqrt((coord2.x - coord1.x) * (coord2.x - coord1.x) + (coord2.y - coord1.y) * (coord2.y - coord1.y))
+  divideInternal(coord: Coord, r: number): Coord {
+    return this.scale(1 - r).add(coord.scale(r))
   }
 }
 

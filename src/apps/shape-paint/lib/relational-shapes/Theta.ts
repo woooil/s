@@ -48,6 +48,24 @@ class Theta {
   static ny() {
     return new ThetaMinimum(-Math.PI / 2)
   }
+  /**
+   * Equals to 0.
+   */
+  static zero() {
+    return new ThetaMinimum(0)
+  }
+  /**
+   * Equals to PI / 2.
+   */
+  static halfPi() {
+    return new ThetaMinimum(Math.PI / 2)
+  }
+  /**
+   * Equals to PI.
+   */
+  static pi() {
+    return new ThetaMinimum(Math.PI)
+  }
 
   /**
    * Calculates the ThetaMinimum of the line from coord1 to coord2. If coord2 is not given, calculates the angle of the line from the origin to coord1.
@@ -58,26 +76,26 @@ class Theta {
   }
 
   /**
-   * Flips the direction of the angle, results in ThetaTravel. For instance, PI / 4 will flipped into - 3 PI / 4.
+   * Flips the direction of Theta, results in ThetaTravel. For instance, PI / 4 will flipped into - 3 PI / 4.
    */
-  static flip(theta: Theta): ThetaTravel {
-    const reduced = new ThetaTravel(theta.t)
+  flip(): ThetaTravel {
+    const reduced = new ThetaTravel(this.t)
     if (reduced.t >= 0) return new ThetaTravel(reduced.t - Math.PI * 2)
     return new ThetaTravel(reduced.t + Math.PI * 2)
   }
 
   /**
-   * Adds two angles, results in Theta.
+   * Adds another Theta.
    */
-  static add(theta1: Theta, theta2: Theta): Theta {
-    return new Theta(theta1.t + theta2.t)
+  add(theta: Theta): Theta {
+    return new Theta(this.t + theta.t)
   }
 
   /**
-   * Substracts one angle from another, results in Theta.
+   * Substracts another Theta
    */
-  static substract(theta1: Theta, theta2: Theta): Theta {
-    return new Theta(theta1.t - theta2.t)
+  substract(theta: Theta): Theta {
+    return new Theta(this.t - theta.t)
   }
 
   /**
@@ -91,12 +109,12 @@ class Theta {
   static intersect(ray1: { from: Coord, to: Coord }, ray2: { from: Coord, to: Coord }): { theta: ThetaMinimum, theta0: ThetaMinimum, thetaMid: ThetaMinimum } {
     const theta1 = Theta.fromCoord(ray1.from, ray1.to)
     const theta2 = Theta.fromCoord(ray2.from, ray2.to)
-    const thetaSub = Theta.substract(theta2, theta1)
+    const thetaSub = theta2.substract(theta1)
     let theta = new ThetaMinimum(thetaSub.t)
     let thetaMid = new ThetaMinimum((theta1.t + theta2.t) / 2)
     if (thetaSub.size > Math.PI) {
-      thetaMid = ThetaMinimum.substract(thetaMid, Theta.nx())
-      theta = ThetaMinimum.substract(theta, Theta.nx())
+      thetaMid = thetaMid.substract(Theta.pi())
+      theta = theta.substract(Theta.pi())
     }
     return { 
       theta: theta,
@@ -122,14 +140,14 @@ class ThetaMinimum extends Theta {
   /**
    * Checks if the given Theta is in the minimum range.
    */
-  public static checkRange(theta: Theta) {
+  public static checkRange(theta: Theta): boolean {
     return -Math.PI < theta.t && theta.t <= Math.PI
   }
 
   /**
    * Converts any angle into the minimum range.
    */
-  protected static intoRange(t: number) {
+  protected static intoRange(t: number): number {
     let travel = t % (Math.PI * 2)
     if (travel > Math.PI) travel -= Math.PI * 2
     else if (travel <= -Math.PI) travel += Math.PI * 2
@@ -141,24 +159,24 @@ class ThetaMinimum extends Theta {
   }
 
   /**
-   * Adds two angles, results in ThetaMinimum.
+   * Adds another Theta.
    */
-  public static add(theta1: Theta, theta2: Theta): ThetaMinimum {
-    return new ThetaMinimum(theta1.t + theta2.t)
+  add(theta: Theta): ThetaMinimum {
+    return new ThetaMinimum(this.t + theta.t)
   }
 
   /**
-   * Substracts two angles, results in ThetaMinimum.
+   * Substract another Theta.
    */
-  public static substract(theta1: Theta, theta2: Theta): ThetaMinimum {
-    return new ThetaMinimum(theta1.t - theta2.t)
+  substract(theta: Theta): ThetaMinimum {
+    return new ThetaMinimum(this.t - theta.t)
   }
   
   /**
-   * Halves the angle, results in ThetaMinimum
+   * Halves the angle.
    */
-  public static half(theta: ThetaMinimum): ThetaMinimum {
-    return new ThetaMinimum(theta.t / 2)
+  half(): ThetaMinimum {
+    return new ThetaMinimum(this.t / 2)
   }
 }
 
@@ -178,14 +196,14 @@ class ThetaTravel extends Theta {
   /**
    * Checks if the given Theta is in the travel range.
    */
-  public static checkRange(theta: Theta) {
+  public static checkRange(theta: Theta): boolean {
     return -Math.PI * 2 < theta.t && theta.t < Math.PI * 2
   }
 
   /**
    * Converts any angle into the travel range.
    */
-  protected static intoRange(t: number) {
+  protected static intoRange(t: number): number {
     return t % (Math.PI * 2)
   }
 
@@ -194,24 +212,24 @@ class ThetaTravel extends Theta {
   }
 
   /**
-   * Adds two angles, results in ThetaTravel.
+   * Adds another Theta.
    */
-  public static add(theta1: Theta, theta2: Theta): ThetaTravel {
-    return new ThetaTravel(theta1.t + theta2.t)
+  add(theta: Theta): ThetaTravel {
+    return new ThetaTravel(this.t + theta.t)
   }
 
   /**
-   * Substract two angles, results in ThetaTravel.
+   * Substract another Theta.
    */
-  public static substract(theta1: Theta, theta2: Theta): ThetaTravel {
-    return new ThetaTravel(theta1.t - theta2.t)
+  substract(theta: Theta): ThetaTravel {
+    return new ThetaTravel(this.t - theta.t)
   }
 
   /**
-   * Halves the angle, results in ThetaTravel
+   * Halves the angle.
    */
-  public static half(theta: ThetaTravel): ThetaTravel {
-    return new ThetaTravel(theta.t / 2)
+  half(): ThetaTravel {
+    return new ThetaTravel(this.t / 2)
   }
 }
 

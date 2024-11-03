@@ -1,4 +1,4 @@
-import { Coord, CoordPolar } from '../Coord'
+import { CoordPolar } from '../Coord'
 import { RLabelProp, RLabelStyle, RLabel } from './RLabel'
 import { RPoint } from '../RPoint'
 
@@ -30,7 +30,7 @@ class RLabelOnPoint extends RLabel {
     const aResolved = this.__dependencies[0].resolve()
 
     return {
-      coord: Coord.addPolar(aResolved.coord, this.__prop.offset),
+      coord: aResolved.coord.addPolar(this.__prop.offset),
       label: this.__prop.label,
       offsite: this.__prop.offsite,
     }

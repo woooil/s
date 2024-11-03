@@ -52,7 +52,7 @@ abstract class RLength extends RShape {
    */
   public resolve(): RLengthResolved {
     const preresolved = this.preresolve()
-    const length = Coord.distance(preresolved.a, preresolved.b)
+    const length = preresolved.a.distance(preresolved.b)
     const maxR = 28
     const co = 4
     const r = length > maxR * co ? maxR : length / co

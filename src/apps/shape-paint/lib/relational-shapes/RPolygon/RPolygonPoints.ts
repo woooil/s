@@ -1,4 +1,3 @@
-import { Coord } from '../Coord'
 import { RPolygonProp, RPolygonStyle, RPolygon } from './RPolygon'
 import { RPoint } from '../RPoint'
 
