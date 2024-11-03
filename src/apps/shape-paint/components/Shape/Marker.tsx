@@ -27,7 +27,7 @@ export default function Marker({
   resolved,
   styles,
   ...props
-}: Props<RMarkerResolved, RMarkerStyle, SVGGeometryElement>) {
+}: Props<RMarkerResolved, RMarkerStyle, SVGGElement>) {
   const r = 10
   const p = {
     M: {

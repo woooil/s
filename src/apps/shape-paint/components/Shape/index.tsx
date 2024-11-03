@@ -8,6 +8,7 @@ import {
   RLength,
   RMarker,
   RPolygon,
+  RArc,
 } from '../../lib/relational-shapes'
 import Point from './Point'
 import Line from './Line'
@@ -16,6 +17,7 @@ import Angle from './Angle'
 import Length from './Length'
 import Marker from './Marker'
 import Polygon from './Polygon'
+import Arc from './Arc'
 
 export default function Shape({ shape, ...props }: { shape: RShape }) {
   switch (shape.type[0]) {
@@ -72,6 +74,14 @@ export default function Shape({ shape, ...props }: { shape: RShape }) {
         <Polygon
           resolved={(shape as RPolygon).resolve()}
           styles={(shape as RPolygon).style}
+          {...props}
+        />
+      )
+    case RArc.TYPEL1:
+      return (
+        <Arc
+          resolved={(shape as RArc).resolve()}
+          styles={(shape as RArc).style}
           {...props}
         />
       )

@@ -25,7 +25,7 @@ class RAngleThreePoints extends RAngle {
   }
 
   /**
-   * Calculates the angle in TRAVLE_RANGE formed by three RPoints.
+   * Calculates the ThetaTravel formed by three RPoints.
    */
   resolve() {
     const aResolved = this.__dependencies[0].resolve()

@@ -29,13 +29,13 @@ interface RAngleProp extends RShapeProp {
 }
 
 /**
- * The style of RAngle
+ * The style of RAngle.
  */
 interface RAngleStyle extends RShapeStyle {}
 
 /**
  * Represents angle markers.
- * @hierarchy RShape <- RLength
+ * @hierarchy RShape <- RAngle
  */
 abstract class RAngle extends RShape {
   /**

@@ -120,10 +120,10 @@ class ThetaMinimum extends Theta {
   }
 
   /**
-   * Checks if the given t is in the minimum range.
+   * Checks if the given Theta is in the minimum range.
    */
-  protected static checkRange(t: number) {
-    return -Math.PI < t && t <= Math.PI
+  public static checkRange(theta: Theta) {
+    return -Math.PI < theta.t && theta.t <= Math.PI
   }
 
   /**
@@ -176,10 +176,10 @@ class ThetaTravel extends Theta {
   }
 
   /**
-   * Checks if the given t is in the travel range.
+   * Checks if the given Theta is in the travel range.
    */
-  protected static checkRange(t: number) {
-    return -Math.PI * 2 < t && t < Math.PI * 2
+  public static checkRange(theta: Theta) {
+    return -Math.PI * 2 < theta.t && theta.t < Math.PI * 2
   }
 
   /**

@@ -22,6 +22,7 @@ export default function App() {
     a2.cutLine(lineBC, lineAC, false)
     const lengthAB = a2.add(new RS.RLengthTwoPoints([pointA, pointB], { reverse: true }))
     const labelAB = a2.add(new RS.RLabelOnLength([lengthAB], { label: '8 cm' }))
+    const arcAB = a2.add(new RS.RArcOnTwoPoints([pointA, pointB], { theta: new RS.Theta(-Math.PI) }))
   }, [])
 
   React.useEffect(() => {
