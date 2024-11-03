@@ -18,8 +18,8 @@ class RLineHorizontal extends RLine {
   public static TYPEL2 = 'RLineHorizontal'
   protected declare __prop: RLineHorizontalProp
 
-  constructor(dependencies: RShape[], prop: RLineHorizontalProp, style?: RLineStyle) {
-    super(dependencies, prop, style, RLineHorizontal.TYPEL2)
+  constructor(_: RShape[], prop: RLineHorizontalProp, style?: RLineStyle) {
+    super([], prop, style, RLineHorizontal.TYPEL2)
   }
 
   /**

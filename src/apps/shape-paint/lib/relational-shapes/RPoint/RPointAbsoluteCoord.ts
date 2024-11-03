@@ -18,7 +18,6 @@ interface RPointAbsoluteCoordProp extends RPointProp {
  */
 class RPointAbsoluteCoord extends RPoint {
   public static TYPEL2 = 'RPointAbsoluteCoord'
-  protected declare __dependencies: RShape[]
   protected declare __prop: RPointAbsoluteCoordProp
 
   constructor(_: RShape[], prop: RPointAbsoluteCoordProp, style?: RPointStyle) {

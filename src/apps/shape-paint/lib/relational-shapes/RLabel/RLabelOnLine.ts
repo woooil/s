@@ -1,4 +1,3 @@
-import { checkDependenciesInitError } from '../Error'
 import { Coord, CoordPolar } from '../Coord'
 import { Theta } from '../Theta'
 import { RLabelProp, RLabelStyle, RLabel } from './RLabel'
@@ -22,14 +21,10 @@ interface RLabelOnLineProp extends RLabelProp {
  */
 class RLabelOnLine extends RLabel {
   public static TYPEL2 = 'RLabelOnLine'
-  protected declare __dependencies: RLine[]
+  protected declare __dependencies: [RLine]
   protected declare __prop: RLabelOnLineProp
 
-  /**
-   * @throws Throws DependenciesInitError if given Dependencies are not of RLine type or its length is not 1.
-   */
-  constructor(dependencies: RLine[], prop: RLabelOnLineProp, style?: RLabelStyle) {
-    checkDependenciesInitError(dependencies, [RLine.TYPEL1])
+  constructor(dependencies: [RLine], prop: RLabelOnLineProp, style?: RLabelStyle) {
     super(dependencies, prop, style, RLabelOnLine.TYPEL2)
   }
 

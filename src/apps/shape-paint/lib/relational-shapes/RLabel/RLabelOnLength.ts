@@ -1,4 +1,3 @@
-import { checkDependenciesInitError } from '../Error'
 import { Coord, CoordPolar } from '../Coord'
 import { Theta } from '../Theta'
 import { RLabelProp, RLabelStyle, RLabel } from './RLabel'
@@ -15,14 +14,10 @@ interface RLabelOnLengthProp extends RLabelProp {}
  */
 class RLabelOnLength extends RLabel {
   public static TYPEL2 = 'RLabelOnLength'
-  protected declare __dependencies: RLength[]
+  protected declare __dependencies: [RLength]
   protected declare __prop: RLabelOnLengthProp
 
-  /**
-   * @throws Throws DependenciesInitError if given Dependencies are not of RLength type or its length is not 1.
-   */
-  constructor(dependencies: RLength[], prop: RLabelOnLengthProp, style?: RLabelStyle) {
-    checkDependenciesInitError(dependencies, [RLength.TYPEL1])
+  constructor(dependencies: [RLength], prop: RLabelOnLengthProp, style?: RLabelStyle) {
     super(dependencies, prop, style, RLabelOnLength.TYPEL2)
   }
 

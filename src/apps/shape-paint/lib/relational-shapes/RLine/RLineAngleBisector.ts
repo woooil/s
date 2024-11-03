@@ -19,14 +19,10 @@ interface RLineAngleBisectorProp extends RLineProp {
  */
 class RLineAngleBisector extends RLine {
   public static TYPEL2 = 'RLineAngleBisector'
-  protected declare __dependencies: RLine[]
+  protected declare __dependencies: [RLine, RLine]
   protected declare __prop: RLineAngleBisectorProp
 
-  /**
-   * @throws Throws DependenciesInitError if given Dependencies are not of RLine type or its length is not 2.
-   */
-  constructor(dependencies: RLine[], prop: RLineAngleBisectorProp, style?: RLineStyle) {
-    checkDependenciesInitError(dependencies, [RLine.TYPEL1, RLine.TYPEL1])
+  constructor(dependencies: [RLine, RLine], prop: RLineAngleBisectorProp, style?: RLineStyle) {
     super(dependencies, prop, style, RLineAngleBisector.TYPEL2)
   }
 

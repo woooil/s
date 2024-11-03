@@ -1,27 +1,3 @@
-import { RShape, RShapeTypeL1 } from './RShape'
-
-interface DependeciesInitError extends Error {
-  name: 'DependenciesInitError'
-}
-
-function DependeciesInitError(
-  dependencies: string[],
-) {
-  const error = new Error(
-    `The given Dependencies are not compatible: ${dependencies.toString()}`,
-  ) as DependeciesInitError
-  error.name = 'DependenciesInitError'
-  return error
-}
-
-function checkDependenciesInitError(dependencies: RShape[], types: RShapeTypeL1[] ) {
-    if (
-      dependencies.length !== types.length ||
-      !dependencies.every((i, idx) => i.type[0] === types[idx])
-    )
-      throw DependeciesInitError(dependencies.map(i => i.id))
-}
-
 interface ParallelLinesError extends Error {
   name: 'ParallelLinesError'
   id1: string
@@ -50,5 +26,4 @@ function NotEqualError(a: any, b: any) {
   return error
 }
 
-export { DependeciesInitError, ParallelLinesError, NotEqualError }
-export { checkDependenciesInitError }
+export { ParallelLinesError, NotEqualError }

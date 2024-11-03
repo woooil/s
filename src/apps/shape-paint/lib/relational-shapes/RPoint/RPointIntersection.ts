@@ -1,4 +1,3 @@
-import { checkDependenciesInitError } from '../Error'
 import { RPointProp, RPointStyle, RPoint } from './RPoint'
 import { RLine } from '../RLine'
 
@@ -13,14 +12,10 @@ interface RPointIntersectionProp extends RPointProp {}
  */
 class RPointIntersection extends RPoint {
   public static TYPEL2 = 'RPointIntersection'
-  protected declare __dependencies: RLine[]
+  protected declare __dependencies: [RLine, RLine]
   protected declare __prop: RPointIntersectionProp
 
-  /**
-   * @throws Throws DependenciesInitError if given Dependencies are not of Line type or its length is not 2.
-   */
-  constructor(dependencies: RLine[], prop: RPointIntersectionProp, style?: RPointStyle) {
-    checkDependenciesInitError(dependencies, [RLine.TYPEL1, RLine.TYPEL1])
+  constructor(dependencies: [RLine, RLine], prop: RPointIntersectionProp, style?: RPointStyle) {
     super(dependencies, prop, style, RPointIntersection.TYPEL2)
   }
 

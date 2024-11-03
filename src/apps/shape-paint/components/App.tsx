@@ -9,18 +9,14 @@ export default function App() {
   const { shapes: s2, action: a2 } = useShapes()
 
   React.useEffect(() => {
-    const lineL = a2.add(new RS.RLineHorizontal([], { y: 100 }, { width: 2 }))
-    const lineM = a2.add(new RS.RLineHorizontal([], { y: 250 }, { width: 2 }))
-    const lineN = a2.add(new RS.RLineHorizontal([], { y: 400 }, { width: 2 }))
-    const pointA = a2.add(new RS.RPointAbsoluteCoord([], { x: 500, y: 200 }, { hide: true }))
-    const line4 = a2.add(new RS.RLineDirectional([pointA], { theta: new RS.ThetaMinimum(0.6) }))
-    const line5 = a2.add(new RS.RLineDirectional([pointA], { theta: new RS.ThetaMinimum(-1) }))
-    const pointB = a2.add(new RS.RPointIntersection([lineL, line4], {}, { hide: true }))
-    const length = a2.add(new RS.RLengthTwoPoints([pointA, pointB], { ny: true }))
-    const label = a2.add(new RS.RLabelOnLength([length], { label: 'x' }, { italic: true }))
-    const labelL = a2.add(new RS.RLabelOnLine([lineL], { section: 2, r: 780, label: 'l' }, { italic: true }))
-    const labelM = a2.add(new RS.RLabelOnLine([lineM], { section: 2, r: 780, label: 'm' }, { italic: true }))
-    const labelN = a2.add(new RS.RLabelOnLine([lineN], { section: 2, r: 780,label: 'n' }, { italic: true }))
+    const point1 = a2.add(new RS.RPointAbsoluteCoord([], { x: 500, y: 200 }, { hide: true }))
+    const point2 = a2.add(new RS.RPointAbsoluteCoord([], { x: 200, y: 200 }, { hide: true }))
+    const point3 = a2.add(new RS.RPointAbsoluteCoord([], { x: 450, y: 400 }, { hide: true }))
+    const point4 = a2.add(new RS.RPointAbsoluteCoord([], { x: 300, y: 50 }, { hide: true }))
+    const point5 = a2.add(new RS.RPointAbsoluteCoord([], { x: 250, y: 390 }, { hide: true }))
+    const point6 = a2.add(new RS.RPointAbsoluteCoord([], { x: 330, y: 410 }, { hide: true }))
+    const polygon = a2.add(new RS.RPolygonPoints([point1, point2, point3, point4, point5, point6], {}, { width: 2 }))
+    const angle612 = a2.add(new RS.RAngleThreePoints([point6, point1, point2], {}))
   }, [])
 
   React.useEffect(() => {

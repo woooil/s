@@ -1,4 +1,3 @@
-import { checkDependenciesInitError } from '../Error'
 import { Coord, CoordPolar } from '../Coord'
 import { RLabelProp, RLabelStyle, RLabel } from './RLabel'
 import { RPoint } from '../RPoint'
@@ -17,14 +16,10 @@ interface RLabelOnPointProp extends RLabelProp {
  */
 class RLabelOnPoint extends RLabel {
   public static TYPEL2 = 'RLabelOnPoint'
-  protected declare __dependencies: RPoint[]
+  protected declare __dependencies: [RPoint]
   protected declare __prop: RLabelOnPointProp
 
-  /**
-   * @throws Throws DependenciesInitError if given Dependencies are not of Point type or its length is not 1.
-   */
-  constructor(dependencies: RPoint[], prop: RLabelOnPointProp, style?: RLabelStyle) {
-    checkDependenciesInitError(dependencies, [RPoint.TYPEL1])
+  constructor(dependencies: [RPoint], prop: RLabelOnPointProp, style?: RLabelStyle) {
     super(dependencies, prop, style, RLabelOnPoint.TYPEL2)
   }
 

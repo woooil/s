@@ -1,4 +1,3 @@
-import { checkDependenciesInitError } from '../Error'
 import { Coord } from '../Coord'
 import { Theta, ThetaMinimum } from '../Theta'
 import { RAngleProp, RAngleStyle, RAngle } from './RAngle'
@@ -18,14 +17,10 @@ interface RAngleThreePointsProp extends RAngleProp {
  */
 class RAngleThreePoints extends RAngle {
   public static TYPEL2 = 'RAngleThreePoints'
-  protected declare __dependencies: RPoint[]
+  protected declare __dependencies: [RPoint, RPoint, RPoint]
   protected declare __prop: RAngleThreePointsProp
 
-  /**
-   * @throws Throws DependenciesInitError if given Dependencies are not of RPoint type or its length is not 3.
-   */
-  constructor(dependencies: RPoint[], prop: RAngleThreePointsProp, style?: RAngleStyle) {
-    checkDependenciesInitError(dependencies, [RPoint.TYPEL1, RPoint.TYPEL1, RPoint.TYPEL1])
+  constructor(dependencies: [RPoint, RPoint, RPoint], prop: RAngleThreePointsProp, style?: RAngleStyle) {
     super(dependencies, prop, style, RAngleThreePoints.TYPEL2)
   }
 

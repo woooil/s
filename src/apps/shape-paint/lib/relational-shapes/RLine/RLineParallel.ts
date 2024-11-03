@@ -1,4 +1,3 @@
-import { checkDependenciesInitError } from '../Error'
 import { Coord, CoordPolar } from '../Coord'
 import { Theta } from '../Theta'
 import { RLineProp, RLineStyle, RLine } from './RLine'
@@ -23,11 +22,7 @@ class RLineParallel extends RLine {
   protected declare __dependencies: [RPoint, RLine]
   protected declare __prop: RLineParallelProp
 
-  /**
-   * @throws Throws DependenciesInitError if given Dependencies are not of [RPoint, RLine] or its length is not 2.
-   */
   constructor(dependencies: [RPoint, RLine], prop: RLineParallelProp, style?: RLineStyle) {
-    checkDependenciesInitError(dependencies, [RPoint.TYPEL1, RLine.TYPEL1])
     super(dependencies, prop, style, RLineParallel.TYPEL2)
   }
 

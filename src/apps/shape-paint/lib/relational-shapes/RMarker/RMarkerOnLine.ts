@@ -1,9 +1,10 @@
-import { checkDependenciesInitError, NotEqualError } from '../Error'
+import { NotEqualError } from '../Error'
 import { Coord } from '../Coord'
 import { Theta, ThetaMinimum } from '../Theta'
 import { sim } from '../tools'
 import { RMarkerProp, RMarkerStyle, RMarker } from './RMarker'
 import { RLine } from '../RLine'
+import { RShape } from '../RShape'
 
 /**
  * The properties of RMarkerOnLine.
@@ -32,11 +33,7 @@ class RMarkerOnLine extends RMarker {
   }
   protected declare __prop: RMarkerOnLineProp
 
-  /**
-   * @throws Throws DependenciesInitError if given Dependencies are not of RLine type or its length is not 1.
-   */
-  constructor(dependencies: RLine[], prop: RMarkerOnLineProp, style?: RMarkerStyle) {
-    checkDependenciesInitError(dependencies, [RLine.TYPEL1])
+  constructor(dependencies: [RLine], prop: RMarkerOnLineProp, style?: RMarkerStyle) {
     super(dependencies, prop, style, RMarkerOnLine.TYPEL2)
   }
 

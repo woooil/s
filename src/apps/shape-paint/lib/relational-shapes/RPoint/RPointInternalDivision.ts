@@ -1,4 +1,3 @@
-import { checkDependenciesInitError } from '../Error'
 import { Coord } from '../Coord'
 import { RPointProp, RPointStyle, RPoint } from './RPoint'
 
@@ -16,14 +15,10 @@ interface RPointInternalDivisionProp extends RPointProp {
  */
 class RPointInternalDivision extends RPoint {
   public static TYPEL2 = 'RPointInternalDivision'
-  protected declare __dependencies: RPoint[]
+  protected declare __dependencies: [RPoint, RPoint]
   protected declare __prop: RPointInternalDivisionProp
 
-  /**
-   * @throws Throws DependenciesInitError if given Dependencies are not of Point type or its length is not 2.
-   */
-  constructor(dependencies: RPoint[], prop: RPointInternalDivisionProp, style?: RPointStyle) {
-    checkDependenciesInitError(dependencies, [RPoint.TYPEL1, RPoint.TYPEL1])
+  constructor(dependencies: [RPoint, RPoint], prop: RPointInternalDivisionProp, style?: RPointStyle) {
     super(dependencies, prop, style, RPointInternalDivision.TYPEL2)
   }
 

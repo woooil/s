@@ -1,4 +1,3 @@
-import { checkDependenciesInitError } from '../Error'
 import { Coord, CoordPolar } from '../Coord'
 import { ThetaMinimum } from '../Theta'
 import { RLineProp, RLineStyle, RLine } from './RLine'
@@ -18,14 +17,10 @@ interface RLineDirectionalProp extends RLineProp {
  */
 class RLineDirectional extends RLine {
   public static TYPEL2 = 'RLineDirectional'
-  protected declare __dependencies: RPoint[]
+  protected declare __dependencies: [RPoint]
   protected declare __prop: RLineDirectionalProp
 
-  /**
-   * @throws Throws DependenciesInitError if given Dependencies are not of RPoint type or its length is not 1.
-   */
-  constructor(dependencies: RPoint[], prop: RLineDirectionalProp, style?: RLineStyle) {
-    checkDependenciesInitError(dependencies, [RPoint.TYPEL1])
+  constructor(dependencies: [RPoint], prop: RLineDirectionalProp, style?: RLineStyle) {
     super(dependencies, prop, style, RLineDirectional.TYPEL2)
   }
 
