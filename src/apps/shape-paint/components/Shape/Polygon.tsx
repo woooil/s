@@ -13,7 +13,7 @@ export default function Polygon({
     points,
     fill: 'none',
     stroke: 'black',
-    strokeWidth: styles?.width || 1,
+    strokeWidth: styles?.width || 2,
   }
 
   return (

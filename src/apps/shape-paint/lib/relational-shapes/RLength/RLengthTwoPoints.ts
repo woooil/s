@@ -30,7 +30,7 @@ class RLengthTwoPoints extends RLength {
       a: aResolved.coord,
       b: bResolved.coord,
       r: 0,
-      ny: this.__prop.ny,
+      reverse: this.__prop.reverse,
     }
   }
 }

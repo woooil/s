@@ -6,7 +6,7 @@ import { RPoint } from '../RPoint'
 /**
  * The properties of RLineParallel.
  * @prop extendA  - Extends RPoint if true.
- * @prop reverse  - Use the reversed direction of RLine if true.
+ * @prop reverse  - Uses the reversed direction of RLine if true.
  */
 interface RLineParallelProp extends RLineProp {
   extendA?: boolean

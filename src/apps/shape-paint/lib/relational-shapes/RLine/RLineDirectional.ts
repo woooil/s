@@ -5,9 +5,11 @@ import { RPoint } from '../RPoint'
 
 /**
  * The properties of RLineDirectional.
+ * @prop extendA  - Extends RPoint if true.
  * @prop theta - The direction.
  */
 interface RLineDirectionalProp extends RLineProp {
+  extendA?: boolean
   theta: ThetaMinimum
 }
 
@@ -32,7 +34,7 @@ class RLineDirectional extends RLine {
     return {
       a: resolved.coord,
       b: Coord.addPolar(resolved.coord, new CoordPolar(1, this.__prop.theta)),
-      extendA: true,
+      extendA: this.__prop.extendA || false,
       extendB: true,
     }
   }

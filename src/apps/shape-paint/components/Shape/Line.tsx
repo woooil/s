@@ -24,7 +24,7 @@ export default function Line({
     x2: resolved.b.x,
     y2: resolved.b.y,
     stroke: 'black',
-    strokeWidth: styles?.width || 1,
+    strokeWidth: styles?.width || 2,
   }
 
   return (
