@@ -79,6 +79,46 @@ function AngleX({
   )
 }
 
+function AngleRight({
+  resolved,
+  styles,
+  ...props
+}: Props<RAngleResolved, RAngleStyle, SVGPathElement>) {
+  const std = getStandard(resolved.theta.t)
+  const cos = Math.cos(resolved.theta0.t)
+  const sin = Math.sin(resolved.theta0.t)
+  const flag = resolved.theta.t > 0 ? 1 : -1
+  const p = {
+    M: {
+      x: resolved.coord.x + std.size * cos,
+      y: resolved.coord.y + std.size * sin,
+    },
+    L1: {
+      x: resolved.coord.x + std.size * (cos - flag * sin),
+      y: resolved.coord.y + std.size * (sin + flag * cos),
+    },
+    L2: {
+      x: resolved.coord.x - flag * std.size * sin,
+      y: resolved.coord.y + flag * std.size * cos,
+    }
+  }
+  const d = `M ${p.M.x} ${p.M.y} L ${p.L1.x} ${p.L1.y} ${p.L2.x} ${p.L2.y}`
+  
+  const attr = {
+    d: d,
+    fill: 'none',
+    stroke: 'black',
+    strokeWidth: '1',
+  }
+
+  return (
+    <path
+      {...attr}
+      {...props}
+    />
+  )
+}
+
 function AngleDefault({
   resolved,
   styles,
@@ -128,6 +168,10 @@ export default function Angle({
     case 'x':
       return (
         <AngleX resolved={resolved} {...props} />
+      )
+    case 'right':
+      return (
+        <AngleRight resolved={resolved} {...props} />
       )
     default:
       return (

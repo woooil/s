@@ -62,6 +62,15 @@ abstract class RAngle extends RShape {
    */
   public abstract resolve(): RAngleResolved
 
+  public right() {
+    const theta = this.resolve().theta.size
+    if (sim(theta, Math.PI / 2)) {
+      this.__prop.marker = 'right'
+    } else {
+      throw NotEqualError(`RAngle ${this.id}`, `pi rad`)
+    }
+  }
+
   /**
    * Makes this RAngle congruent to another.
    * @param rangle  - The RAngle congruent to this RAngle.

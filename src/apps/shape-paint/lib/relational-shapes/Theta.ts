@@ -99,6 +99,13 @@ class Theta {
   }
 
   /**
+   * Halves the angle.
+   */
+  half(): Theta {
+    return new Theta(this.t / 2)
+  }
+
+  /**
    * Investigates ThetaMinimum made by two rays.
    * @param   ray1      - The first ray which makes the angle.
    * @param   ray2      - The second ray which makes the angle.

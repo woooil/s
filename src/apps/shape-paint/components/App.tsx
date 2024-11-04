@@ -9,20 +9,25 @@ export default function App() {
   const { shapes: s2, action: a2 } = useShapes()
 
   React.useEffect(() => {
-    const pointA = a2.add(new RS.RPointAbsoluteCoord([], { x: 350, y: 200 }, { hide: true }))
+    const pointA = a2.add(new RS.RPointAbsoluteCoord([], { x: 350, y: 150 }, { hide: true }))
     const labelA = a2.add(new RS.RLabelOnPoint([pointA], { offset: new RS.CoordPolar(16, RS.Theta.ny()), label: 'A' }))
-    const pointB = a2.add(new RS.RPointAbsoluteCoord([], { x: 200, y: 400 }, { hide: true }))
+    const pointB = a2.add(new RS.RPointAbsoluteCoord([], { x: 200, y: 350 }, { hide: true }))
     const labelB = a2.add(new RS.RLabelOnPoint([pointB], { offset: new RS.CoordPolar(20, new RS.Theta(2.8)), label: 'B' }))
     const lineAB = a2.add(new RS.RLineTwoPoints([pointA, pointB], {}))
     const lineAC = a2.add(new RS.RLinePerpendicular([pointA, lineAB], { reverse: true }))
     const lineBC = a2.add(new RS.RLineDirectional([pointB], { theta: RS.Theta.px() }))
     const pointC = a2.add(new RS.RPointIntersection([lineAC, lineBC], {}, { hide: true }))
     const labelC = a2.add(new RS.RLabelOnPoint([pointC], { offset: new RS.CoordPolar(16, new RS.Theta(0.4)), label: 'C' }))
+    const angleBAC = a2.add(new RS.RAngleThreePoints([pointB, pointA, pointC], {}))
+    a2.rightAngle(angleBAC)
     a2.cutLine(lineAC, lineBC, false)
     a2.cutLine(lineBC, lineAC, false)
     const lengthAB = a2.add(new RS.RLengthTwoPoints([pointA, pointB], { reverse: true }))
     const labelAB = a2.add(new RS.RLabelOnLength([lengthAB], { label: '8 cm' }))
     const arcAB = a2.add(new RS.RArcOnTwoPoints([pointA, pointB], { theta: new RS.Theta(-Math.PI) }))
+    const arcBC = a2.add(new RS.RArcOnTwoPoints([pointB, pointC], { theta: new RS.Theta(-Math.PI) }))
+    const arcCA = a2.add(new RS.RArcOnTwoPoints([pointC, pointA], { theta: new RS.Theta(-Math.PI) }))
+    const labelArcBC = a2.add(new RS.RLabelOnArc([arcBC], { label: '8 cm^2' }))
   }, [])
 
   React.useEffect(() => {

@@ -7,6 +7,7 @@ interface Action {
   cutLine: (rline: RS.RLine, cut: RS.RLine, selectA: boolean) => RS.RLine
   uncutLine: (rline: RS.RLine, selectA: boolean) => RS.RLine
   congruentAngle: (rangle: RS.RAngle, rangle2: RS.RAngle, marker: string) => RS.RAngle
+  rightAngle: (rangle: RS.RAngle) => RS.RAngle
   parallelLineMarker: (rmarker: RS.RMarkerOnLine, rmarker2: RS.RMarkerOnLine, marker: string) => RS.RLine
 }
 
@@ -63,6 +64,15 @@ function useShapes() {
     return rangle
   }
 
+  const rightAngle = (rangle: RS.RAngle) => {
+    setShapes(i => {
+      if (!i.includes(rangle)) throw new Error('No such shape in shapes')
+      rangle.right()
+      return [...i]
+    })
+    return rangle
+  }
+
   const parallelLineMarker = (rmarker: RS.RMarkerOnLine, rmarker2: RS.RLine, marker: string) => {
     setShapes(i => {
       if (!i.includes(rmarker) || !i.includes(rmarker2)) throw new Error('No such shape in shapes')
@@ -78,6 +88,7 @@ function useShapes() {
     cutLine,
     uncutLine,
     congruentAngle,
+    rightAngle,
     parallelLineMarker,
   }
 
