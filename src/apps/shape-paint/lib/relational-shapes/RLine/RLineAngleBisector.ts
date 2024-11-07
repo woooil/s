@@ -1,13 +1,14 @@
-import { Coord, CoordPolar } from '../Coord'
-import { Theta } from '../Theta'
+import { LARGE_NUMBER } from '../tools'
+import { CoordPolar } from '../Coord'
 import { RLineProp, RLineStyle, RLine } from './RLine'
+import { RDistanceExtraProp } from '../RShape'
 
 /**
  * The properties of RLineAngleBisectorProp. 
  * @prop reverseL - True if reverse the direction of the first RLine.
  * @prop reverseM - True if reverse the direction of the second RLine.
  */
-interface RLineAngleBisectorProp extends RLineProp {
+interface RLineAngleBisectorProp extends RLineProp, RDistanceExtraProp {
   reverseL?: boolean,
   reverseM?: boolean,
 }
@@ -30,26 +31,15 @@ class RLineAngleBisector extends RLine {
    * @throws Throws an Error if two RLines are parallel.
    */
   preresolve() {
-    const a = this.__dependencies[0].intersect(this.__dependencies[1]) // Throws an Error
-
-    const lResolved = this.__dependencies[0].resolve()
-    const mResolved = this.__dependencies[1].resolve()
-
-    const { thetaMid: theta } = Theta.intersect({ 
-        from: this.__prop.reverseL ? lResolved.b : lResolved.a, 
-        to:   this.__prop.reverseL ? lResolved.a : lResolved.b 
-      }, { 
-        from: this.__prop.reverseM ? mResolved.b : mResolved.a, 
-        to:   this.__prop.reverseM ? mResolved.a : mResolved.b 
-      })
+    const { coord: a, thetaMid: theta } = RLine.intersect(this.__dependencies[0], this.__dependencies[1], this.__prop.reverseL, this.__prop.reverseM)
     
-    const b = a.addPolar(new CoordPolar(1 << 8, theta))
+    const b = a.addPolar(new CoordPolar(this.__prop.distance || LARGE_NUMBER, theta))
 
     return {
       a: a,
       b: b,
       extendA: false,
-      extendB: true,
+      extendB: !(this.__prop.distance),
     }
   }
 }

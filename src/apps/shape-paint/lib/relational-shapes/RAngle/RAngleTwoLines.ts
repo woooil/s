@@ -30,18 +30,7 @@ class RAngleTwoLines extends RAngle {
    * @throws Throws an Error if two RLines are parallel.
    */
   resolve() {
-    const coord = this.__dependencies[0].intersect(this.__dependencies[1]) // Throws an Error
-
-    const lResolved = this.__dependencies[0].resolve()
-    const mResolved = this.__dependencies[1].resolve()
-
-    const { theta0, theta } = Theta.intersect({ 
-        from: this.__prop.reverseL ? lResolved.b : lResolved.a, 
-        to:   this.__prop.reverseL ? lResolved.a : lResolved.b 
-      }, { 
-        from: this.__prop.reverseM ? mResolved.b : mResolved.a, 
-        to:   this.__prop.reverseM ? mResolved.a : mResolved.b 
-      })
+    const { coord, theta0, theta } = RLine.intersect(this.__dependencies[0], this.__dependencies[1], this.__prop.reverseL, this.__prop.reverseM)
 
     return {
       coord: coord,

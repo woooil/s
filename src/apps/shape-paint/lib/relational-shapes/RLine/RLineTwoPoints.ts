@@ -34,8 +34,8 @@ class RLineTwoPoints extends RLine {
     return {
       a: aResolved.coord,
       b: bResolved.coord,
-      extendA: this.__prop.extendA || false,
-      extendB: this.__prop.extendB || false,
+      extendA: !!(this.__prop.extendA),
+      extendB: !!(this.__prop.extendB),
     }
   }
 }

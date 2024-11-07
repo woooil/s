@@ -1,14 +1,16 @@
+import { LARGE_NUMBER } from '../tools'
 import { CoordPolar } from '../Coord'
 import { ThetaMinimum } from '../Theta'
 import { RLineProp, RLineStyle, RLine } from './RLine'
 import { RPoint } from '../RPoint'
+import { RDistanceExtraProp } from '../RShape'
 
 /**
  * The properties of RLineDirectional.
  * @prop extendA  - Extends RPoint if true.
  * @prop theta - The direction.
  */
-interface RLineDirectionalProp extends RLineProp {
+interface RLineDirectionalProp extends RLineProp, RDistanceExtraProp {
   extendA?: boolean
   theta: ThetaMinimum
 }
@@ -31,11 +33,12 @@ class RLineDirectional extends RLine {
    */
   preresolve() {
     const resolved = this.__dependencies[0].resolve()
+    const b = resolved.coord.addPolar(new CoordPolar(this.__prop.distance || LARGE_NUMBER, this.__prop.theta))
     return {
       a: resolved.coord,
-      b: resolved.coord.addPolar(new CoordPolar(1, this.__prop.theta)),
-      extendA: this.__prop.extendA || false,
-      extendB: true,
+      b,
+      extendA: !!(this.__prop.extendA),
+      extendB: !(this.__prop.distance),
     }
   }
 }

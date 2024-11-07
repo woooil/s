@@ -5,11 +5,25 @@ import { v4 as uuid } from 'uuid'
  */
 interface RShapeProp {}
 
+interface RDistanceExtraProp {
+  distance?: number
+}
+
+interface RCoordOnLineExtraProp {
+  onLine?: {
+    type: 'from1' | 'from2' | 'ratio' | 'x' | 'y'
+    value: number
+  }
+}
+
 /**
  * The mathematical definition of RShape. Once resolved, any RShape of the same RShapeType should be of the same type.
  */
 interface RShapeResolved {}
 
+/**
+ * The style of RShape.
+ */
 interface RShapeStyle {}
 
 /**
@@ -29,7 +43,7 @@ type RShapeTypeL2 = string
  */
 type RShapeType = [RShapeTypeL1, RShapeTypeL2]
 
-export { RShapeProp, RShapeResolved, RShapeStyle, RShapeID, RShapeTypeL1, RShapeTypeL2, RShapeType }
+export { RShapeProp, RDistanceExtraProp, RCoordOnLineExtraProp, RShapeResolved, RShapeStyle, RShapeID, RShapeTypeL1, RShapeTypeL2, RShapeType }
 
 /**
  * Represents any shapes by the definition related to other shapes.

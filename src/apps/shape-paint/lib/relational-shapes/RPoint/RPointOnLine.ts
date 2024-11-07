@@ -1,17 +1,15 @@
+import { ParallelLinesError, DefaultCaseError } from '../Error'
+import { sim } from '../tools'
 import { Coord, CoordPolar } from '../Coord'
 import { Theta } from '../Theta'
 import { RPointProp, RPointStyle, RPoint } from './RPoint'
 import { RLine } from '../RLine'
+import { RCoordOnLineExtraProp } from '../RShape'
 
 /**
  * The properties of RPointOnLine.
- * @prop section  - 0 for the section of the first Coord, 1 for the inside of the two Coords, 2 for the section of the second Coord.
- * @prop r        - The distance from the first/second Coord along the RLine if the section is 0 or 2. The ratio of the internal division if the section is 1.
  */
-interface RPointOnLineProp extends RPointProp {
-  section: number
-  r: number
-}
+interface RPointOnLineProp extends RPointProp, RCoordOnLineExtraProp { }
 
 /**
  * Represents points on a line.
@@ -33,16 +31,31 @@ class RPointOnLine extends RPoint {
     const resolved = this.__dependencies[0].resolve()
     const theta = Theta.fromCoord(resolved.a, resolved.b)
     let coord: Coord
-    switch (this.__prop.section % 3) {
-      case 0:
-        coord = resolved.a.addPolar(new CoordPolar(this.__prop.r, theta))
+    const m = (resolved.b.y - resolved.a.y) / (resolved.b.x - resolved.a.x)
+    switch (this.__prop.onLine.type) {
+      case 'from1':
+        coord = resolved.a.addPolar(new CoordPolar(this.__prop.onLine.value, theta))
         break
-      case 1:
-        coord = resolved.a.divideInternal(resolved.b, this.__prop.r)
+      case 'from2':
+        coord = resolved.b.addPolar(new CoordPolar(this.__prop.onLine.value, theta))
         break
-      case 2:
-        coord = resolved.b.addPolar(new CoordPolar(this.__prop.r, theta))
+      case 'ratio':
+        coord = resolved.a.divideInternal(resolved.b, this.__prop.onLine.value)
         break
+      case 'x':
+        if (sim(resolved.a.x, resolved.b.x))
+          throw ParallelLinesError(`RLine ${this.__dependencies[0].id}`, 'y-axis')
+        const y = resolved.a.y + (this.__prop.onLine.value - resolved.a.x) * m
+        coord = new Coord(this.__prop.onLine.value, y)
+        break
+      case 'y':
+        if (sim(resolved.a.y, resolved.b.y))
+          throw ParallelLinesError(`RLine ${this.__dependencies[0].id}`, 'x-axis')
+        const x = resolved.a.x + (this.__prop.onLine.value - resolved.a.y) / m
+        coord = new Coord(x, this.__prop.onLine.value)
+        break
+      default:
+        throw DefaultCaseError(this.__prop.onLine.type)
     }
     return {
       coord: coord,

@@ -1,4 +1,5 @@
 import { Coord } from '../Coord'
+import { Theta, ThetaMinimum } from '../Theta'
 import { ParallelLinesError } from '../Error'
 import { RShapeResolved, RShapeProp, RShapeStyle, RShapeTypeL2, RShape } from '../RShape'
 
@@ -74,12 +75,12 @@ abstract class RLine extends RShape {
   public resolve(): RLineResolved {
     const preresolved = this.preresolve()
     if (preresolved.extendA && this.__prop.cutA) {
-      const pointCutA = this.intersect(this.__dependenciesCut.a)
+      const { coord: pointCutA } = RLine.intersect(this, this.__dependenciesCut.a)
       preresolved.a = pointCutA
       preresolved.extendA = false
     }
     if (preresolved.extendB && this.__prop.cutB) {
-      const pointCutB = this.intersect(this.__dependenciesCut.b)
+      const { coord: pointCutB } = RLine.intersect(this, this.__dependenciesCut.b)
       preresolved.b = pointCutB
       preresolved.extendB = false
     }
@@ -119,11 +120,15 @@ abstract class RLine extends RShape {
 
   /**
    * Returns an intersection with another RLine.
+   * @return  coord     - The intersection.
+   * @return  theta     - The (directional) angular measure.
+   * @return  theta0    - The start direction.
+   * @return  thetaMid  - The middle direction.
    * @throws Throws an Error if two RLines are parallel.
    */
-  public intersect(rline: RLine): Coord {
-    const lResolved = this.preresolve()
-    const mResolved = rline.preresolve()
+  public static intersect(lineL: RLine, lineM: RLine, reverseL?: boolean, reverseM?: boolean): { coord: Coord, theta0: ThetaMinimum, theta: ThetaMinimum, thetaMid: ThetaMinimum } {
+    const lResolved = lineL.preresolve()
+    const mResolved = lineM.preresolve()
 
     const alpha1 = lResolved.a.x - lResolved.b.x
     const alpha2 = mResolved.a.x - mResolved.b.x
@@ -144,7 +149,7 @@ abstract class RLine extends RShape {
       )
     } else if ((beta2 === 0 && beta1 === 0) || gamma1 === 0) {
       // m || l
-      throw ParallelLinesError(this.id, rline.id)
+      throw ParallelLinesError(`RLine ${lineL.id}`, `RLine ${lineM.id}`)
     } else {
       a = new Coord(
         lResolved.a.x - alpha1 * (gamma2 / gamma1), // div by 0 if l || m
@@ -152,7 +157,21 @@ abstract class RLine extends RShape {
       )
     }
 
-    return a
+    const theta1 = reverseL ? Theta.fromCoord(lResolved.b, lResolved.a) : Theta.fromCoord(lResolved.a, lResolved.b)
+    const theta2 = reverseM ? Theta.fromCoord(mResolved.b, mResolved.a) : Theta.fromCoord(mResolved.a, mResolved.b)
+    const thetaSub = theta2.substract(theta1)
+    let theta = new ThetaMinimum(thetaSub.t)
+    let thetaMid = new ThetaMinimum((theta1.t + theta2.t) / 2)
+    if (thetaSub.size > Math.PI) {
+      thetaMid = thetaMid.substract(Theta.pi())
+      theta = theta.substract(Theta.pi())
+    }
+    return { 
+      coord: a,
+      theta: theta,
+      theta0: theta1,
+      thetaMid: thetaMid
+    }
   }
 }
 

@@ -1,3 +1,4 @@
+import { LARGE_NUMBER } from '../tools'
 import { Coord } from '../Coord'
 import { RLineProp, RLineStyle, RLine } from './RLine'
 import { RShape } from '../RShape'
@@ -27,8 +28,8 @@ class RLineHorizontal extends RLine {
    */
   preresolve() {
     return {
-      a: new Coord(0, this.__prop.y),
-      b: new Coord(1, this.__prop.y),
+      a: new Coord(-LARGE_NUMBER, this.__prop.y),
+      b: new Coord(LARGE_NUMBER, this.__prop.y),
       extendA: true,
       extendB: true,
     }

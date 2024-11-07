@@ -1,14 +1,16 @@
+import { LARGE_NUMBER } from '../tools'
 import { CoordPolar } from '../Coord'
 import { Theta } from '../Theta'
 import { RLineProp, RLineStyle, RLine } from './RLine'
 import { RPoint } from '../RPoint'
+import { RDistanceExtraProp } from '../RSHape'
 
 /**
  * The properties of RLineParallel.
  * @prop extendA  - Extends RPoint if true.
  * @prop reverse  - Uses the reversed direction of RLine if true.
  */
-interface RLineParallelProp extends RLineProp {
+interface RLineParallelProp extends RLineProp, RDistanceExtraProp {
   extendA?: boolean
   reverse?: boolean
 }
@@ -33,13 +35,13 @@ class RLineParallel extends RLine {
     const aResolved = this.__dependencies[0].resolve()
     const lResolved = this.__dependencies[1].resolve()
     const theta = this.__prop.reverse ? Theta.fromCoord(lResolved.b, lResolved.a) : Theta.fromCoord(lResolved.a, lResolved.b)
-    const b = aResolved.coord.addPolar(new CoordPolar(10, theta))
+    const b = aResolved.coord.addPolar(new CoordPolar(this.__prop.distance || LARGE_NUMBER, theta))
 
     return {
       a: aResolved.coord,
-      b: b,
-      extendA: this.__prop.extendA || false,
-      extendB: true,
+      b,
+      extendA: !!(this.__prop.extendA),
+      extendB: !(this.__prop.distance),
     }
   }
 }

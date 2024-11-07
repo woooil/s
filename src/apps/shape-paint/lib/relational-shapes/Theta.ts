@@ -104,31 +104,6 @@ class Theta {
   half(): Theta {
     return new Theta(this.t / 2)
   }
-
-  /**
-   * Investigates ThetaMinimum made by two rays.
-   * @param   ray1      - The first ray which makes the angle.
-   * @param   ray2      - The second ray which makes the angle.
-   * @return  theta     - The (directional) angular measure.
-   * @return  theta0    - The start direction.
-   * @return  thetaMid  - The middle direction.
-   */
-  static intersect(ray1: { from: Coord, to: Coord }, ray2: { from: Coord, to: Coord }): { theta: ThetaMinimum, theta0: ThetaMinimum, thetaMid: ThetaMinimum } {
-    const theta1 = Theta.fromCoord(ray1.from, ray1.to)
-    const theta2 = Theta.fromCoord(ray2.from, ray2.to)
-    const thetaSub = theta2.substract(theta1)
-    let theta = new ThetaMinimum(thetaSub.t)
-    let thetaMid = new ThetaMinimum((theta1.t + theta2.t) / 2)
-    if (thetaSub.size > Math.PI) {
-      thetaMid = thetaMid.substract(Theta.pi())
-      theta = theta.substract(Theta.pi())
-    }
-    return { 
-      theta: theta,
-      theta0: theta1,
-      thetaMid: thetaMid
-    }
-  }
 }
 
 /**

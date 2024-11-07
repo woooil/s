@@ -1,14 +1,16 @@
+import { LARGE_NUMBER } from '../tools'
 import { CoordPolar } from '../Coord'
-import { Theta, ThetaMinimum } from '../Theta'
+import { Theta } from '../Theta'
 import { RLineProp, RLineStyle, RLine } from './RLine'
 import { RPoint } from '../RPoint'
+import { RDistanceExtraProp } from '../RShape'
 
 /**
  * The properties of RLinePerpendicular.
  * @prop extendA  - Extends RPoint if true.
  * @prop reverse  - Uses -y direction when RLine is rotated to be aligned to +x direction if true. Uses +y direction if false.
  */
-interface RLinePerpendicularProp extends RLineProp {
+interface RLinePerpendicularProp extends RLineProp, RDistanceExtraProp {
   extendA?: boolean
   reverse?: boolean
 }
@@ -35,13 +37,13 @@ class RLinePerpendicular extends RLine {
     const lResolved = this.__dependencies[1].resolve()
     const theta = this.__prop.reverse ? Theta.fromCoord(lResolved.b, lResolved.a) : Theta.fromCoord(lResolved.a, lResolved.b)
     const phi = theta.add(Theta.py())
-    const b = aResolved.coord.addPolar(new CoordPolar(10, phi))
+    const b = aResolved.coord.addPolar(new CoordPolar(this.__prop.distance || LARGE_NUMBER, phi))
 
     return {
       a: aResolved.coord,
-      b: b,
-      extendA: this.__prop.extendA || false,
-      extendB: true,
+      b,
+      extendA: !!(this.__prop.extendA),
+      extendB: !(this.__prop.distance),
     }
   }
 }

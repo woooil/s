@@ -1,12 +1,12 @@
 interface ParallelLinesError extends Error {
   name: 'ParallelLinesError'
-  id1: string
-  id2: string
+  a: any
+  b: any
 }
 
-function ParallelLinesError(line1: string, line2: string) {
+function ParallelLinesError(a: any, b: any) {
   const error = new Error(
-    `RLine ${line1} and RLine ${line2} are parallel.`,
+    `${a} and ${b} are parallel.`,
   ) as ParallelLinesError
   error.name = 'ParallelLinesError'
   return error
@@ -26,4 +26,17 @@ function NotEqualError(a: any, b: any) {
   return error
 }
 
-export { ParallelLinesError, NotEqualError }
+interface DefaultCaseError extends Error {
+  name: 'DefaultCaseError'
+  a: any
+}
+
+function DefaultCaseError(a: any) {
+  const error = new Error(
+    `${a} does not match any cases.`,
+  ) as DefaultCaseError
+  error.name = 'DefaultCaseError'
+  return error
+}
+
+export { ParallelLinesError, NotEqualError, DefaultCaseError }
