@@ -28,10 +28,10 @@ class RLineVertical extends RLine {
    */
   preresolve() {
     return {
-      a: new Coord(this.__prop.x, -LARGE_NUMBER),
-      b: new Coord(this.__prop.x, LARGE_NUMBER),
-      extendA: true,
-      extendB: true,
+      coord1: new Coord(this.__prop.x, -LARGE_NUMBER),
+      coord2: new Coord(this.__prop.x, LARGE_NUMBER),
+      extend1: true,
+      extend2: true,
     }
   }
 }

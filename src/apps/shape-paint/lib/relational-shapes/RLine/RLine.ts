@@ -5,26 +5,26 @@ import { RShapeResolved, RShapeProp, RShapeStyle, RShapeTypeL2, RShape } from '.
 
 /**
  * The mathematical definition of RLine. Defined by two points Line passes through.
- * @prop a        - The first Coord which this RLine passes through.
- * @prop b        - The second Coord which this RLine passes through.
- * @prop extendA  - Whether to extend point A or not.
- * @prop extendB  - Whether to extend point B or not.
+ * @prop coord1   - The first Coord which this RLine passes through.
+ * @prop coord2   - The second Coord which this RLine passes through.
+ * @prop extend1  - Whether to extend coord1 or not.
+ * @prop extend2  - Whether to extend coord2 or not.
  */
 interface RLineResolved extends RShapeResolved {
-  a: Coord
-  b: Coord
-  extendA: boolean
-  extendB: boolean
+  coord1: Coord
+  coord2: Coord
+  extend1: boolean
+  extend2: boolean
 }
 
 /**
  * The properties of RLine.
- * @prop cutA - Whether to cut extending point A by another Line.
- * @prop cutB - Whether to cut extending point B by another Line.
+ * @prop cut1 - Whether to cut coord1 by another Line.
+ * @prop cut2 - Whether to cut coord2 by another Line.
  */
 interface RLineProp extends RShapeProp {
-  cutA?: boolean
-  cutB?: boolean
+  cut1?: boolean
+  cut2?: boolean
 }
 
 /**
@@ -50,18 +50,18 @@ abstract class RLine extends RShape {
    * @prop a  - RLine which cuts the extending point A of this RLine. undefined if not cut.
    * @prop b  - RLine which cuts the extending point B of this RLine. undefined if not cut.
    */
-  protected __dependenciesCut: { a: RLine | undefined; b: RLine | undefined }
+  protected __dependenciesCut: { coord1: RLine | undefined; coord2: RLine | undefined }
   public get dependencies(): RShape[] {
     const d = this.__dependencies
-    if (this.__dependenciesCut.a) d.push(this.__dependenciesCut.a)
-    if (this.__dependenciesCut.b) d.push(this.__dependenciesCut.b)
+    if (this.__dependenciesCut.coord1) d.push(this.__dependenciesCut.coord1)
+    if (this.__dependenciesCut.coord2) d.push(this.__dependenciesCut.coord2)
     return d
   }
   protected declare __prop: RLineProp
 
   constructor(dependencies: RShape[], prop: RLineProp, style: RLineStyle, typel2: RShapeTypeL2) {
     super(dependencies, prop, style, [RLine.TYPEL1, typel2])
-    this.__dependenciesCut = { a: undefined, b: undefined }
+    this.__dependenciesCut = { coord1: undefined, coord2: undefined }
   }
 
   /**
@@ -74,15 +74,15 @@ abstract class RLine extends RShape {
    */
   public resolve(): RLineResolved {
     const preresolved = this.preresolve()
-    if (preresolved.extendA && this.__prop.cutA) {
-      const { coord: pointCutA } = RLine.intersect(this, this.__dependenciesCut.a)
-      preresolved.a = pointCutA
-      preresolved.extendA = false
+    if (preresolved.extend1 && this.__prop.cut1) {
+      const { coord: pointCutA } = RLine.intersect(this, this.__dependenciesCut.coord1)
+      preresolved.coord1 = pointCutA
+      preresolved.extend1 = false
     }
-    if (preresolved.extendB && this.__prop.cutB) {
-      const { coord: pointCutB } = RLine.intersect(this, this.__dependenciesCut.b)
-      preresolved.b = pointCutB
-      preresolved.extendB = false
+    if (preresolved.extend2 && this.__prop.cut2) {
+      const { coord: pointCutB } = RLine.intersect(this, this.__dependenciesCut.coord2)
+      preresolved.coord2 = pointCutB
+      preresolved.extend2 = false
     }
     return preresolved
   }
@@ -91,30 +91,30 @@ abstract class RLine extends RShape {
    * Cuts this RLine with the given RLine.
    * If this RLine has been already cut, it will change the cutting line.
    * @param rline    - RLine which cut.
-   * @param selectA - True if cut extending point A; false if cut extending point B.
+   * @param select1 - True if cut coord1; false if cut coord2.
    */
-  public cut(rline: RLine, selectA: boolean) {
-    if (selectA) {
-      this.__dependenciesCut.a = rline
-      this.__prop.cutA = true
-    } else if (!selectA) {
-      this.__dependenciesCut.b = rline
-      this.__prop.cutB = true
+  public cut(rline: RLine, select1: boolean) {
+    if (select1) {
+      this.__dependenciesCut.coord1 = rline
+      this.__prop.cut1 = true
+    } else {
+      this.__dependenciesCut.coord2 = rline
+      this.__prop.cut2 = true
     }
   }
 
   /**
    * Uncuts this RLine.
    * If this RLine has not been cut, it will have no effect.
-   * @param selectA - True if uncut extending point A; false if uncut extending point B.
+   * @param select1 - True if uncut coord1; false if uncut coord2.
    */
-  public uncut(selectA: boolean) {
-    if (selectA) {
-      this.__dependenciesCut.a = undefined
-      this.__prop.cutA = false
-    } else if (!selectA) {
-      this.__dependenciesCut.b = undefined
-      this.__prop.cutB = false
+  public uncut(select1: boolean) {
+    if (select1) {
+      this.__dependenciesCut.coord1 = undefined
+      this.__prop.cut1 = false
+    } else {
+      this.__dependenciesCut.coord2 = undefined
+      this.__prop.cut2 = false
     }
   }
 
@@ -130,12 +130,12 @@ abstract class RLine extends RShape {
     const lResolved = lineL.preresolve()
     const mResolved = lineM.preresolve()
 
-    const alpha1 = lResolved.a.x - lResolved.b.x
-    const alpha2 = mResolved.a.x - mResolved.b.x
-    const alpha3 = mResolved.a.x - lResolved.a.x
-    const beta1 = lResolved.a.y - lResolved.b.y
-    const beta2 = mResolved.a.y - mResolved.b.y
-    const beta3 = mResolved.a.y - lResolved.a.y
+    const alpha1 = lResolved.coord1.x - lResolved.coord2.x
+    const alpha2 = mResolved.coord1.x - mResolved.coord2.x
+    const alpha3 = mResolved.coord1.x - lResolved.coord1.x
+    const beta1 = lResolved.coord1.y - lResolved.coord2.y
+    const beta2 = mResolved.coord1.y - mResolved.coord2.y
+    const beta3 = mResolved.coord1.y - lResolved.coord1.y
     const gamma1 = -alpha1 + alpha2 * (beta1 / (beta2 || 1)) // div by 0 if m || x-axis
     const gamma2 = alpha3 - alpha2 * (beta3 / (beta2 || 1)) // div by 0 if m || x-axis
 
@@ -144,21 +144,21 @@ abstract class RLine extends RShape {
     if (beta2 === 0 && beta1 !== 0) {
       // m || x-axis
       a = new Coord(
-        lResolved.a.x + alpha1 * (beta3 / beta1),
-        lResolved.a.y + beta3,
+        lResolved.coord1.x + alpha1 * (beta3 / beta1),
+        lResolved.coord1.y + beta3,
       )
     } else if ((beta2 === 0 && beta1 === 0) || gamma1 === 0) {
       // m || l
       throw ParallelLinesError(`RLine ${lineL.id}`, `RLine ${lineM.id}`)
     } else {
       a = new Coord(
-        lResolved.a.x - alpha1 * (gamma2 / gamma1), // div by 0 if l || m
-        lResolved.a.y - beta1 * (gamma2 / gamma1), // div by 0 if l || m
+        lResolved.coord1.x - alpha1 * (gamma2 / gamma1), // div by 0 if l || m
+        lResolved.coord1.y - beta1 * (gamma2 / gamma1), // div by 0 if l || m
       )
     }
 
-    const theta1 = reverseL ? Theta.fromCoord(lResolved.b, lResolved.a) : Theta.fromCoord(lResolved.a, lResolved.b)
-    const theta2 = reverseM ? Theta.fromCoord(mResolved.b, mResolved.a) : Theta.fromCoord(mResolved.a, mResolved.b)
+    const theta1 = reverseL ? Theta.fromCoord(lResolved.coord2, lResolved.coord1) : Theta.fromCoord(lResolved.coord1, lResolved.coord2)
+    const theta2 = reverseM ? Theta.fromCoord(mResolved.coord2, mResolved.coord1) : Theta.fromCoord(mResolved.coord1, mResolved.coord2)
     const thetaSub = theta2.substract(theta1)
     let theta = new ThetaMinimum(thetaSub.t)
     let thetaMid = new ThetaMinimum((theta1.t + theta2.t) / 2)

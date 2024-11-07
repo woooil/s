@@ -37,19 +37,19 @@ function useShapes() {
     return shape
   }
 
-  const cutLine = (rline: RS.RLine, cut: RS.RLine, selectA: boolean) => {
+  const cutLine = (rline: RS.RLine, cut: RS.RLine, select1?: boolean) => {
     setShapes(i => {
       if (!i.includes(rline)) throw new Error('No such shape in shapes')
-      rline.cut(cut, selectA)
+      rline.cut(cut, !!select1)
       return [...i]
     })
     return rline
   }
 
-  const uncutLine = (rline: RS.RLine, selectA: boolean) => {
+  const uncutLine = (rline: RS.RLine, select1?: boolean) => {
     setShapes(i => {
       if (!i.includes(rline)) throw new Error('No such shape in shapes')
-      rline.uncut(selectA)
+      rline.uncut(!!select1)
       return [...i]
     })
     return rline

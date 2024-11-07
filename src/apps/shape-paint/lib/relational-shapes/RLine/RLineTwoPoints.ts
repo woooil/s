@@ -3,12 +3,12 @@ import { RPoint } from '../RPoint'
 
 /**
  * The properties of RLineTwoPointsProp.
- * @prop extendA  - The extension of the first Coord.
- * @prop extendB  - The extension of the second Coord.
+ * @prop extend1  - The extension of the first Coord.
+ * @prop extend2  - The extension of the second Coord.
  */
 interface RLineTwoPointsProp extends RLineProp {
-  extendA?: boolean
-  extendB?: boolean
+  extend1?: boolean
+  extend2?: boolean
 }
 
 /**
@@ -32,10 +32,10 @@ class RLineTwoPoints extends RLine {
     const bResolved = this.__dependencies[1].resolve()
 
     return {
-      a: aResolved.coord,
-      b: bResolved.coord,
-      extendA: !!(this.__prop.extendA),
-      extendB: !!(this.__prop.extendB),
+      coord1: aResolved.coord,
+      coord2: bResolved.coord,
+      extend1: !!(this.__prop.extend1),
+      extend2: !!(this.__prop.extend2),
     }
   }
 }

@@ -7,11 +7,11 @@ import { RDistanceExtraProp } from '../RShape'
 
 /**
  * The properties of RLinePerpendicular.
- * @prop extendA  - Extends RPoint if true.
+ * @prop extend1  - Extends backwards if true.
  * @prop reverse  - Uses -y direction when RLine is rotated to be aligned to +x direction if true. Uses +y direction if false.
  */
 interface RLinePerpendicularProp extends RLineProp, RDistanceExtraProp {
-  extendA?: boolean
+  extend1?: boolean
   reverse?: boolean
 }
 
@@ -35,15 +35,15 @@ class RLinePerpendicular extends RLine {
   preresolve() {
     const aResolved = this.__dependencies[0].resolve()
     const lResolved = this.__dependencies[1].resolve()
-    const theta = this.__prop.reverse ? Theta.fromCoord(lResolved.b, lResolved.a) : Theta.fromCoord(lResolved.a, lResolved.b)
+    const theta = this.__prop.reverse ? Theta.fromCoord(lResolved.coord2, lResolved.coord1) : Theta.fromCoord(lResolved.coord1, lResolved.coord2)
     const phi = theta.add(Theta.py())
-    const b = aResolved.coord.addPolar(new CoordPolar(this.__prop.distance || LARGE_NUMBER, phi))
+    const coord2 = aResolved.coord.addPolar(new CoordPolar(this.__prop.distance || LARGE_NUMBER, phi))
 
     return {
-      a: aResolved.coord,
-      b,
-      extendA: !!(this.__prop.extendA),
-      extendB: !(this.__prop.distance),
+      coord1: aResolved.coord,
+      coord2,
+      extend1: !!(this.__prop.extend1),
+      extend2: !(this.__prop.distance),
     }
   }
 }

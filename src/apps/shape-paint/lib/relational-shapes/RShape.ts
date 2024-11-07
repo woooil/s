@@ -11,7 +11,7 @@ interface RDistanceExtraProp {
 
 interface RCoordOnLineExtraProp {
   onLine?: {
-    type: 'from1' | 'from2' | 'ratio' | 'x' | 'y'
+    type: 'coord1' | 'coord2' | 'ratio' | 'x' | 'y'
     value: number
   }
 }

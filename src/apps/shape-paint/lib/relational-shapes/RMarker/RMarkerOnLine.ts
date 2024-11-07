@@ -7,11 +7,11 @@ import { RShape } from '../RShape'
 
 /**
  * The properties of RMarkerOnLine.
- * @prop r  - The ratio of the internal division which this RMarkerOnLine makes. Uses 0.5 if not provided.
+ * @prop ratio    - The ratio of the internal division which this RMarkerOnLine makes. Uses 0.5 if not provided.
  * @prop reverse  - Reverses the direction of this RMarkerOnLine if true.
  */
 interface RMarkerOnLineProp extends RMarkerProp {
-  r?: number
+  ratio?: number
   reverse?: boolean
 }
 
@@ -41,8 +41,8 @@ class RMarkerOnLine extends RMarker {
    */
   resolve() {
     const resolved = this.__dependencies[0].resolve()
-    const r = this.__prop.r || 0.5
-    const coord = resolved.a.divideInternal(resolved.b, r)
+    const ratio = this.__prop.ratio || 0.5
+    const coord = resolved.a.divideInternal(resolved.b, ratio)
     const theta = this.__prop.reverse ? Theta.fromCoord(resolved.b, resolved.a) :  Theta.fromCoord(resolved.a, resolved.b)
 
     return {

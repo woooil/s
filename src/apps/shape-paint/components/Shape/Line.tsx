@@ -14,15 +14,15 @@ export default function Line({
     )
   }
 
-  const tempA = resolved.extendA ? extend(resolved.a, resolved.b) : resolved.a
-  resolved.b = resolved.extendB ? extend(resolved.b, resolved.a) : resolved.b
-  resolved.a = tempA
+  const tempA = resolved.extend1 ? extend(resolved.coord1, resolved.coord2) : resolved.coord1
+  resolved.coord2 = resolved.extend2 ? extend(resolved.coord2, resolved.coord1) : resolved.coord2
+  resolved.coord1 = tempA
 
   const attr = {
-    x1: resolved.a.x,
-    y1: resolved.a.y,
-    x2: resolved.b.x,
-    y2: resolved.b.y,
+    x1: resolved.coord1.x,
+    y1: resolved.coord1.y,
+    x2: resolved.coord2.x,
+    y2: resolved.coord2.y,
     stroke: 'black',
     strokeWidth: styles?.width || 2,
   }

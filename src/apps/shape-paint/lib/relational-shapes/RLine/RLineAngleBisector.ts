@@ -5,12 +5,12 @@ import { RDistanceExtraProp } from '../RShape'
 
 /**
  * The properties of RLineAngleBisectorProp. 
- * @prop reverseL - True if reverse the direction of the first RLine.
- * @prop reverseM - True if reverse the direction of the second RLine.
+ * @prop reverse1 - True if reverse the direction of the first RLine.
+ * @prop reverse2 - True if reverse the direction of the second RLine.
  */
 interface RLineAngleBisectorProp extends RLineProp, RDistanceExtraProp {
-  reverseL?: boolean,
-  reverseM?: boolean,
+  reverse1?: boolean,
+  reverse2?: boolean,
 }
 
 /**
@@ -31,15 +31,15 @@ class RLineAngleBisector extends RLine {
    * @throws Throws an Error if two RLines are parallel.
    */
   preresolve() {
-    const { coord: a, thetaMid: theta } = RLine.intersect(this.__dependencies[0], this.__dependencies[1], this.__prop.reverseL, this.__prop.reverseM)
+    const { coord: coord1, thetaMid: theta } = RLine.intersect(this.__dependencies[0], this.__dependencies[1], this.__prop.reverse1, this.__prop.reverse2)
     
-    const b = a.addPolar(new CoordPolar(this.__prop.distance || LARGE_NUMBER, theta))
+    const coord2 = coord1.addPolar(new CoordPolar(this.__prop.distance || LARGE_NUMBER, theta))
 
     return {
-      a: a,
-      b: b,
-      extendA: false,
-      extendB: !(this.__prop.distance),
+      coord1,
+      coord2,
+      extend1: false,
+      extend2: !(this.__prop.distance),
     }
   }
 }

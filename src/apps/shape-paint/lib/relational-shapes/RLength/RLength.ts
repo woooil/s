@@ -3,15 +3,15 @@ import { RShapeResolved, RShapeProp, RShapeStyle, RShapeTypeL2, RShape } from '.
 
 /**
  * The mathematical definition of RLength. Defined by two endpoints and which side this RLength should lay.
- * @prop a        - Coord at which this RLength starts.
- * @prop b        - Coord at which this RLength ends.
- * @prop r        - The curved ratio of this RLength.
- * @prop reverse  - True if this RLength should lay on -y direction when rotated to be aligned to +x direction. False if this RLength should lay on +y direction.
+ * @prop coord1     - Coord at which this RLength starts.
+ * @prop coord2     - Coord at which this RLength ends.
+ * @prop curvature  - The curvature of this RLength.
+ * @prop reverse    - True if this RLength should lay on -y direction when rotated to be aligned to +x direction. False if this RLength should lay on +y direction.
  */
 interface RLengthResolved extends RShapeResolved {
-  a: Coord,
-  b: Coord,
-  r: number,
+  coord1: Coord,
+  coord2: Coord,
+  curvature: number,
   reverse?: boolean,
 }
 
@@ -43,20 +43,20 @@ abstract class RLength extends RShape {
   }
 
   /**
-   * Resolves this RLength into RLengthResolved without calculated r.
+   * Resolves this RLength into RLengthResolved without calculated curvature.
    */
   protected abstract preresolve(): RLengthResolved
 
   /**
-   * Resolves this RLength into RLengthResolved with calculated r.
+   * Resolves this RLength into RLengthResolved with calculated curvature.
    */
   public resolve(): RLengthResolved {
     const preresolved = this.preresolve()
-    const length = preresolved.a.distance(preresolved.b)
+    const length = preresolved.coord1.distance(preresolved.coord2)
     const maxR = 28
     const co = 4
     const r = length > maxR * co ? maxR : length / co
-    preresolved.r = r
+    preresolved.curvature = r
     return preresolved
   }
 }

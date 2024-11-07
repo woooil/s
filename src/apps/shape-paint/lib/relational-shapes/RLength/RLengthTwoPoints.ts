@@ -8,7 +8,7 @@ interface RLengthTwoPointsProp extends RLengthProp { }
 
 /**
  * Represents length marker by its two endpoints.
- * @hierarchy RShape <- RLength<- RLengthTwoPoints
+ * @hierarchy RShape <- RLength <- RLengthTwoPoints
  */
 class RLengthTwoPoints extends RLength {
   public static TYPEL2 = 'RLengthTwoPoints'
@@ -27,9 +27,9 @@ class RLengthTwoPoints extends RLength {
     const bResolved = this.__dependencies[1].resolve()
 
     return {
-      a: aResolved.coord,
-      b: bResolved.coord,
-      r: 0,
+      coord1: aResolved.coord,
+      coord2: bResolved.coord,
+      curvature: 0,
       reverse: this.__prop.reverse,
     }
   }

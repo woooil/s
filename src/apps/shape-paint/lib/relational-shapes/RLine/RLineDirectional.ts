@@ -7,11 +7,11 @@ import { RDistanceExtraProp } from '../RShape'
 
 /**
  * The properties of RLineDirectional.
- * @prop extendA  - Extends RPoint if true.
+ * @prop extend1  - Extends backwards if true.
  * @prop theta - The direction.
  */
 interface RLineDirectionalProp extends RLineProp, RDistanceExtraProp {
-  extendA?: boolean
+  extend1?: boolean
   theta: ThetaMinimum
 }
 
@@ -33,12 +33,12 @@ class RLineDirectional extends RLine {
    */
   preresolve() {
     const resolved = this.__dependencies[0].resolve()
-    const b = resolved.coord.addPolar(new CoordPolar(this.__prop.distance || LARGE_NUMBER, this.__prop.theta))
+    const coord2 = resolved.coord.addPolar(new CoordPolar(this.__prop.distance || LARGE_NUMBER, this.__prop.theta))
     return {
-      a: resolved.coord,
-      b,
-      extendA: !!(this.__prop.extendA),
-      extendB: !(this.__prop.distance),
+      coord1: resolved.coord,
+      coord2,
+      extend1: !!(this.__prop.extend1),
+      extend2: !(this.__prop.distance),
     }
   }
 }

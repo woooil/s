@@ -2,10 +2,10 @@ import { RPointProp, RPointStyle, RPoint } from './RPoint'
 
 /**
  * The properties of RPointInternalDivison.
- * @prop r - The division ratio.
+ * @prop ratio - The division ratio.
  */
 interface RPointInternalDivisionProp extends RPointProp {
-  r: number
+  ratio: number
 }
 
 /**
@@ -29,7 +29,7 @@ class RPointInternalDivision extends RPoint {
     const bResolved = this.__dependencies[1].resolve()
 
     return {
-      coord: aResolved.coord.divideInternal(bResolved.coord, this.__prop.r)
+      coord: aResolved.coord.divideInternal(bResolved.coord, this.__prop.ratio)
     }
   }
 }

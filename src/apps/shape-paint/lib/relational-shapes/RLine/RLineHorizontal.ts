@@ -28,10 +28,10 @@ class RLineHorizontal extends RLine {
    */
   preresolve() {
     return {
-      a: new Coord(-LARGE_NUMBER, this.__prop.y),
-      b: new Coord(LARGE_NUMBER, this.__prop.y),
-      extendA: true,
-      extendB: true,
+      coord1: new Coord(-LARGE_NUMBER, this.__prop.y),
+      coord2: new Coord(LARGE_NUMBER, this.__prop.y),
+      extend1: true,
+      extend2: true,
     }
   }
 }
