@@ -19,6 +19,7 @@ export default function App() {
     a.cutLine(lineAC, lineBC)
     const angleABC = a.add(new RS.RAngleTwoLines([lineAB, lineBC], { reverse1: true }))
     a.rightAngle(angleABC)
+    const markerL = a.add(new RS.RMarkerOnLine([lineL], { onLine: { type: 'y', value: 80 }, marker: 'rotate' }))
   }, [])
 
   return (

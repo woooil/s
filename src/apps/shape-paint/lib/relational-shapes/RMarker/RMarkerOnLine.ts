@@ -1,17 +1,16 @@
 import { NotEqualError } from '../Error'
-import { Theta, ThetaMinimum } from '../Theta'
+import { Theta } from '../Theta'
 import { sim } from '../tools'
 import { RMarkerProp, RMarkerStyle, RMarker } from './RMarker'
-import { RLine } from '../RLine'
+import { RLine, CoordOnLine } from '../RLine'
 import { RShape } from '../RShape'
 
 /**
  * The properties of RMarkerOnLine.
- * @prop ratio    - The ratio of the internal division which this RMarkerOnLine makes. Uses 0.5 if not provided.
  * @prop reverse  - Reverses the direction of this RMarkerOnLine if true.
  */
 interface RMarkerOnLineProp extends RMarkerProp {
-  ratio?: number
+  onLine: CoordOnLine
   reverse?: boolean
 }
 
@@ -26,6 +25,7 @@ class RMarkerOnLine extends RMarker {
    * The dependencies for the dual. If exists, indicates the dual RMarkerOnLine to this RMarker.
    */
   protected __dependenciesDual: RMarkerOnLine | undefined
+  protected declare __dependencies: [RLine]
   public get dependencies(): RShape[] {
     if (this.__dependenciesDual) return [...this.__dependencies, this.__dependenciesDual]
     return this.__dependencies
@@ -40,10 +40,9 @@ class RMarkerOnLine extends RMarker {
    * Calculates the coord and the direction.
    */
   resolve() {
+    const coord = this.__dependencies[0].coordOnLine(this.__prop.onLine)
     const resolved = this.__dependencies[0].resolve()
-    const ratio = this.__prop.ratio || 0.5
-    const coord = resolved.a.divideInternal(resolved.b, ratio)
-    const theta = this.__prop.reverse ? Theta.fromCoord(resolved.b, resolved.a) :  Theta.fromCoord(resolved.a, resolved.b)
+    const theta = this.__prop.reverse ? Theta.fromCoord(resolved.coord2, resolved.coord1) :  Theta.fromCoord(resolved.coord1, resolved.coord2)
 
     return {
       coord,
@@ -61,8 +60,8 @@ class RMarkerOnLine extends RMarker {
   public parallel(rmarker: RMarkerOnLine, marker: string) {
     const lResolved = this.__dependencies[0].resolve()
     const mResolved = rmarker.__dependencies[0].resolve()
-    const lTheta = Theta.fromCoord(lResolved.a, lResolved.b)
-    const mTheta = Theta.fromCoord(mResolved.a, mResolved.b)
+    const lTheta = Theta.fromCoord(lResolved.coord1, lResolved.coord2)
+    const mTheta = Theta.fromCoord(mResolved.coord1, mResolved.coord2)
     if (sim(lTheta.t, mTheta.t) || sim(lTheta.t, mTheta.add(Theta.nx()).t)) {
       this.__dependenciesDual = rmarker
       this.__prop.marker = marker

@@ -1,6 +1,7 @@
-import { Coord } from '../Coord'
+import { ParallelLinesError, DefaultCaseError } from '../Error'
+import { sim } from '../tools'
+import { Coord, CoordPolar } from '../Coord'
 import { Theta, ThetaMinimum } from '../Theta'
-import { ParallelLinesError } from '../Error'
 import { RShapeResolved, RShapeProp, RShapeStyle, RShapeTypeL2, RShape } from '../RShape'
 
 /**
@@ -25,6 +26,11 @@ interface RLineResolved extends RShapeResolved {
 interface RLineProp extends RShapeProp {
   cut1?: boolean
   cut2?: boolean
+}
+
+type CoordOnLine = {
+  type: 'coord1' | 'coord2' | 'ratio' | 'x' | 'y'
+  value: number
 }
 
 /**
@@ -119,6 +125,43 @@ abstract class RLine extends RShape {
   }
 
   /**
+   * Calculates CoordOnLine on this RLine.
+   */
+  public coordOnLine(onLine: CoordOnLine): Coord {
+    const resolved = this.resolve()
+    const theta = Theta.fromCoord(resolved.coord1, resolved.coord2)
+    let coord: Coord
+    const m = (resolved.coord2.y - resolved.coord1.y) / (resolved.coord2.x - resolved.coord1.x)
+    switch (onLine.type) {
+      case 'coord1':
+        coord = resolved.coord1.addPolar(new CoordPolar(onLine.value, theta))
+        break
+      case 'coord2':
+        coord = resolved.coord2.addPolar(new CoordPolar(onLine.value, theta))
+        break
+      case 'ratio':
+        coord = resolved.coord1.divideInternal(resolved.coord2, onLine.value)
+        break
+      case 'x':
+        if (sim(resolved.coord1.x, resolved.coord2.x))
+          throw ParallelLinesError(`RLine ${this.__dependencies[0].id}`, 'y-axis')
+        const y = resolved.coord1.y + (onLine.value - resolved.coord1.x) * m
+        coord = new Coord(onLine.value, y)
+        break
+      case 'y':
+        if (sim(resolved.coord1.y, resolved.coord2.y))
+          throw ParallelLinesError(`RLine ${this.__dependencies[0].id}`, 'x-axis')
+        const x = resolved.coord1.x + (onLine.value - resolved.coord1.y) / m
+        coord = new Coord(x, onLine.value)
+        break
+      default:
+        throw DefaultCaseError(onLine.type)
+    }
+
+    return coord
+  }
+
+  /**
    * Returns an intersection with another RLine.
    * @return  coord     - The intersection.
    * @return  theta     - The (directional) angular measure.
@@ -175,4 +218,4 @@ abstract class RLine extends RShape {
   }
 }
 
-export { RLineResolved, RLineProp, RLineStyle, RLine }
+export { RLineResolved, RLineProp, RLineStyle, RLine, CoordOnLine }
