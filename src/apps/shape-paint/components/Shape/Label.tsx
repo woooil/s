@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { v4 as uuid } from 'uuid'
 import { Props } from './Props'
-import { RLabelResolved, RLabelStyle } from '../../lib/relational-shapes'
+import { RLabelResolved, } from '../../lib/relational-shapes'
 
 function Arrow({ x1, y1, x2, y2 }: { x1: number, y1: number, x2: number, y2: number }) {
   const theta = Math.atan2(y2 - y1, x2 - x1)
@@ -49,16 +49,14 @@ function Arrow({ x1, y1, x2, y2 }: { x1: number, y1: number, x2: number, y2: num
 
 export default function Label({
   resolved,
-  styles,
   ...props
-}: Props<RLabelResolved, RLabelStyle, SVGGElement>) {
+}: Props<RLabelResolved, SVGGElement>) {
   const attr = {
     x: resolved.coord.x,
     y: resolved.coord.y,
     textAnchor: 'middle',
     dominantBaseline: 'middle',
     fontFamily: 'Latin Modern',
-    fontStyle: styles?.italic ? 'italic' : '',
     fontSize: '24px',
     stroke: 'white',
     strokeWidth: '0.3em',

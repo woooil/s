@@ -20,68 +20,60 @@ import Polygon from './Polygon'
 import Arc from './Arc'
 
 export default function Shape({ shape, ...props }: { shape: RShape }) {
-  switch (shape.type[0]) {
-    case RPoint.TYPEL1:
+  switch (shape.resType) {
+    case RPoint.RES_TYPE:
       return (
         <Point
           resolved={(shape as RPoint).resolve()}
-          styles={(shape as RPoint).style}
           {...props}
         />
       )
-    case RLine.TYPEL1:
+    case RLine.RES_TYPE:
       return (
         <Line
           resolved={(shape as RLine).resolve()}
-          styles={(shape as RPoint).style}
           {...props}
         />
       )
-    case RLabel.TYPEL1:
+    case RLabel.RES_TYPE:
       return (
         <Label
           resolved={(shape as RLabel).resolve()}
-          styles={(shape as RLabel).style}
           {...props}
         />
       )
-    case RAngle.TYPEL1:
+    case RAngle.RES_TYPE:
       return (
         <Angle
           resolved={(shape as RAngle).resolve()}
-          styles={(shape as RAngle).style}
           {...props}
         />
       )
-    case RLength.TYPEL1:
+    case RLength.RES_TYPE:
       return (
         <Length
           resolved={(shape as RLength).resolve()}
-          styles={(shape as RLength).style}
           {...props}
         />
       )
-    case RMarker.TYPEL1:
+    case RMarker.RES_TYPE:
       return (
         <Marker
           resolved={(shape as RMarker).resolve()}
-          styles={(shape as RMarker).style}
           {...props}
         />
       )
-    case RPolygon.TYPEL1:
+    case RPolygon.RES_TYPE:
       return (
         <Polygon
           resolved={(shape as RPolygon).resolve()}
-          styles={(shape as RPolygon).style}
           {...props}
         />
       )
-    case RArc.TYPEL1:
+    case RArc.RES_TYPE:
       return (
         <Arc
           resolved={(shape as RArc).resolve()}
-          styles={(shape as RArc).style}
           {...props}
         />
       )

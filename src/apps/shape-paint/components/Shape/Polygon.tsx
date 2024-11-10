@@ -1,19 +1,18 @@
 import * as React from 'react'
 import { Props } from './Props'
-import { RPolygonResolved, RPolygonStyle } from '../../lib/relational-shapes'
+import { RPolygonResolved } from '../../lib/relational-shapes'
 
 export default function Polygon({
   resolved,
-  styles,
   ...props
-}: Props<RPolygonResolved, RPolygonStyle, SVGPolygonElement>) {
+}: Props<RPolygonResolved, SVGPolygonElement>) {
   const points = resolved.coords.map(coord => `${coord.x} ${coord.y} `).join(' ').trimEnd()
   
   const attr = {
     points,
     fill: 'none',
     stroke: 'black',
-    strokeWidth: styles?.width || 2,
+    strokeWidth: 2,
   }
 
   return (

@@ -1,7 +1,6 @@
 import * as React from 'react'
 
-export type Props<R, S, T> = {
+export type Props<R, T> = {
   resolved: R
-  styles?: S
 } & React.AllHTMLAttributes<T> &
   React.SVGAttributes<T>

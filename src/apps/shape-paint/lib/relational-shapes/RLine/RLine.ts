@@ -2,16 +2,17 @@ import { ParallelLinesError, DefaultCaseError } from '../Error'
 import { sim } from '../tools'
 import { Coord, CoordPolar } from '../Coord'
 import { Theta, ThetaMinimum } from '../Theta'
-import { RShapeResolved, RShapeProp, RShapeStyle, RShapeTypeL2, RShape } from '../RShape'
+import { RShape } from '../RShape'
 
 /**
- * The mathematical definition of RLine. Defined by two points Line passes through.
- * @prop coord1   - The first Coord which this RLine passes through.
- * @prop coord2   - The second Coord which this RLine passes through.
- * @prop extend1  - Whether to extend coord1 or not.
- * @prop extend2  - Whether to extend coord2 or not.
+ * The resolved of RLine.
+ * RLine is a line if both extend1 and extend2 are true; a segment if both are false; a ray if only one of them is true.
+ * @prop coord1   - The first Coord at which this RLine starts.
+ * @prop coord2   - The second Coord at which this RLine ends.
+ * @prop extend1  - Extends this RLine backwards over coord1 if true.
+ * @prop extend2  - Extends this RLine forwards over coord2 if true.
  */
-interface RLineResolved extends RShapeResolved {
+interface RLineResolved {
   coord1: Coord
   coord2: Coord
   extend1: boolean
@@ -20,41 +21,50 @@ interface RLineResolved extends RShapeResolved {
 
 /**
  * The properties of RLine.
- * @prop cut1 - Whether to cut coord1 by another Line.
- * @prop cut2 - Whether to cut coord2 by another Line.
+ * @prop cut1 - Cuts coord1 by another RLine if true.
+ * @prop cut2 - Cuts coord2 by another RLine if true.
  */
-interface RLineProp extends RShapeProp {
+interface RLineProp {
   cut1?: boolean
   cut2?: boolean
 }
 
+/**
+ * The type to determine a specific Coord on RLine.
+ * @prop type   - How to use the value: value is a (signed) distance from coord1 if 'coord1'; value is a (signed) distance from coord2 if 'coord2'; value is a ratio of internal division if 'ratio'; value is the x coordinate if 'x'; value is the y coordinate if 'y'
+ * @prop value  - The value which determines the Coord on RLine.
+ *
+ * @example {
+ *   type: 'coord1';
+ *   value: 10;
+ * }
+ * represents a Coord which is on RLine, distant by 10 from its coord1 along RLine. 
+ */
 type CoordOnLine = {
   type: 'coord1' | 'coord2' | 'ratio' | 'x' | 'y'
   value: number
 }
 
 /**
- * The style of RLine.
- * @prop width  - The width.
- */
-interface RLineStyle extends RShapeStyle {
-  width?: number
-}
-
-/**
- * Represents lines.
+ * Represents directional lines including segments and rays.
+ *
+ * @example RLineResolved {
+ *   coord1: { x: 10, y: 20 };
+ *   coord2: { x: 30, y: 40 };
+ *   extend1: false;
+ *   extend2: true;
+ * }
+ * represents a line which starts at (10, 20) and extends infinitely through (30, 40).
+ *
  * @hierarchy RShape <- RLine
  */
 abstract class RLine extends RShape {
-  /**
-   * 'RLine'.
-   */
-  public static TYPEL1 = 'RLine'
+  public static RES_TYPE = 'RLine'
 
   /**
    * The dependencies for the cut.
-   * @prop a  - RLine which cuts the extending point A of this RLine. undefined if not cut.
-   * @prop b  - RLine which cuts the extending point B of this RLine. undefined if not cut.
+   * @prop coord1 - RLine which cuts coord1, if exists.
+   * @prop coord2 - RLine which cuts coord2, if exists.
    */
   protected __dependenciesCut: { coord1: RLine | undefined; coord2: RLine | undefined }
   public get dependencies(): RShape[] {
@@ -65,8 +75,8 @@ abstract class RLine extends RShape {
   }
   protected declare __prop: RLineProp
 
-  constructor(dependencies: RShape[], prop: RLineProp, style: RLineStyle, typel2: RShapeTypeL2) {
-    super(dependencies, prop, style, [RLine.TYPEL1, typel2])
+  constructor(dependencies: RShape[], prop: RLineProp, relType: string) {
+    super(dependencies, prop, RLine.RES_TYPE, relType)
     this.__dependenciesCut = { coord1: undefined, coord2: undefined }
   }
 
@@ -95,9 +105,8 @@ abstract class RLine extends RShape {
 
   /**
    * Cuts this RLine with the given RLine.
-   * If this RLine has been already cut, it will change the cutting line.
-   * @param rline    - RLine which cut.
-   * @param select1 - True if cut coord1; false if cut coord2.
+   * @param rline   - RLine which cuts this RLine.
+   * @param select1 - Cuts coord1 if true; cuts coord2 if false.
    */
   public cut(rline: RLine, select1: boolean) {
     if (select1) {
@@ -110,9 +119,8 @@ abstract class RLine extends RShape {
   }
 
   /**
-   * Uncuts this RLine.
-   * If this RLine has not been cut, it will have no effect.
-   * @param select1 - True if uncut coord1; false if uncut coord2.
+   * Uncuts this RLine. If this RLine has not been cut, it will have no effect.
+   * @param select1 - Uncuts coord1 if true; uncuts coord if false.
    */
   public uncut(select1: boolean) {
     if (select1) {
@@ -125,7 +133,8 @@ abstract class RLine extends RShape {
   }
 
   /**
-   * Calculates CoordOnLine on this RLine.
+   * Calculates a Coord on this RLine.
+   * @params onLine - The CoordOnLine on this RLine.
    */
   public coordOnLine(onLine: CoordOnLine): Coord {
     const resolved = this.resolve()
@@ -162,12 +171,12 @@ abstract class RLine extends RShape {
   }
 
   /**
-   * Returns an intersection with another RLine.
+   * Calculates the intersection with another RLine.
    * @return  coord     - The intersection.
    * @return  theta     - The (directional) angular measure.
-   * @return  theta0    - The start direction.
-   * @return  thetaMid  - The middle direction.
-   * @throws Throws an Error if two RLines are parallel.
+   * @return  theta0    - The start orientation.
+   * @return  thetaMid  - The middle orientation.
+   * @throws  Throws a ParallelLinesError if two RLines are parallel.
    */
   public static intersect(lineL: RLine, lineM: RLine, reverseL?: boolean, reverseM?: boolean): { coord: Coord, theta0: ThetaMinimum, theta: ThetaMinimum, thetaMid: ThetaMinimum } {
     const lResolved = lineL.preresolve()
@@ -218,4 +227,4 @@ abstract class RLine extends RShape {
   }
 }
 
-export { RLineResolved, RLineProp, RLineStyle, RLine, CoordOnLine }
+export { RLineResolved, RLineProp, RLine, CoordOnLine }

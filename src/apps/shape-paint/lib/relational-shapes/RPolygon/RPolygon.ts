@@ -1,45 +1,32 @@
 import { Coord } from '../Coord'
-import { RShapeResolved, RShapeProp, RShapeStyle, RShapeTypeL2, RShape } from '../RShape'
+import { RShape } from '../RShape'
 
 /**
- * The mathematical definition of RPolygon. Defined by its vertices.
+ * The resolved of RPolygon.
  * @prop coords - The coordinates of its vertices. 
  */
-interface RPolygonResolved extends RShapeResolved {
+interface RPolygonResolved {
   coords: Coord[]
 }
 
 /**
- * The properties of RPolygon.
- */
-interface RPolygonProp extends RShapeProp {}
-
-/**
- * The style of RPolygon.
- * @prop width  - The width.
- */
-interface RPolygonStyle extends RShapeStyle {
-  width?: number
-}
-
-/**
  * Represents polygons.
+ *
+ * @example RPolygonResolved {
+ *   coords: [{ x: 10, y: 10 }, { x: 20, y: 20 }, { x: 30, y: 20 }];
+ * }
+ * represents a triangle whose vertices are (10, 10), (20, 20) and (30, 20).
+ *
  * @hierarchy RShape <- RPolygon
  */
 abstract class RPolygon extends RShape {
-  /**
-   * 'RPolygon'.
-   */
-  public static TYPEL1 = 'RPolygon'
+  public static RES_TYPE = 'RPolygon'
 
-  constructor(dependencies: RShape[], prop: RPolygonProp, style: RPolygonStyle, typel2: RShapeTypeL2) {
-    super(dependencies, prop, style, [RPolygon.TYPEL1, typel2])
+  constructor(dependencies: RShape[], prop: any, relType: string) {
+    super(dependencies, prop, RPolygon.RES_TYPE, relType)
   }
 
-  /**
-   * Resolves this RPolygon into RPolygonResolved.
-   */
   public abstract resolve(): RPolygonResolved
 }
 
-export { RPolygonResolved, RPolygonProp, RPolygonStyle, RPolygon }
+export { RPolygonResolved, RPolygon }

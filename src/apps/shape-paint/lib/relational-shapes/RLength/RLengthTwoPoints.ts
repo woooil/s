@@ -1,22 +1,16 @@
-import { RLengthProp, RLengthStyle, RLength } from './RLength'
+import { RLength } from './RLength'
 import { RPoint } from '../RPoint'
-
-/**
- * The properties of RLengthTwoPointsProp.
- */
-interface RLengthTwoPointsProp extends RLengthProp { }
 
 /**
  * Represents length marker by its two endpoints.
  * @hierarchy RShape <- RLength <- RLengthTwoPoints
  */
 class RLengthTwoPoints extends RLength {
-  public static TYPEL2 = 'RLengthTwoPoints'
+  public static REL_TYPE = 'RLengthTwoPoints'
   protected declare __dependencies: [RPoint, RPoint]
-  protected declare __prop: RLengthTwoPointsProp
 
-  constructor(dependencies: [RPoint, RPoint], prop: RLengthTwoPointsProp, style?: RLengthStyle) {
-    super(dependencies, prop, style, RLengthTwoPoints.TYPEL2)
+  constructor(dependencies: [RPoint, RPoint], _: any) {
+    super(dependencies, {}, RLengthTwoPoints.REL_TYPE)
   }
 
   /**
@@ -30,9 +24,8 @@ class RLengthTwoPoints extends RLength {
       coord1: aResolved.coord,
       coord2: bResolved.coord,
       curvature: 0,
-      reverse: this.__prop.reverse,
     }
   }
 }
 
-export { RLengthTwoPointsProp, RLengthTwoPoints }
+export { RLengthTwoPoints }

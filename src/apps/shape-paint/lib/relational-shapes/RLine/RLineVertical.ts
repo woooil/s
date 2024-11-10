@@ -1,32 +1,35 @@
 import { LARGE_NUMBER } from '../tools'
 import { Coord } from '../Coord'
-import { RLineProp, RLineStyle, RLine } from './RLine'
+import { RLineProp, RLine } from './RLine'
 import { RShape } from '../RShape'
 
 /**
- * The properties of RLineVertical.
- * @prop x  - The x coordinate.
+ * The properties of RLineVertical which extends RLineProp.
+ * @prop x - The x coordinate.
  */
 interface RLineVerticalProp extends RLineProp {
   x: number
 }
 
 /**
- * Represents lines vertical.
+ * Represents vertical lines.
+ *
+ * @example RLineVertical {
+ *   prop: { x: 10 }
+ * }
+ * represents a vertical line whose x coordinate is 10.
+ *
  * @hierarchy RShape <- RLine <- RLineVertical
  */
 class RLineVertical extends RLine {
-  public static TYPEL2 = 'RLineVertical'
+  public static REL_TYPE = 'RLineVertical'
   protected declare __prop: RLineVerticalProp
 
-  constructor(_: RShape[], prop: RLineVerticalProp, style?: RLineStyle) {
-    super([], prop, style, RLineVertical.TYPEL2)
+  constructor(_: RShape[], prop: RLineVerticalProp) {
+    super([], prop, RLineVertical.REL_TYPE)
   }
 
-  /**
-   * Returns a vertical line.
-   */
-  preresolve() {
+  protected preresolve() {
     return {
       coord1: new Coord(this.__prop.x, -LARGE_NUMBER),
       coord2: new Coord(this.__prop.x, LARGE_NUMBER),

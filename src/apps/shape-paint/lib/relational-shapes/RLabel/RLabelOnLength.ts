@@ -1,34 +1,39 @@
-import { Coord, CoordPolar } from '../Coord'
+import { CoordPolar } from '../Coord'
 import { Theta } from '../Theta'
-import { RLabelProp, RLabelStyle, RLabel } from './RLabel'
+import { RLabelProp, RLabel } from './RLabel'
 import { RLength } from '../RLength'
 
 /**
- * The properties of RLableOnLength.
+ * The properties of RLableOnLength which extends RLabelProp.
  */
 interface RLabelOnLengthProp extends RLabelProp {}
 
 /**
- * Represents labels on length markers, typically representing their length.
+ * Represents labels on length markers.
+ *
+ * @example RLabelOnLength {
+ *   dependencies: [RLength1];
+ *   prop: { label: '10 cm' };
+ * }
+ * represents a label written '10 cm' at the middle of RLength1.
+ *
+ *
  * @hierarchy RShape <- RLabel <- RLabelOnLength
  */
 class RLabelOnLength extends RLabel {
-  public static TYPEL2 = 'RLabelOnLength'
+  public static REL_TYPE = 'RLabelOnLength'
   protected declare __dependencies: [RLength]
   protected declare __prop: RLabelOnLengthProp
 
-  constructor(dependencies: [RLength], prop: RLabelOnLengthProp, style?: RLabelStyle) {
-    super(dependencies, prop, style, RLabelOnLength.TYPEL2)
+  constructor(dependencies: [RLength], prop: RLabelOnLengthProp) {
+    super(dependencies, prop, RLabelOnLength.REL_TYPE)
   }
 
-  /**
-   * Calculates the midpoint of RLength and give some offsets.
-   */
   resolve() {
     const resolved = this.__dependencies[0].resolve()
     const theta = Theta.fromCoord(resolved.a, resolved.b)
     const coord = resolved.a.avg(resolved.b).addPolar(new CoordPolar(
-      resolved.r,
+      resolved.curvature,
       theta.add(resolved.reverse ? Theta.ny() : Theta.py())
     ))
     return {

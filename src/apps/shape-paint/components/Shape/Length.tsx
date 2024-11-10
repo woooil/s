@@ -1,12 +1,11 @@
 import * as React from 'react'
 import { Props } from './Props'
-import { RLengthResolved, RLengthStyle } from '../../lib/relational-shapes'
+import { RLengthResolved } from '../../lib/relational-shapes'
 
 export default function Length({
   resolved,
-  styles,
   ...props
-}: Props<RLengthResolved, RLengthStyle, SVGPathElement>) {
+}: Props<RLengthResolved, SVGPathElement>) {
   const theta = Math.atan2(resolved.coord2.y - resolved.coord1.y, resolved.coord2.x - resolved.coord1.x)
   const p = {
     M: {

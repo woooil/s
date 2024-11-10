@@ -1,13 +1,11 @@
-import { ParallelLinesError, DefaultCaseError } from '../Error'
-import { sim } from '../tools'
-import { Coord, CoordPolar } from '../Coord'
-import { Theta } from '../Theta'
-import { RLabelProp, RLabelStyle, RLabel } from './RLabel'
+import { CoordPolar } from '../Coord'
+import { RLabelProp, RLabel } from './RLabel'
 import { RLine, CoordOnLine } from '../RLine'
 
 /**
- * The properties of RLabelOnLine.
- * @prop offset   - The polar coordinate of offset.
+ * The properties of RLabelOnLine which extends RLabelProp.
+ * @prop onLine - The CoordOnLine on the dependend RLine.
+ * @prop offset - The polar coordinate of offset.
  */
 interface RLabelOnLineProp extends RLabelProp {
   onLine: CoordOnLine
@@ -16,20 +14,24 @@ interface RLabelOnLineProp extends RLabelProp {
 
 /**
  * Represents labels on lines, typically representing their name.
+ *
+ * @example RLabelOnLine {
+ *   dependencies: [RLine1];
+ *   prop: { label: 'l', onLine: { type: 'ratio', value: 0.5 } };
+ * }
+ * represents a label written 'l' at the midpoint of RLine1.
+ *
  * @hierarchy RShape <- RLabel <- RLabelOnLine
  */
 class RLabelOnLine extends RLabel {
-  public static TYPEL2 = 'RLabelOnLine'
+  public static REL_TYPE = 'RLabelOnLine'
   protected declare __dependencies: [RLine]
   protected declare __prop: RLabelOnLineProp
 
-  constructor(dependencies: [RLine], prop: RLabelOnLineProp, style?: RLabelStyle) {
-    super(dependencies, prop, style, RLabelOnLine.TYPEL2)
+  constructor(dependencies: [RLine], prop: RLabelOnLineProp) {
+    super(dependencies, prop, RLabelOnLine.REL_TYPE)
   }
 
-  /**
-   * Calculates the coord of RLabelOnLine.
-   */
   resolve() {
     const coord = this.__dependencies[0].coordOnLine(this.__prop.onLine)
 

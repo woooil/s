@@ -2,16 +2,16 @@ import { NotEqualError } from '../Error'
 import { Coord } from '../Coord'
 import { sim } from '../tools'
 import { Theta, ThetaMinimum } from '../Theta'
-import { RShapeResolved, RShapeProp, RShapeStyle, RShapeTypeL2, RShape } from '../RShape'
+import { RShapeRelType, RShape } from '../RShape'
 
 /**
- * The mathematical definition of RAngle.
+ * The resolved of RAngle.
  * @prop coord  - The coordinates of the vertex.
- * @prop theta0 - The start direction in ThetaMinimum.
- * @prop theta  - The (directional) angular measure in Theta. 
+ * @prop theta0 - The start orientation.
+ * @prop theta  - The (directional) angular measure.
  * @prop marker - The marker representing this RAngle.
  */
-interface RAngleResolved extends RShapeResolved {
+interface RAngleResolved {
   coord: Coord
   theta0: ThetaMinimum
   theta: Theta
@@ -20,31 +20,31 @@ interface RAngleResolved extends RShapeResolved {
 
 /**
  * The properties of RAngle.
- * @prop marker     - The marker representing this RAngle.
- * @prop congruent  - True if this is congruent to another RAngle.
+ * @prop marker - The marker representing this RAngle.
+ * @prop dual   - Congurent to another RAngle if true.
  */
-interface RAngleProp extends RShapeProp {
+interface RAngleProp {
   marker?: string
   dual?: boolean
 }
 
 /**
- * The style of RAngle.
- */
-interface RAngleStyle extends RShapeStyle {}
-
-/**
  * Represents angle markers.
+ * 
+ * @example RAngleResolved {
+ *   coord: { x: 10, 10 };
+ *   theta0: { t: 0 };
+ *   theta: { t: Math.PI / 2};
+ * }
+ * represents a right angle at (10, 10) which starts at 0 rad and ends at PI / 2 rad.
+ *
  * @hierarchy RShape <- RAngle
  */
 abstract class RAngle extends RShape {
-  /**
-   * 'RAngle'
-   */
-  public static TYPEL1 = 'RAngle'
+  public static RES_TYPE = 'RAngle'
 
   /**
-   * The dependencies for the congruent. If exists, indicates the congruent RAngle to this RAngle.
+   * The dependencies for the congruent. If exists, this indicates the congruent RAngle to this RAngle.
    */
   protected __dependenciesDual: RAngle | undefined
   public get dependencies(): RShape[] {
@@ -53,15 +53,16 @@ abstract class RAngle extends RShape {
   }
   protected declare __prop: RAngleProp
 
-  constructor(dependencies: RShape[], prop: RAngleProp, style: RAngleStyle, typel2: RShapeTypeL2) {
-    super(dependencies, prop, style, [RAngle.TYPEL1, typel2])
+  constructor(dependencies: RShape[], prop: RAngleProp, relType: RShapeRelType) {
+    super(dependencies, prop, RAngle.RES_TYPE, relType)
   }
 
-  /**
-   * Resolves this RAngle to RAngleResolved.
-   */
   public abstract resolve(): RAngleResolved
 
+  /**
+   * Makes this RAngle right.
+   * @throws Throws a NotEqualError if this RAngle does not have size of pi radian.
+   */
   public right() {
     const theta = this.resolve().theta.size
     if (sim(theta, Math.PI / 2)) {
@@ -93,4 +94,4 @@ abstract class RAngle extends RShape {
   }
 }
 
-export { RAngleResolved, RAngleProp, RAngleStyle, RAngle }
+export { RAngleResolved, RAngleProp, RAngle }

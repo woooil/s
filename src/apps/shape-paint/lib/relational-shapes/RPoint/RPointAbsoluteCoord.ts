@@ -1,33 +1,36 @@
 import { Coord } from '../Coord'
-import { RPointProp, RPointStyle, RPoint } from './RPoint'
+import { RPoint } from './RPoint'
 import { RShape } from '../RShape'
 
 /**
- * The properties of RPointAbsoluteCoord. Defined by its absolute coordinates.
+ * The properties of RPointAbsoluteCoord. 
  * @prop x - The x coordinate.
  * @prop y - The y coordinate.
  */
-interface RPointAbsoluteCoordProp extends RPointProp {
+interface RPointAbsoluteCoordProp {
   x: number
   y: number
 }
 
 /**
  * Represents points as its absolute coordinates in the Cartesian coordinate system.
+ * 
+ * @example RPointAbsoluteCoord {
+ *   prop: { x: 10, y: 10 };
+ * }
+ * represents a point at (10, 10).
+ *
  * @hierarchy RShape <- RPoint <- RPointAbsoluteCoord
  */
 class RPointAbsoluteCoord extends RPoint {
-  public static TYPEL2 = 'RPointAbsoluteCoord'
+  public static REL_TYPE = 'RPointAbsoluteCoord'
   protected declare __prop: RPointAbsoluteCoordProp
 
-  constructor(_: RShape[], prop: RPointAbsoluteCoordProp, style?: RPointStyle) {
-    super([], prop, style, RPointAbsoluteCoord.TYPEL2)
+  constructor(_: RShape[], prop: RPointAbsoluteCoordProp) {
+    super([], prop, RPointAbsoluteCoord.REL_TYPE)
   }
 
-  /**
-   * Returns its coordinates without any modification.
-   */
-  resolve() {
+  public resolve() {
     return {
       coord: new Coord(this.__prop.x, this.__prop.y),
     }

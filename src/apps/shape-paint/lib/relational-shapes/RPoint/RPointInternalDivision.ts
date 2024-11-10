@@ -1,30 +1,34 @@
-import { RPointProp, RPointStyle, RPoint } from './RPoint'
+import { RPoint } from './RPoint'
 
 /**
  * The properties of RPointInternalDivison.
- * @prop ratio - The division ratio.
+ * @prop ratio - The division ratio of the two depended RPoints.
  */
-interface RPointInternalDivisionProp extends RPointProp {
+interface RPointInternalDivisionProp {
   ratio: number
 }
 
 /**
- * Represents points as internal divisions of two points.
+ * Represents points as the internal division of two RPoints.
+ *
+ * @example RPointInternalDivision {
+ *   dependencies: [RPoint1, RPoint2];
+ *   prop: { ratio: 0.2 };
+ * }
+ * represents the internal division point of RPoint1 and RPoint2 with the division ratio of 0.2.
+ *
  * @hierarchy RShape <- RPoint <- RPointInternalDivision
  */
 class RPointInternalDivision extends RPoint {
-  public static TYPEL2 = 'RPointInternalDivision'
+  public static REL_TYPE = 'RPointInternalDivision'
   protected declare __dependencies: [RPoint, RPoint]
   protected declare __prop: RPointInternalDivisionProp
 
-  constructor(dependencies: [RPoint, RPoint], prop: RPointInternalDivisionProp, style?: RPointStyle) {
-    super(dependencies, prop, style, RPointInternalDivision.TYPEL2)
+  constructor(dependencies: [RPoint, RPoint], prop: RPointInternalDivisionProp) {
+    super(dependencies, prop, RPointInternalDivision.REL_TYPE)
   }
 
-  /**
-   * Calculates the internal division mathematically.
-   */
-  resolve() {
+  public resolve() {
     const aResolved = this.__dependencies[0].resolve()
     const bResolved = this.__dependencies[1].resolve()
 

@@ -1,50 +1,47 @@
 import { Coord } from '../Coord'
 import { ThetaMinimum } from '../Theta'
-import { RShapeResolved, RShapeProp, RShapeStyle, RShapeTypeL2, RShape } from '../RShape'
+import { RShape } from '../RShape'
 
 /**
- * The mathematical definition of RMarker.
+ * The resolved of RMarker.
  * @prop coord  - The coordinates.
- * @prop theta  - The direction.
+ * @prop theta  - The orientation.
  * @prop marker - The marker.
  */
-interface RMarkerResolved extends RShapeResolved {
+interface RMarkerResolved {
   coord: Coord
   theta: ThetaMinimum
-  marker?: string
+  marker: string
 }
 
 /**
  * The properties of RMarker.
  * @prop marker - The marker.
  */
-interface RMarkerProp extends RShapeProp {
-  marker?: string
+interface RMarkerProp {
+  marker: string
 }
-
-/**
- * The style of RMarker.
- */
-interface RMarkerStyle extends RShapeStyle {}
 
 /**
  * Represents any markers at a specific position.
+ *
+ * @example RMarkerResolved {
+ *   coord: { x: 10, y: 10 };
+ *   theta: { t: 1 };
+ *   marker: '|';
+ * }
+ * represnet a marker '|' which is located at (10, 10) and rotated by 1 rad about +x axis.
+ *
  * @hierarchy RShape <- RMarker
  */
 abstract class RMarker extends RShape {
-  /**
-   * 'RMarker'.
-   */
-  public static TYPEL1 = 'RMarker'
+  public static RES_TYPE = 'RMarker'
 
-  constructor(dependencies: RShape[], prop: RMarkerProp, style: RMarkerStyle, typel2: RShapeTypeL2) {
-    super(dependencies, prop, style, [RMarker.TYPEL1, typel2])
+  constructor(dependencies: RShape[], prop: RMarkerProp, relType: string) {
+    super(dependencies, prop, RMarker.RES_TYPE, relType)
   }
 
-  /**
-   * Resolves this RMarker into RMarkerResolved.
-   */
   public abstract resolve(): RMarkerResolved
 }
 
-export { RMarkerResolved, RMarkerProp, RMarkerStyle, RMarker }
+export { RMarkerResolved, RMarkerProp, RMarker }

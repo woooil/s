@@ -1,12 +1,11 @@
 import * as React from 'react'
 import { Props } from './Props'
-import { RArcResolved, RArcStyle, Coord } from '../../lib/relational-shapes'
+import { RArcResolved, Coord } from '../../lib/relational-shapes'
 
 export default function Arc({
   resolved,
-  styles,
   ...props
-}: Props<RArcResolved, RArcStyle, SVGPathElement>) {
+}: Props<RArcResolved, SVGPathElement>) {
   const p = {
     M: {
       x: resolved.coord.x + resolved.r * Math.cos(resolved.theta0.t),

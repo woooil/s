@@ -1,13 +1,14 @@
 import { NotEqualError } from '../Error'
 import { Theta } from '../Theta'
 import { sim } from '../tools'
-import { RMarkerProp, RMarkerStyle, RMarker } from './RMarker'
+import { RMarkerProp, RMarker } from './RMarker'
 import { RLine, CoordOnLine } from '../RLine'
 import { RShape } from '../RShape'
 
 /**
- * The properties of RMarkerOnLine.
- * @prop reverse  - Reverses the direction of this RMarkerOnLine if true.
+ * The properties of RMarkerOnLine which extends RMarkerProp.
+ * @prop onLine   - The CoordOnLine on the depended RLine.
+ * @prop reverse  - Reverses the direction of the depended RLine if true.
  */
 interface RMarkerOnLineProp extends RMarkerProp {
   onLine: CoordOnLine
@@ -15,14 +16,21 @@ interface RMarkerOnLineProp extends RMarkerProp {
 }
 
 /**
- * Represents markers on lines.
+ * Represents markers on RLine.
+ *
+ * @example RMarkerOnLine {
+ *   dependencies: [RLine1];
+ *   prop: { marker: '|', onLine: { type: 'coord1', value: 10 } };
+ * }
+ * represents a marker '|' which is distant by 10 from coord1 of RLine1 and oriented along RLine1.
+ *
  * @hierarchy RShape <- RMarker <- RMarkerOnLine
  */
 class RMarkerOnLine extends RMarker {
-  public static TYPEL2 = 'RMarkerOnLine'
+  public static REL_TYPE = 'RMarkerOnLine'
 
   /**
-   * The dependencies for the dual. If exists, indicates the dual RMarkerOnLine to this RMarker.
+   * The dependencies for the dual. If exists, this indicates the dual RMarkerOnLine to this RMarker.
    */
   protected __dependenciesDual: RMarkerOnLine | undefined
   protected declare __dependencies: [RLine]
@@ -32,14 +40,11 @@ class RMarkerOnLine extends RMarker {
   }
   protected declare __prop: RMarkerOnLineProp
 
-  constructor(dependencies: [RLine], prop: RMarkerOnLineProp, style?: RMarkerStyle) {
-    super(dependencies, prop, style, RMarkerOnLine.TYPEL2)
+  constructor(dependencies: [RLine], prop: RMarkerOnLineProp) {
+    super(dependencies, prop, RMarkerOnLine.REL_TYPE)
   }
 
-  /**
-   * Calculates the coord and the direction.
-   */
-  resolve() {
+  public resolve() {
     const coord = this.__dependencies[0].coordOnLine(this.__prop.onLine)
     const resolved = this.__dependencies[0].resolve()
     const theta = this.__prop.reverse ? Theta.fromCoord(resolved.coord2, resolved.coord1) :  Theta.fromCoord(resolved.coord1, resolved.coord2)
@@ -52,10 +57,10 @@ class RMarkerOnLine extends RMarker {
   }
 
   /**
-   * Makes this RMarkerOnLine represents a parallel line to another which is represented by another RMarkerOnLine.
-   * @param rmarker - The RMarkerOnLine parallel to this RMarkerOnLine.
-   * @param marker  - The marker.
-   * @throws Throws an Error if the lines two RMarkerOnLine represents are not actually parallel.
+   * Makes this RMarkerOnLine represents parallelism associated with another RMarkerOnLine.
+   * @param rmarker - The RMarkerOnLine associated with this RMarkerOnLine.
+   * @param marker  - The marker to represent the parallelism.
+   * @throws Throws a NotEqualError if the two lines RMarkerOnLine represents are not parallel.
    */
   public parallel(rmarker: RMarkerOnLine, marker: string) {
     const lResolved = this.__dependencies[0].resolve()

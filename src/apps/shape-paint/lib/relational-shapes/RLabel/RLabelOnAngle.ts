@@ -1,11 +1,10 @@
-import { Coord, CoordPolar } from '../Coord'
-import { Theta, ThetaMinimum, ThetaTravel } from '../Theta'
-import { RLabelProp, RLabelStyle, RLabel } from './RLabel'
+import { CoordPolar } from '../Coord'
+import { RLabelProp, RLabel } from './RLabel'
 import { RAngle } from '../RAngle'
 
 /**
- * The properties of RLabelOnAngle.
- * @prop r   - The radial offset.
+ * The properties of RLabelOnAngle which extends RLabelProp.
+ * @prop r - The radial offset.
  */
 interface RLabelOnAngleProp extends RLabelProp {
   r: number
@@ -13,20 +12,24 @@ interface RLabelOnAngleProp extends RLabelProp {
 
 /**
  * Represents labels on angles, typically representing their angles.
+ *
+ * @example RLabelOnAngle {
+ *   dependencies: [RAngle1];
+ *   prop: { label: 'x', r: 10 };
+ * }
+ * represents a label written 'x' 10 units away from RAngle1.
+ *
  * @hierarchy RShape <- RLabel <- RLabelOnAngle
  */
 class RLabelOnAngle extends RLabel {
-  public static TYPEL2 = 'RLabelOnAngle'
+  public static REL_TYPE = 'RLabelOnAngle'
   protected declare __dependencies: [RAngle]
   protected declare __prop: RLabelOnAngleProp
 
-  constructor(dependencies: [RAngle], prop: RLabelOnAngleProp, style?: RLabelStyle) {
-    super(dependencies, prop, style, RLabelOnAngle.TYPEL2)
+  constructor(dependencies: [RAngle], prop: RLabelOnAngleProp) {
+    super(dependencies, prop, RLabelOnAngle.REL_TYPE)
   }
 
-  /**
-   * Calculates the coordinates.
-   */
   resolve() {
     const resolved = this.__dependencies[0].resolve()
     const theta = resolved.theta0.add(resolved.theta.half())

@@ -1,45 +1,38 @@
 import { Coord } from '../Coord'
-import { RShapeResolved, RShapeProp, RShapeStyle, RShapeTypeL2, RShape } from '../RShape'
+import { RShapeRelType, RShape } from '../RShape'
 
 /**
- * The mathematical definition of RLength. Defined by two endpoints and which side this RLength should lay.
- * @prop coord1     - Coord at which this RLength starts.
- * @prop coord2     - Coord at which this RLength ends.
+ * The resolved of RLength. 
+ * @prop coord1     - The Coord at which this RLength starts.
+ * @prop coord2     - The Coord at which this RLength ends.
  * @prop curvature  - The curvature of this RLength.
- * @prop reverse    - True if this RLength should lay on -y direction when rotated to be aligned to +x direction. False if this RLength should lay on +y direction.
  */
-interface RLengthResolved extends RShapeResolved {
+interface RLengthResolved {
   coord1: Coord,
   coord2: Coord,
   curvature: number,
-  reverse?: boolean,
 }
 
 /**
- * The properties of RPoint.
- * @prop reverse - True if this RLength should lay on -y direction when rotated to be aligned to +x direction. False if this RLength should lay on +y direction.
- */
-interface RLengthProp extends RShapeProp {
-  reverse?: boolean
-}
-
-/**
- * The style of RLength.
- */
-interface RLengthStyle extends RShapeStyle {}
-
-/**
- * Represents length markers (of segments, typically.)
+ * Represents length markers (typically, of segments).
+ *
+ * @example RLengthResolved {
+ *   coord1: { x: 10, y: 10 };
+ *   coord2: { x: 70, y: 70 };
+ *   curvature: 80;
+ * }
+ * represents a length marker which connects (10, 10) and (70, 70), and curved with radius of 80.
+ *
  * @hierarchy RShape <- RLength
  */
 abstract class RLength extends RShape {
   /**
    * 'RLength'.
    */
-  public static TYPEL1 = 'RLength'
+  public static RES_TYPE = 'RLength'
 
-  constructor(dependencies: RShape[], prop: RLengthProp, style: RLengthStyle, typel2: RShapeTypeL2) {
-    super(dependencies, prop, style, [RLength.TYPEL1, typel2])
+  constructor(dependencies: RShape[], _: any, relType: RShapeRelType) {
+    super(dependencies, {}, RLength.RES_TYPE, relType)
   }
 
   /**
@@ -61,4 +54,4 @@ abstract class RLength extends RShape {
   }
 }
 
-export { RLengthResolved, RLengthProp, RLengthStyle, RLength }
+export { RLengthResolved, RLength }

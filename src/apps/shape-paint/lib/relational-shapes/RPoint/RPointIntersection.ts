@@ -1,34 +1,30 @@
-import { RPointProp, RPointStyle, RPoint } from './RPoint'
+import { RPoint } from './RPoint'
 import { RLine } from '../RLine'
 
 /**
- * The properties of RPointIntersection.
- */
-interface RPointIntersectionProp extends RPointProp {}
-
-/**
- * Represents points as an intersection of two lines.
+ * Represents points as an intersection of two RLines.
+ *
+ * @example RPointIntersection {
+ *   dependencies: [RLine1, RLine2];
+ * }
+ * represents the intersection point of RLine1 and RLine2.
+ *
  * @hierarchy RShape <- RPoint <- RPointIntersection
  */
 class RPointIntersection extends RPoint {
-  public static TYPEL2 = 'RPointIntersection'
+  public static REL_TYPE = 'RPointIntersection'
   protected declare __dependencies: [RLine, RLine]
-  protected declare __prop: RPointIntersectionProp
 
-  constructor(dependencies: [RLine, RLine], prop: RPointIntersectionProp, style?: RPointStyle) {
-    super(dependencies, prop, style, RPointIntersection.TYPEL2)
+  constructor(dependencies: [RLine, RLine], _: any) {
+    super(dependencies, {}, RPointIntersection.REL_TYPE)
   }
 
-  /**
-   * Calculates the intersection of two Lines.
-   */
-  resolve() {
+  public resolve() {
     const { coord } = RLine.intersect(this.__dependencies[0], this.__dependencies[1])
     return {
       coord,
-      hide: this.__prop.hide,
     }
   }
 }
 
-export { RPointIntersectionProp, RPointIntersection }
+export { RPointIntersection }

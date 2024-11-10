@@ -1,46 +1,32 @@
 import { Coord } from '../Coord'
-import { RShapeResolved, RShapeProp, RShapeStyle, RShapeTypeL2, RShape } from '../RShape'
+import { RShape } from '../RShape'
 
 /**
- * The mathematical definition of RPoint. 
- * @prop coord  - The coordinates.
- * @prop hide   - True if this RPoint is invisible.
+ * The resolved of RPoint. 
+ * @prop coord - The coordinates.
  */
-interface RPointResolved extends RShapeResolved {
+interface RPointResolved {
   coord: Coord
 }
 
 /**
- * The properties of RPoint.
- */
-interface RPointProp extends RShapeProp { }
-
-/**
- * The style of RPoint.
- * @prop hide - Make this RPoint invisible if true.
- */
-interface RPointStyle extends RShapeStyle {
-  hide?: boolean
-}
-
-/**
  * Represents points.
+ *
+ * @example RPointResolved {
+ *   coord: { x: 10, y: 10 }
+ * }
+ * represents a point at (10, 10).
+ *
  * @hierarchy RShape <- RPoint
  */
 abstract class RPoint extends RShape {
-  /**
-   * 'RPoint'.
-   */
-  public static TYPEL1 = 'RPoint'
+  public static RES_TYPE = 'RPoint'
 
-  constructor(dependencies: RShape[], prop: RPointProp, style: RPointStyle, typel2: RShapeTypeL2) {
-    super(dependencies, prop, style, [RPoint.TYPEL1, typel2])
+  constructor(dependencies: RShape[], prop: any, relType: string) {
+    super(dependencies, prop, RPoint.RES_TYPE, relType)
   }
 
-  /**
-   * Resolves this RPoint into PointResolved.
-   */
   public abstract resolve(): RPointResolved
 }
 
-export { RPointResolved, RPointProp, RPointStyle, RPoint }
+export { RPointResolved, RPoint }

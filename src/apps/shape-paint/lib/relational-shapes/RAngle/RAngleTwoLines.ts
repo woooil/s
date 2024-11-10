@@ -1,11 +1,10 @@
-import { Theta } from '../Theta'
-import { RAngleProp, RAngleStyle, RAngle } from './RAngle'
+import { RAngleProp, RAngle } from './RAngle'
 import { RLine } from '../RLine'
 
 /**
- * The properties of RAngleTwoLinesProp. 
- * @prop reverse1 - True if reverse the direction of the first RLine.
- * @prop reverse2 - True if reverse the direction of the second RLine.
+ * The properties of RAngleTwoLinesProp which extends RAngleProp. 
+ * @prop reverse1 - Reverses the direction of the first depended RLine if true.
+ * @prop reverse2 - Reverses the direction of the second depended RLine if true.
  */
 interface RAngleTwoLinesProp extends RAngleProp {
   reverse1?: boolean,
@@ -14,19 +13,25 @@ interface RAngleTwoLinesProp extends RAngleProp {
 
 /**
  * Represents angles formed by the intersection of two RLines.
+ *
+ * @example RAngleTwoLines {
+ *   dependencies: [RLine1, RLine2];
+ *   prop: { reverse1: true };
+ * }
+ * represents an angle made by the reversed RLine1 and RLine2.
+ *
  * @hierarchy RShape <- RAngle <- RAngleTwoLines
  */
 class RAngleTwoLines extends RAngle {
-  public static TYPEL2 = 'RAngleTwoLines'
+  public static REL_TYPE = 'RAngleTwoLines'
   protected declare __dependencies: [RLine, RLine]
   protected declare __prop: RAngleTwoLinesProp
 
-  constructor(dependencies: [RLine, RLine], prop: RAngleTwoLinesProp, style?: RAngleStyle) {
-    super(dependencies, prop, style, RAngleTwoLines.TYPEL2)
+  constructor(dependencies: [RLine, RLine], prop: RAngleTwoLinesProp) {
+    super(dependencies, prop, RAngleTwoLines.REL_TYPE)
   }
 
   /**
-   * Calculates the angle in MINIMUM_RANGE formed by two RLines.
    * @throws Throws an Error if two RLines are parallel.
    */
   resolve() {

@@ -1,32 +1,35 @@
 import { LARGE_NUMBER } from '../tools'
 import { Coord } from '../Coord'
-import { RLineProp, RLineStyle, RLine } from './RLine'
+import { RLineProp, RLine } from './RLine'
 import { RShape } from '../RShape'
 
 /**
- * The properties of RLineHorizontal.
- * @prop y  - The y coordinate.
+ * The properties of RLineHorizontal which extends RLineProp.
+ * @prop y - The y coordinate.
  */
 interface RLineHorizontalProp extends RLineProp {
   y: number
 }
 
 /**
- * Represents lines horizontal.
+ * Represents horizontal lines.
+ *
+ * @example RLineHorizontal {
+ *   prop: { y: 10 };
+ * }
+ * represents a horizontal line whose y coordinate is 10.
+ *
  * @hierarchy RShape <- RLine <- RLineHorizontal
  */
 class RLineHorizontal extends RLine {
-  public static TYPEL2 = 'RLineHorizontal'
+  public static REL_TYPE = 'RLineHorizontal'
   protected declare __prop: RLineHorizontalProp
 
-  constructor(_: RShape[], prop: RLineHorizontalProp, style?: RLineStyle) {
-    super([], prop, style, RLineHorizontal.TYPEL2)
+  constructor(_: RShape[], prop: RLineHorizontalProp) {
+    super([], prop, RLineHorizontal.REL_TYPE)
   }
 
-  /**
-   * Returns a horizontal line.
-   */
-  preresolve() {
+  protected preresolve() {
     return {
       coord1: new Coord(-LARGE_NUMBER, this.__prop.y),
       coord2: new Coord(LARGE_NUMBER, this.__prop.y),

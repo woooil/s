@@ -1,49 +1,54 @@
 import { LARGE_NUMBER } from '../tools'
 import { CoordPolar } from '../Coord'
 import { Theta } from '../Theta'
-import { RLineProp, RLineStyle, RLine } from './RLine'
+import { RLineProp, RLine } from './RLine'
 import { RPoint } from '../RPoint'
-import { RDistanceExtraProp } from '../RShape'
 
 /**
- * The properties of RLinePerpendicular.
+ * The properties of RLinePerpendicular which extends RLineProp.
+ * @prop reverse  - PI / 2 rad behind of the depended RLine if true; PI / 2 rad ahead if false.
  * @prop extend1  - Extends backwards if true.
- * @prop reverse  - Uses -y direction when RLine is rotated to be aligned to +x direction if true. Uses +y direction if false.
+ * @prop length   - The length, if provided.
  */
-interface RLinePerpendicularProp extends RLineProp, RDistanceExtraProp {
-  extend1?: boolean
+interface RLinePerpendicularProp extends RLineProp {
   reverse?: boolean
+  extend1?: boolean
+  length?: number
 }
 
 
 /**
- * Represents lines which is perpendicular to another line and passes through a point.
+ * Represents lines which is perpendicular to another RLine and passes through a given RPoint.
+ *
+ * @example RLinePerpendicular {
+ *   dependencies: [RPoint1, RLine1];
+ *   prop: { reverse: true };
+ * }
+ * represents a ray which starts at RPoint1 and is -PI / 2 rad behind of RLine1. 
+ *
  * @hierarchy RShape <- RLine <- RLinePerpendicular
  */
 class RLinePerpendicular extends RLine {
-  public static TYPEL2 = 'RLinePerpendicular'
+  public static REL_TYPE = 'RLinePerpendicular'
   protected declare __dependencies: [RPoint, RLine]
   protected declare __prop: RLinePerpendicularProp
 
-  constructor(dependencies: [RPoint, RLine], prop: RLinePerpendicularProp, style?: RLineStyle) {
-    super(dependencies, prop, style, RLinePerpendicular.TYPEL2)
+  constructor(dependencies: [RPoint, RLine], prop: RLinePerpendicularProp) {
+    super(dependencies, prop, RLinePerpendicular.REL_TYPE)
   }
 
-  /**
-   * Returns a perpendicular line passing through a given point.
-   */
-  preresolve() {
+  protected preresolve() {
     const aResolved = this.__dependencies[0].resolve()
     const lResolved = this.__dependencies[1].resolve()
     const theta = this.__prop.reverse ? Theta.fromCoord(lResolved.coord2, lResolved.coord1) : Theta.fromCoord(lResolved.coord1, lResolved.coord2)
     const phi = theta.add(Theta.py())
-    const coord2 = aResolved.coord.addPolar(new CoordPolar(this.__prop.distance || LARGE_NUMBER, phi))
+    const coord2 = aResolved.coord.addPolar(new CoordPolar(this.__prop.length || LARGE_NUMBER, phi))
 
     return {
       coord1: aResolved.coord,
       coord2,
       extend1: !!(this.__prop.extend1),
-      extend2: !(this.__prop.distance),
+      extend2: !(this.__prop.length),
     }
   }
 }

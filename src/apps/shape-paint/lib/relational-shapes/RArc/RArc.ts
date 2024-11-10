@@ -1,15 +1,15 @@
 import { Coord } from '../Coord'
 import { ThetaTravel, ThetaMinimum } from '../Theta'
-import { RShapeResolved, RShapeProp, RShapeStyle, RShapeTypeL2, RShape } from '../RShape'
+import { RShapeRelType, RShape } from '../RShape'
 
 /**
- * The mathematical definition of RArc.
- * @prop coord  - The coordinates of the center.
+ * The resolved of RArc.
+ * @prop coord  - The Coord of the center.
  * @prop r      - The radius.
- * @prop theta0 - The start direction in ThetaMinimum.
+ * @prop theta0 - The start orientation in ThetaMinimum.
  * @prop theta  - The (directional) central angle in ThetaTravel. 
  */
-interface RArcResolved extends RShapeResolved {
+interface RArcResolved {
   coord: Coord
   r: number
   theta0: ThetaMinimum
@@ -17,35 +17,26 @@ interface RArcResolved extends RShapeResolved {
 }
 
 /**
- * The properties of RArc.
- */
-interface RArcProp extends RShapeProp {}
-
-/**
- * The style of RArc.
- */
-interface RArcStyle extends RShapeStyle {}
-
-/**
  * Represents circular arcs.
+ *
+ * @example RArcResolved {
+ *   coord: { x: 40, y: 40 };
+ *   r: 10;
+ *   theta0: { t: Math.PI / 2 };
+ *   theta: { t: Math.PI };
+ * }
+ * represents a half circle which is centered at (40, 40), starts at (40, 30) and rotates PI rad with radius of 10.
+ *
  * @hierarchy RShape <- RArc
  */
 abstract class RArc extends RShape {
-  /**
-   * 'RArc'
-   */
-  public static TYPEL1 = 'RArc'
+  public static RES_TYPE = 'RArc'
 
-  protected declare __prop: RArcProp
-
-  constructor(dependencies: RShape[], prop: RArcProp, style: RArcStyle, typel2: RShapeTypeL2) {
-    super(dependencies, prop, style, [RArc.TYPEL1, typel2])
+  constructor(dependencies: RShape[], _: any, relType: RShapeRelType) {
+    super(dependencies, {}, RArc.RES_TYPE, relType)
   }
 
-  /**
-   * Resolves this RArc to RArcResolved.
-   */
   public abstract resolve(): RArcResolved
 }
 
-export { RArcResolved, RArcProp, RArcStyle, RArc }
+export { RArcResolved, RArc }

@@ -1,45 +1,54 @@
 import { LARGE_NUMBER } from '../tools'
 import { CoordPolar } from '../Coord'
-import { RLineProp, RLineStyle, RLine } from './RLine'
-import { RDistanceExtraProp } from '../RShape'
+import { RLineProp, RLine } from './RLine'
 
 /**
- * The properties of RLineAngleBisectorProp. 
- * @prop reverse1 - True if reverse the direction of the first RLine.
- * @prop reverse2 - True if reverse the direction of the second RLine.
+ * The properties of RLineAngleBisectorProp which extends RLineProp. 
+ * @prop reverse1 - Reverses the direction of the first depended RLine if true.
+ * @prop reverse2 - Reverses the direction of the second depended RLine if true.
+ * @prop length   - The length, if provided. 
  */
-interface RLineAngleBisectorProp extends RLineProp, RDistanceExtraProp {
+interface RLineAngleBisectorProp extends RLineProp {
   reverse1?: boolean,
   reverse2?: boolean,
+  length?: number,
 }
 
 /**
- * Represents lines as angle bisectors of two lines.
+ * Represents lines as the angle bisector of two RLines.
+ *
+ * This is a ray unless length is provided, which makes it a segment.
+ *
+ * @example RLineAngleBisector {
+ *   dependencies: [RLine1, RLine2];
+ *   prop: { reverse1: true, length: 10 };
+ * }
+ * represents an angle bisector segment of the reversed RLine1 and RLine2 with length of 10.
+ *
  * @hierarchy RShape <- RLine <- RLineAngleBisector
  */
 class RLineAngleBisector extends RLine {
-  public static TYPEL2 = 'RLineAngleBisector'
+  public static REL_TYPE = 'RLineAngleBisector'
   protected declare __dependencies: [RLine, RLine]
   protected declare __prop: RLineAngleBisectorProp
 
-  constructor(dependencies: [RLine, RLine], prop: RLineAngleBisectorProp, style?: RLineStyle) {
-    super(dependencies, prop, style, RLineAngleBisector.TYPEL2)
+  constructor(dependencies: [RLine, RLine], prop: RLineAngleBisectorProp) {
+    super(dependencies, prop, RLineAngleBisector.REL_TYPE)
   }
 
   /**
-   * Calculates the angle bisector of two RLines mathematically.
-   * @throws Throws an Error if two RLines are parallel.
+   * @throws Throws a ParallelLinesError if two RLines are parallel.
    */
-  preresolve() {
-    const { coord: coord1, thetaMid: theta } = RLine.intersect(this.__dependencies[0], this.__dependencies[1], this.__prop.reverse1, this.__prop.reverse2)
+  protected preresolve() {
+    const { coord: coord1, thetaMid: theta } = RLine.intersect(this.__dependencies[0], this.__dependencies[1], this.__prop.reverse1, this.__prop.reverse2) // Throws an Error
     
-    const coord2 = coord1.addPolar(new CoordPolar(this.__prop.distance || LARGE_NUMBER, theta))
+    const coord2 = coord1.addPolar(new CoordPolar(this.__prop.length || LARGE_NUMBER, theta))
 
     return {
       coord1,
       coord2,
       extend1: false,
-      extend2: !(this.__prop.distance),
+      extend2: !(this.__prop.length),
     }
   }
 }

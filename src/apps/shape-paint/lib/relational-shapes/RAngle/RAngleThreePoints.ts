@@ -1,10 +1,10 @@
-import { Theta, ThetaMinimum } from '../Theta'
-import { RAngleProp, RAngleStyle, RAngle } from './RAngle'
+import { Theta } from '../Theta'
+import { RAngleProp, RAngle } from './RAngle'
 import { RPoint } from '../RPoint'
 
 /**
- * The properties of RAngleThreePointsProp. 
- * @prop reflex - True if to choose the angle larger than PI.
+ * The properties of RAngleThreePointsProp which extends RAngleProp. 
+ * @prop reflex - Chooses the angle larger that PI if true.
  */
 interface RAngleThreePointsProp extends RAngleProp {
   reflex: boolean
@@ -12,20 +12,24 @@ interface RAngleThreePointsProp extends RAngleProp {
 
 /**
  * Represents angles formed by three points. The second point is its vertex.
+ *
+ * @example RAngleThreePoints {
+ *   dependencies: [RPoint1, RPoint2, RPoint3];
+ *   prop: { reflex: false };
+ * }
+ * represents an angle less than PI which is made by connecting RPoint1, RPoint2 and RPoint3 in the order.
+ *
  * @hierarchy RShape <- RAngle <- RAngleThreePoints
  */
 class RAngleThreePoints extends RAngle {
-  public static TYPEL2 = 'RAngleThreePoints'
+  public static REL_TYPE = 'RAngleThreePoints'
   protected declare __dependencies: [RPoint, RPoint, RPoint]
   protected declare __prop: RAngleThreePointsProp
 
-  constructor(dependencies: [RPoint, RPoint, RPoint], prop: RAngleThreePointsProp, style?: RAngleStyle) {
-    super(dependencies, prop, style, RAngleThreePoints.TYPEL2)
+  constructor(dependencies: [RPoint, RPoint, RPoint], prop: RAngleThreePointsProp) {
+    super(dependencies, prop, RAngleThreePoints.REL_TYPE)
   }
 
-  /**
-   * Calculates the ThetaTravel formed by three RPoints.
-   */
   resolve() {
     const aResolved = this.__dependencies[0].resolve()
     const bResolved = this.__dependencies[1].resolve()

@@ -1,27 +1,34 @@
 import { CoordPolar } from '../Coord'
 import { Theta, ThetaTravel } from '../Theta'
-import { RArcProp, RArcStyle, RArc } from './RArc'
+import { RArc } from './RArc'
 import { RPoint } from '../RPoint'
 
 /**
  * The properties of RArcOnTwoPoints.
  * @prop theta  - The (directional) central angle.
  */
-interface RArcOnTwoPointsProp extends RArcProp {
+interface RArcOnTwoPointsProp {
   theta: ThetaTravel
 }
 
 /**
  * Represents arcs whose two passing points and central angle are give.
+ *
+ * @example RArcOnTwoPoints {
+ *   dependencies: [RPoint1, RPoint2];
+ *   prop: { theta: Math.PI };
+ * }
+ * represents a half circle whose endpoints are RPoint1 and RPoint2.
+ *
  * @hierarchy RShape <- RArc <- RArcOnTwoPoints
  */
 class RArcOnTwoPoints extends RArc {
-  public static TYPEL2 = 'RArcOnTwoPoint'
+  public static REL_TYPE = 'RArcOnTwoPoint'
   protected declare __dependencies: [RPoint, RPoint]
   protected declare __prop: RArcOnTwoPointsProp
 
-  constructor(dependencies: [RPoint, RPoint], prop: RArcOnTwoPointsProp, style?: RArcStyle) {
-    super(dependencies, prop, style, RArcOnTwoPoints.TYPEL2)
+  constructor(dependencies: [RPoint, RPoint], prop: RArcOnTwoPointsProp) {
+    super(dependencies, prop, RArcOnTwoPoints.REL_TYPE)
   }
 
   resolve() {

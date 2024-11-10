@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { v4 as uuid } from 'uuid'
 import { Props } from './Props'
-import { RMarkerResolved, RMarkerStyle } from '../../lib/relational-shapes'
+import { RMarkerResolved } from '../../lib/relational-shapes'
 
 function Path({ marker, id }: { marker: string, id: string }) {
   switch (marker) {
@@ -35,9 +35,8 @@ function Path({ marker, id }: { marker: string, id: string }) {
 
 export default function Marker({
   resolved,
-  styles,
   ...props
-}: Props<RMarkerResolved, RMarkerStyle, SVGGElement>) {
+}: Props<RMarkerResolved, SVGGElement>) {
   const r = 1
   const p = {
     M: {

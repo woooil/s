@@ -1,9 +1,9 @@
 import { CoordPolar } from '../Coord'
-import { RLabelProp, RLabelStyle, RLabel } from './RLabel'
+import { RLabelProp, RLabel } from './RLabel'
 import { RArc } from '../RArc'
 
 /**
- * The properties of RLabelOnArc.
+ * The properties of RLabelOnArc which extends RLabelProp.
  * @prop offset - The polar coordinate relative to the center of the mass of RArc.
  */
 interface RLabelOnArcProp extends RLabelProp {
@@ -12,20 +12,24 @@ interface RLabelOnArcProp extends RLabelProp {
 
 /**
  * Represents labels on arcs.
+ *
+ * @example RLabelOnArc {
+ *   dependencies: [RArc1];
+ *   prop: { label: 'A' };
+ * }
+ * represents a label written 'A' fixed on the center of the mass of RArc1.
+ *
  * @hierarchy RShape <- RLabel <- RLabelOnArc
  */
 class RLabelOnArc extends RLabel {
-  public static TYPEL2 = 'RLabelOnArc'
+  public static REL_TYPE = 'RLabelOnArc'
   protected declare __dependencies: [RArc]
   protected declare __prop: RLabelOnArcProp
 
-  constructor(dependencies: [RArc], prop: RLabelOnArcProp, style?: RLabelStyle) {
-    super(dependencies, prop, style, RLabelOnArc.TYPEL2)
+  constructor(dependencies: [RArc], prop: RLabelOnArcProp) {
+    super(dependencies, prop, RLabelOnArc.REL_TYPE)
   }
 
-  /**
-   * Calculates the center of the mass and adds with the offset.
-   */
   resolve() {
     const aResolved = this.__dependencies[0].resolve()
     const theta = aResolved.theta.size

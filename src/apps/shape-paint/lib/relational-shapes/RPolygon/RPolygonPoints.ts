@@ -1,28 +1,25 @@
-import { RPolygonProp, RPolygonStyle, RPolygon } from './RPolygon'
+import { RPolygon } from './RPolygon'
 import { RPoint } from '../RPoint'
 
 /**
- * The properties of RPolygonPoints.
- */
-interface RPolygonPointsProp extends RPolygonProp {}
-
-/**
- * Represents polygons by its vertices.
+ * Represents polygons by its vertex RPoints.
+ *
+ * @example RPolygonPoints {
+ *   dependencies: [RPoint1, RPoint2, RPoint3];
+ * }
+ * represents a triangle whose vertices are RPoint1, RPoint2 and RPoint3.
+ *
  * @hierarchy RShape <- RPolygon <- RPolygonPoints
  */
 class RPolygonPoints extends RPolygon {
-  public static TYPEL2 = 'RPolygonPoints'
+  public static REL_TYPE = 'RPolygonPoints'
   protected declare __dependencies: RPoint[]
-  protected declare __prop: RPolygonPointsProp
 
-  constructor(dependencies: RPoint[], prop: RPolygonPointsProp, style?: RPolygonStyle) {
-    super(dependencies, prop, style, RPolygonPoints.TYPEL2)
+  constructor(dependencies: RPoint[], _: any) {
+    super(dependencies, {}, RPolygonPoints.REL_TYPE)
   }
 
-  /**
-   * Resolves each vertex.
-   */
-  resolve() {
+  public resolve() {
     const coords = this.__dependencies.map(i => i.resolve().coord)
     return {
       coords
@@ -30,4 +27,4 @@ class RPolygonPoints extends RPolygon {
   }
 }
 
-export { RPolygonPointsProp, RPolygonPoints }
+export { RPolygonPoints }
