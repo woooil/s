@@ -1,6 +1,6 @@
 import * as React from 'react'
-import { Props } from './Props'
-import { RPointResolved } from '../../lib/relational-shapes'
+import { Props } from '../ComponentProps'
+import { RPointResolved } from './RPoint'
 
 export default function Point({
   resolved,
@@ -11,7 +11,6 @@ export default function Point({
     cy: resolved.coord.y,
     r: 3,
     fill: 'black',
-    visibility: resolved.hide ? 'hidden' : 'visible'
   }
   
   return (

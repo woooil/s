@@ -1,44 +1,25 @@
 import * as React from 'react'
-import * as RS from '../lib/relational-shapes'
-import { useShapes } from '../lib/useShapes'
-import Shape from './Shape'
+import { RCanvas, useShapes } from '../lib/react-relational-shapes'
 import '../styles/App.css'
 
 export default function App() {
   const { shapes: s, action: a } = useShapes()
 
   React.useEffect(() => {
-    const lineL = a.add(new RS.RLineVertical([], { x: 300 }))
-    // const labelL = a.add(new RS.RLabelOnLine([lineL], { onLine: { type: 'y', value: 40 }, label: 'l' }))
-    // const pointA = a.add(new RS.RPointOnLine([lineL], { onLine: { type: 'y', value: 440 } }))
-    // const lineAB = a.add(new RS.RLineDirectional([pointA], { theta: RS.Theta.px(), length: 200 }))
-    // const pointB = a.add(new RS.RPointOnLine([lineAB], { onLine: { type: 'coord1', value: 200 } }))
-    // const lineBC = a.add(new RS.RLineDirectional([pointB], { theta: RS.Theta.ny() }))
-    // const lineAC = a.add(new RS.RLineDirectional([pointA], { theta: new RS.Theta(-Math.PI / 3) }))
-    // a.cutLine(lineBC, lineAC)
-    // a.cutLine(lineAC, lineBC)
-    // const angleABC = a.add(new RS.RAngleTwoLines([lineAB, lineBC], { reverse1: true }))
-    // a.rightAngle(angleABC)
-    // const markerL = a.add(new RS.RMarkerOnLine([lineL], { onLine: { type: 'y', value: 80 }, marker: 'rotate' }))
+    const pointA = a.add.point.absoluteCoord([], { x: 200, y: 400 })
+    const pointB = a.add.point.absoluteCoord([], { x: 400, y: 200 })
+    const pointC = a.add.point.internalDivision([pointA, pointB], { ratio: 0.1 })
+    const pointD = a.add.point.absoluteCoord([], { x: 500, y: 300 })
+    const lineL = a.add.line.twoPoints([pointA, pointB], { extend2: true })
+    const lineM = a.add.line.twoPoints([pointC, pointD], {})
+    a.update.line.cut(lineL, lineM, true)
   }, [])
 
   return (
     <div>
       <div>THIS IS SHAPE PAINT APP</div>
       <div className="test-field"></div>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        version="1.1"
-        width="800px"
-        height="600px"
-        style={{ border: '1px solid blue' }}>
-        {s.map((i: RS.RShape) => (
-          <Shape
-            shape={i}
-            key={i.id}
-          />
-        ))}
-      </svg>
+      <RCanvas shapes={s} />
     </div>
   )
 }
