@@ -1,11 +1,11 @@
-import { ReactSVGElement, SVGAttributes } from 'react'
+import { SVGAttributes } from 'react'
 import { Coord } from '../Coord'
 import { RShape } from '../RShape'
 import Component from './Polygon'
 
 /**
  * The resolved of RPolygon.
- * @prop coords - The coordinates of its vertices. 
+ * @prop coords - The coordinates of its vertices.
  */
 interface RPolygonResolved {
   coords: Coord[]
@@ -21,15 +21,24 @@ interface RPolygonResolved {
  *
  * @hierarchy RShape <- RPolygon
  */
-abstract class RPolygon extends RShape {
+abstract class RPolygon extends RShape<SVGPolygonElement> {
   public static RES_TYPE = 'RPolygon'
 
-  constructor(dependencies: RShape[], prop: any, style: SVGAttributes<ReactSVGElement>, relType: string) {
+  constructor(
+    dependencies: RShape<any>[],
+    prop: any,
+    style: SVGAttributes<SVGPolygonElement>,
+    relType: string,
+  ) {
     super(dependencies, prop, style, RPolygon.RES_TYPE, relType)
   }
 
   public component = () => {
-    return Component({ resolved: this.resolve(), style: this.style, key: this.id })
+    return Component({
+      resolved: this.resolve(),
+      styles: this.style,
+      key: this.id,
+    })
   }
 
   public abstract resolve(): RPolygonResolved

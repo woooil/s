@@ -1,15 +1,15 @@
-import { ReactSVGElement, SVGAttributes } from 'react'
+import { SVGAttributes } from 'react'
 import { RAngleProp, RAngle } from './RAngle'
 import { RLine } from '../RLine'
 
 /**
- * The properties of RAngleTwoLinesProp which extends RAngleProp. 
+ * The properties of RAngleTwoLinesProp which extends RAngleProp.
  * @prop reverse1 - Reverses the direction of the first depended RLine if true.
  * @prop reverse2 - Reverses the direction of the second depended RLine if true.
  */
 interface RAngleTwoLinesProp extends RAngleProp {
-  reverse1?: boolean,
-  reverse2?: boolean,
+  reverse1?: boolean
+  reverse2?: boolean
 }
 
 /**
@@ -28,7 +28,11 @@ class RAngleTwoLines extends RAngle {
   protected declare __dependencies: [RLine, RLine]
   protected declare __prop: RAngleTwoLinesProp
 
-  constructor(dependencies: [RLine, RLine], prop: RAngleTwoLinesProp, style?: SVGAttributes<ReactSVGElement>) {
+  constructor(
+    dependencies: [RLine, RLine],
+    prop: RAngleTwoLinesProp,
+    style?: SVGAttributes<SVGGeometryElement>,
+  ) {
     super(dependencies, prop, style, RAngleTwoLines.REL_TYPE)
   }
 
@@ -36,13 +40,18 @@ class RAngleTwoLines extends RAngle {
    * @throws Throws an Error if two RLines are parallel.
    */
   resolve() {
-    const { coord, theta0, theta } = RLine.intersect(this.__dependencies[0], this.__dependencies[1], this.__prop.reverse1, this.__prop.reverse2)
+    const { coord, theta0, theta } = RLine.intersect(
+      this.__dependencies[0],
+      this.__dependencies[1],
+      this.__prop.reverse1,
+      this.__prop.reverse2,
+    )
 
     return {
       coord: coord,
       theta0: theta0,
       theta: theta,
-      marker: this.__prop.marker
+      marker: this.__prop.marker,
     }
   }
 }

@@ -1,7 +1,6 @@
-import { ReactSVGElement, SVGAttributes } from 'react'
+import { SVGAttributes } from 'react'
 import { Coord } from '../Coord'
 import { RPoint, RPointResolvedProp } from './RPoint'
-import { RShape } from '../RShape'
 
 /**
  * The properties of RPointAbsoluteCoord. This extends RPointResolvedProp.
@@ -16,7 +15,7 @@ interface RPointAbsoluteCoordProp extends RPointResolvedProp {
 
 /**
  * Represents points as its absolute coordinates in the Cartesian coordinate system.
- * 
+ *
  * @example RPointAbsoluteCoord {
  *   prop: { x: 10, y: 10 };
  * }
@@ -28,7 +27,11 @@ class RPointAbsoluteCoord extends RPoint {
   public static REL_TYPE = 'RPointAbsoluteCoord'
   protected declare __prop: RPointAbsoluteCoordProp
 
-  constructor(_: RShape[], prop: RPointAbsoluteCoordProp, style?: SVGAttributes<ReactSVGElement>) {
+  constructor(
+    _: any,
+    prop: RPointAbsoluteCoordProp,
+    style?: SVGAttributes<SVGCircleElement>,
+  ) {
     super([], prop, style, RPointAbsoluteCoord.REL_TYPE)
   }
 

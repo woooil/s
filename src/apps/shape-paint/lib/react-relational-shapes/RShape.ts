@@ -1,16 +1,16 @@
-import { ReactSVGElement, SVGAttributes } from 'react'
+import { JSX, SVGAttributes } from 'react'
 import { v4 as uuid } from 'uuid'
 
 /**
  * Represents any shapes by the definition related to other shapes.
  *
- * This is defined by the relational definition consisting of two parts: 
+ * This is defined by the relational definition consisting of two parts:
  * The dependencies, which are the other RShapes this RShape depends on, and the prop, the additional information for this RShape to be defined.
  * The relational definition is resolved into the resolved definition which is independent from any other RShapes and complete by itself, meaning that this RShape is finally determined only if resolved.
  *
  * @hierarchy RShape
  */
-abstract class RShape {
+abstract class RShape<T extends SVGElement> {
   /**
    * The prefix of the id.
    */
@@ -22,7 +22,7 @@ abstract class RShape {
   /**
    * The list of RShapes on which this RShape depends.
    */
-  protected __dependencies: RShape[]
+  protected __dependencies: RShape<any>[]
   /**
    * The list of RShapes on which this RShape depends.
    */
@@ -42,7 +42,7 @@ abstract class RShape {
   /**
    * The styles of this RShape.
    */
-  public style: SVGAttributes<ReactSVGElement>
+  public style: SVGAttributes<T>
   /**
    * The type of the resolved of RShape.
    */
@@ -61,19 +61,25 @@ abstract class RShape {
   readonly relType: string
 
   /**
-   * Resolves this RShape into its resolved definition. 
+   * Resolves this RShape into its resolved definition.
    */
   public abstract resolve(): any
 
   /**
    * Returns React SVG Component displaying this RShape.
    */
-  public abstract component(props: any): ReactSVGElement
+  public abstract component(props: any): JSX.Element
 
   /**
    * Assigns properties to this RShape. id is auto-generated using uuid().
    */
-  constructor(dependencies: RShape[], prop: any, style: SVGAttributes<ReactSVGElement>, resType: string, relType: string) {
+  constructor(
+    dependencies: RShape<any>[],
+    prop: any,
+    style: SVGAttributes<T>,
+    resType: string,
+    relType: string,
+  ) {
     this.id = `${RShape.ID_PREFIX}${uuid()}`
     this.__dependencies = dependencies
     this.__prop = prop

@@ -1,4 +1,4 @@
-import { ReactSVGElement, SVGAttributes } from 'react'
+import { SVGAttributes } from 'react'
 import { RPoint, RPointResolvedProp } from './RPoint'
 
 /**
@@ -26,7 +26,11 @@ class RPointInternalDivision extends RPoint {
   protected declare __dependencies: [RPoint, RPoint]
   protected declare __prop: RPointInternalDivisionProp
 
-  constructor(dependencies: [RPoint, RPoint], prop: RPointInternalDivisionProp, style?: SVGAttributes<ReactSVGElement>) {
+  constructor(
+    dependencies: [RPoint, RPoint],
+    prop: RPointInternalDivisionProp,
+    style?: SVGAttributes<SVGCircleElement>,
+  ) {
     super(dependencies, prop, style, RPointInternalDivision.REL_TYPE)
   }
 

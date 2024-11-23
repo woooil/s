@@ -1,4 +1,4 @@
-import { ReactSVGElement, SVGAttributes } from 'react'
+import { JSX, SVGAttributes } from 'react'
 import { RPoint, RPointResolvedProp } from './RPoint'
 import { RLine, CoordOnLine } from '../RLine'
 
@@ -7,13 +7,13 @@ import { RLine, CoordOnLine } from '../RLine'
  * @prop onLine - The CoordOnLine on the depended RLine.
  * @extends RPointResolvedProp
  */
-interface RPointOnLineProp extends RPointResolvedProp { 
+interface RPointOnLineProp extends RPointResolvedProp {
   onLine: CoordOnLine
 }
 
 /**
  * Represents points on RLine.
- * 
+ *
  * @example RPointOnLine {
  *   dependencies: [RLine1];
  *   prop: { type: 'coord1', value: 10 };
@@ -27,7 +27,11 @@ class RPointOnLine extends RPoint {
   protected declare __dependencies: [RLine]
   protected declare __prop: RPointOnLineProp
 
-  constructor(dependencies: [RLine], prop: RPointOnLineProp, style?: SVGAttributes<ReactSVGElement>) {
+  constructor(
+    dependencies: [RLine],
+    prop: RPointOnLineProp,
+    style?: SVGAttributes<SVGCircleElement>,
+  ) {
     super(dependencies, prop, style, RPointOnLine.REL_TYPE)
   }
 

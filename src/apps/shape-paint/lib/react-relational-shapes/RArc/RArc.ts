@@ -1,4 +1,4 @@
-import { ReactSVGElement, SVGAttributes } from 'react'
+import { SVGAttributes } from 'react'
 import { Coord } from '../Coord'
 import { ThetaTravel, ThetaMinimum } from '../Theta'
 import { RShape } from '../RShape'
@@ -9,7 +9,7 @@ import Component from './Arc'
  * @prop coord  - The Coord of the center.
  * @prop r      - The radius.
  * @prop theta0 - The start orientation in ThetaMinimum.
- * @prop theta  - The (directional) central angle in ThetaTravel. 
+ * @prop theta  - The (directional) central angle in ThetaTravel.
  */
 interface RArcResolved {
   coord: Coord
@@ -31,15 +31,24 @@ interface RArcResolved {
  *
  * @hierarchy RShape <- RArc
  */
-abstract class RArc extends RShape {
+abstract class RArc extends RShape<SVGPathElement> {
   public static RES_TYPE = 'RArc'
 
-  constructor(dependencies: RShape[], _: any, style: SVGAttributes<ReactSVGElement>, relType: string) {
+  constructor(
+    dependencies: RShape<any>[],
+    _: any,
+    style: SVGAttributes<SVGPathElement>,
+    relType: string,
+  ) {
     super(dependencies, {}, style, RArc.RES_TYPE, relType)
   }
 
   public component = () => {
-    return Component({ resolved: this.resolve(), style: this.style, key: this.id })
+    return Component({
+      resolved: this.resolve(),
+      styles: this.style,
+      key: this.id,
+    })
   }
 
   public abstract resolve(): RArcResolved

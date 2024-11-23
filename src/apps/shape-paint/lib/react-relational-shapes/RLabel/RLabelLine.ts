@@ -1,4 +1,4 @@
-import { ReactSVGElement, SVGAttributes } from 'react'
+import { SVGAttributes } from 'react'
 import { CoordPolar } from '../Coord'
 import { RLabelProp, RLabel } from './RLabel'
 import { RLine, CoordOnLine } from '../RLine'
@@ -29,7 +29,11 @@ class RLabelLine extends RLabel {
   protected declare __dependencies: [RLine]
   protected declare __prop: RLabelLineProp
 
-  constructor(dependencies: [RLine], prop: RLabelLineProp, style?: SVGAttributes<ReactSVGElement>) {
+  constructor(
+    dependencies: [RLine],
+    prop: RLabelLineProp,
+    style?: SVGAttributes<SVGGElement>,
+  ) {
     super(dependencies, prop, style, RLabelLine.REL_TYPE)
   }
 
@@ -39,7 +43,7 @@ class RLabelLine extends RLabel {
     return {
       coord: this.__prop.offset ? coord.addPolar(this.__prop.offset) : coord,
       label: this.__prop.label,
-      offsite: this.__prop.offsite
+      offsite: this.__prop.offsite,
     }
   }
 }

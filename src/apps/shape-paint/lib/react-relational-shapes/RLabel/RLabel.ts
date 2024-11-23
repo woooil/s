@@ -1,4 +1,4 @@
-import { ReactSVGElement, SVGAttributes } from 'react'
+import { SVGAttributes } from 'react'
 import { Coord, CoordPolar } from '../Coord'
 import { RShape } from '../RShape'
 import Component from './Label'
@@ -36,15 +36,24 @@ interface RLabelProp {
  *
  * @hierarchy RShape <- RLabel
  */
-abstract class RLabel extends RShape {
+abstract class RLabel extends RShape<SVGGElement> {
   public static RES_TYPE = 'RLabel'
 
-  constructor(dependencies: RShape[], prop: RLabelProp, style: SVGAttributes<ReactSVGElement>, relType: string) {
+  constructor(
+    dependencies: RShape<any>[],
+    prop: RLabelProp,
+    style: SVGAttributes<SVGGElement>,
+    relType: string,
+  ) {
     super(dependencies, prop, style, RLabel.RES_TYPE, relType)
   }
 
   public component = () => {
-    return Component({ resolved: this.resolve(), style: this.style, key: this.id })
+    return Component({
+      resolved: this.resolve(),
+      styles: this.style,
+      key: this.id,
+    })
   }
 
   public abstract resolve(): RLabelResolved

@@ -1,18 +1,18 @@
-import { ReactSVGElement, SVGAttributes } from 'react'
+import { SVGAttributes } from 'react'
 import { LARGE_NUMBER } from '../tools'
 import { CoordPolar } from '../Coord'
 import { RLineProp, RLine } from './RLine'
 
 /**
- * The properties of RLineAngleBisectorProp which extends RLineProp. 
+ * The properties of RLineAngleBisectorProp which extends RLineProp.
  * @prop reverse1 - Reverses the direction of the first depended RLine if true.
  * @prop reverse2 - Reverses the direction of the second depended RLine if true.
- * @prop length   - The length, if provided. 
+ * @prop length   - The length, if provided.
  */
 interface RLineAngleBisectorProp extends RLineProp {
-  reverse1?: boolean,
-  reverse2?: boolean,
-  length?: number,
+  reverse1?: boolean
+  reverse2?: boolean
+  length?: number
 }
 
 /**
@@ -33,7 +33,11 @@ class RLineAngleBisector extends RLine {
   protected declare __dependencies: [RLine, RLine]
   protected declare __prop: RLineAngleBisectorProp
 
-  constructor(dependencies: [RLine, RLine], prop: RLineAngleBisectorProp, style?: SVGAttributes<ReactSVGElement>) {
+  constructor(
+    dependencies: [RLine, RLine],
+    prop: RLineAngleBisectorProp,
+    style?: SVGAttributes<SVGLineElement>,
+  ) {
     super(dependencies, prop, style, RLineAngleBisector.REL_TYPE)
   }
 
@@ -41,15 +45,22 @@ class RLineAngleBisector extends RLine {
    * @throws Throws a ParallelLinesError if two RLines are parallel.
    */
   protected preresolve() {
-    const { coord: coord1, thetaMid: theta } = RLine.intersect(this.__dependencies[0], this.__dependencies[1], this.__prop.reverse1, this.__prop.reverse2) // Throws an Error
-    
-    const coord2 = coord1.addPolar(new CoordPolar(this.__prop.length || LARGE_NUMBER, theta))
+    const { coord: coord1, thetaMid: theta } = RLine.intersect(
+      this.__dependencies[0],
+      this.__dependencies[1],
+      this.__prop.reverse1,
+      this.__prop.reverse2,
+    ) // Throws an Error
+
+    const coord2 = coord1.addPolar(
+      new CoordPolar(this.__prop.length || LARGE_NUMBER, theta),
+    )
 
     return {
       coord1,
       coord2,
       extend1: false,
-      extend2: !(this.__prop.length),
+      extend2: !this.__prop.length,
     }
   }
 }

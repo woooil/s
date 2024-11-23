@@ -1,18 +1,18 @@
-import { ReactSVGElement, SVGAttributes } from 'react'
+import { SVGAttributes } from 'react'
 import { Coord } from '../Coord'
 import { RShape } from '../RShape'
 import Component from './Length'
 
 /**
- * The resolved of RLength. 
+ * The resolved of RLength.
  * @prop coord1     - The Coord at which this RLength starts.
  * @prop coord2     - The Coord at which this RLength ends.
  * @prop curvature  - The curvature of this RLength.
  */
 interface RLengthResolved {
-  coord1: Coord,
-  coord2: Coord,
-  curvature: number,
+  coord1: Coord
+  coord2: Coord
+  curvature: number
 }
 
 /**
@@ -27,18 +27,27 @@ interface RLengthResolved {
  *
  * @hierarchy RShape <- RLength
  */
-abstract class RLength extends RShape {
+abstract class RLength extends RShape<SVGPathElement> {
   /**
    * 'RLength'.
    */
   public static RES_TYPE = 'RLength'
 
-  constructor(dependencies: RShape[], _: any, style: SVGAttributes<ReactSVGElement>, relType: string) {
+  constructor(
+    dependencies: any,
+    _: any,
+    style: SVGAttributes<SVGPathElement>,
+    relType: string,
+  ) {
     super(dependencies, {}, style, RLength.RES_TYPE, relType)
   }
 
   public component = () => {
-    return Component({ resolved: this.resolve(), style: this.style, key: this.id })
+    return Component({
+      resolved: this.resolve(),
+      styles: this.style,
+      key: this.id,
+    })
   }
 
   /**

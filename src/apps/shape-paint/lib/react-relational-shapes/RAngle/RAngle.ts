@@ -1,4 +1,4 @@
-import { ReactSVGElement, SVGAttributes } from 'react'
+import { SVGAttributes } from 'react'
 import { NotEqualError } from '../Error'
 import { Coord } from '../Coord'
 import { sim } from '../tools'
@@ -32,7 +32,7 @@ interface RAngleProp {
 
 /**
  * Represents angle markers.
- * 
+ *
  * @example RAngleResolved {
  *   coord: { x: 10, 10 };
  *   theta0: { t: 0 };
@@ -42,25 +42,35 @@ interface RAngleProp {
  *
  * @hierarchy RShape <- RAngle
  */
-abstract class RAngle extends RShape {
+abstract class RAngle extends RShape<SVGGeometryElement> {
   public static RES_TYPE = 'RAngle'
 
   /**
    * The dependencies for the congruent. If exists, this indicates the congruent RAngle to this RAngle.
    */
   protected __dependenciesDual: RAngle | undefined
-  public get dependencies(): RShape[] {
-    if (this.__dependenciesDual) return [...this.__dependencies, this.__dependenciesDual]
+  public get dependencies(): RShape<any>[] {
+    if (this.__dependenciesDual)
+      return [...this.__dependencies, this.__dependenciesDual]
     return this.__dependencies
   }
   protected declare __prop: RAngleProp
 
-  constructor(dependencies: RShape[], prop: RAngleProp, style: SVGAttributes<ReactSVGElement>, relType: string) {
+  constructor(
+    dependencies: RShape<any>[],
+    prop: RAngleProp,
+    style: SVGAttributes<SVGGeometryElement>,
+    relType: string,
+  ) {
     super(dependencies, prop, style, RAngle.RES_TYPE, relType)
   }
 
   public component = () => {
-    return Component({ resolved: this.resolve(), style: this.style, key: this.id })
+    return Component({
+      resolved: this.resolve(),
+      styles: this.style,
+      key: this.id,
+    })
   }
 
   public abstract resolve(): RAngleResolved
@@ -95,7 +105,7 @@ abstract class RAngle extends RShape {
       rangle.__prop.marker = marker
       rangle.__prop.dual = true
     } else {
-      throw NotEqualError(`RAngle ${this.id}`,`RAngle ${rangle.id}`)
+      throw NotEqualError(`RAngle ${this.id}`, `RAngle ${rangle.id}`)
     }
   }
 }

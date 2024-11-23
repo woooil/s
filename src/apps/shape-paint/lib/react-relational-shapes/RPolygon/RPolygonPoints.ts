@@ -1,4 +1,4 @@
-import { ReactSVGElement, SVGAttributes } from 'react'
+import { SVGAttributes } from 'react'
 import { RPolygon } from './RPolygon'
 import { RPoint } from '../RPoint'
 
@@ -16,14 +16,18 @@ class RPolygonPoints extends RPolygon {
   public static REL_TYPE = 'RPolygonPoints'
   protected declare __dependencies: RPoint[]
 
-  constructor(dependencies: RPoint[], _: any, style?: SVGAttributes<ReactSVGElement>) {
+  constructor(
+    dependencies: RPoint[],
+    _: any,
+    style?: SVGAttributes<SVGPolygonElement>,
+  ) {
     super(dependencies, {}, style, RPolygonPoints.REL_TYPE)
   }
 
   public resolve() {
     const coords = this.__dependencies.map(i => i.resolve().coord)
     return {
-      coords
+      coords,
     }
   }
 }

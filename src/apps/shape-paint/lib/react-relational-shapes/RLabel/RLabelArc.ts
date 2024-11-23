@@ -1,4 +1,4 @@
-import { ReactSVGElement, SVGAttributes } from 'react'
+import { SVGAttributes } from 'react'
 import { CoordPolar } from '../Coord'
 import { RLabelProp, RLabel } from './RLabel'
 import { RArc } from '../RArc'
@@ -27,15 +27,24 @@ class RLabelArc extends RLabel {
   protected declare __dependencies: [RArc]
   protected declare __prop: RLabelArcProp
 
-  constructor(dependencies: [RArc], prop: RLabelArcProp, style?: SVGAttributes<ReactSVGElement>) {
+  constructor(
+    dependencies: [RArc],
+    prop: RLabelArcProp,
+    style?: SVGAttributes<SVGGElement>,
+  ) {
     super(dependencies, prop, style, RLabelArc.REL_TYPE)
   }
 
   resolve() {
     const aResolved = this.__dependencies[0].resolve()
     const theta = aResolved.theta.size
-    const r = 4 * aResolved.r * Math.pow(Math.sin(theta / 2), 3) / 3 / (theta - Math.sin(theta))
-    const coord = aResolved.coord.addPolar(new CoordPolar(r, aResolved.theta.half().add(aResolved.theta0)))
+    const r =
+      (4 * aResolved.r * Math.pow(Math.sin(theta / 2), 3)) /
+      3 /
+      (theta - Math.sin(theta))
+    const coord = aResolved.coord.addPolar(
+      new CoordPolar(r, aResolved.theta.half().add(aResolved.theta0)),
+    )
 
     return {
       coord: this.__prop.offset ? coord.addPolar(this.__prop.offset) : coord,

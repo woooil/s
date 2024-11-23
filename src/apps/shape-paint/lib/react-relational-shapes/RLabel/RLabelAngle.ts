@@ -1,4 +1,4 @@
-import { ReactSVGElement, SVGAttributes } from 'react'
+import { SVGAttributes } from 'react'
 import { CoordPolar } from '../Coord'
 import { RLabelProp, RLabel } from './RLabel'
 import { RAngle } from '../RAngle'
@@ -27,19 +27,25 @@ class RLabelAngle extends RLabel {
   protected declare __dependencies: [RAngle]
   protected declare __prop: RLabelAngleProp
 
-  constructor(dependencies: [RAngle], prop: RLabelAngleProp, style?: SVGAttributes<ReactSVGElement>) {
+  constructor(
+    dependencies: [RAngle],
+    prop: RLabelAngleProp,
+    style?: SVGAttributes<SVGGElement>,
+  ) {
     super(dependencies, prop, style, RLabelAngle.REL_TYPE)
   }
 
   resolve() {
     const resolved = this.__dependencies[0].resolve()
     const theta = resolved.theta0.add(resolved.theta.half())
-    const coord = resolved.coord.addPolar(new CoordPolar(28 + (this.__prop.r || 0), theta))
+    const coord = resolved.coord.addPolar(
+      new CoordPolar(28 + (this.__prop.r || 0), theta),
+    )
 
     return {
       coord: coord,
       label: this.__prop.label,
-      offsite: this.__prop.offsite
+      offsite: this.__prop.offsite,
     }
   }
 }

@@ -1,4 +1,4 @@
-import { ReactSVGElement, SVGAttributes } from 'react'
+import { SVGAttributes } from 'react'
 import { LARGE_NUMBER } from '../tools'
 import { CoordPolar } from '../Coord'
 import { ThetaMinimum } from '../Theta'
@@ -9,7 +9,7 @@ import { RPoint } from '../RPoint'
  * The properties of RLineOriented which extends RLineProp.
  * @prop theta    - The orientation.
  * @prop extend1  - Extends backwards if true.
- * @prop length   - The length, if provided. 
+ * @prop length   - The length, if provided.
  */
 interface RLineOrientedProp extends RLineProp {
   theta: ThetaMinimum
@@ -33,18 +33,24 @@ class RLineOriented extends RLine {
   protected declare __dependencies: [RPoint]
   protected declare __prop: RLineOrientedProp
 
-  constructor(dependencies: [RPoint], prop: RLineOrientedProp, style?: SVGAttributes<ReactSVGElement>) {
+  constructor(
+    dependencies: [RPoint],
+    prop: RLineOrientedProp,
+    style?: SVGAttributes<SVGLineElement>,
+  ) {
     super(dependencies, prop, style, RLineOriented.REL_TYPE)
   }
 
   protected preresolve() {
     const resolved = this.__dependencies[0].resolve()
-    const coord2 = resolved.coord.addPolar(new CoordPolar(this.__prop.length || LARGE_NUMBER, this.__prop.theta))
+    const coord2 = resolved.coord.addPolar(
+      new CoordPolar(this.__prop.length || LARGE_NUMBER, this.__prop.theta),
+    )
     return {
       coord1: resolved.coord,
       coord2,
-      extend1: !!(this.__prop.extend1),
-      extend2: !(this.__prop.length),
+      extend1: !!this.__prop.extend1,
+      extend2: !this.__prop.length,
     }
   }
 }

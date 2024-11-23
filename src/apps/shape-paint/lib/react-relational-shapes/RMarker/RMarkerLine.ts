@@ -1,4 +1,4 @@
-import { ReactSVGElement, SVGAttributes } from 'react'
+import { SVGAttributes } from 'react'
 import { NotEqualError } from '../Error'
 import { Theta } from '../Theta'
 import { sim } from '../tools'
@@ -35,25 +35,32 @@ class RMarkerLine extends RMarker {
    */
   protected __dependenciesDual: RMarkerLine | undefined
   protected declare __dependencies: [RLine]
-  public get dependencies(): RShape[] {
-    if (this.__dependenciesDual) return [...this.__dependencies, this.__dependenciesDual]
+  public get dependencies(): RShape<any>[] {
+    if (this.__dependenciesDual)
+      return [...this.__dependencies, this.__dependenciesDual]
     return this.__dependencies
   }
   protected declare __prop: RMarkerLineProp
 
-  constructor(dependencies: [RLine], prop: RMarkerLineProp, style?: SVGAttributes<ReactSVGElement>) {
+  constructor(
+    dependencies: [RLine],
+    prop: RMarkerLineProp,
+    style?: SVGAttributes<SVGGElement>,
+  ) {
     super(dependencies, prop, style, RMarkerLine.REL_TYPE)
   }
 
   public resolve() {
     const coord = this.__dependencies[0].coordOnLine(this.__prop.onLine)
     const resolved = this.__dependencies[0].resolve()
-    const theta = this.__prop.reverse ? Theta.fromCoord(resolved.coord2, resolved.coord1) :  Theta.fromCoord(resolved.coord1, resolved.coord2)
+    const theta = this.__prop.reverse
+      ? Theta.fromCoord(resolved.coord2, resolved.coord1)
+      : Theta.fromCoord(resolved.coord1, resolved.coord2)
 
     return {
       coord,
       theta,
-      marker: this.__prop.marker
+      marker: this.__prop.marker,
     }
   }
 
@@ -74,7 +81,10 @@ class RMarkerLine extends RMarker {
       rmarker.__dependenciesDual = this
       rmarker.__prop.marker = marker
     } else {
-      throw NotEqualError(`the direction of ${this.id}`, `the direction of ${rmarker.id}`)
+      throw NotEqualError(
+        `the direction of ${this.id}`,
+        `the direction of ${rmarker.id}`,
+      )
     }
   }
 }

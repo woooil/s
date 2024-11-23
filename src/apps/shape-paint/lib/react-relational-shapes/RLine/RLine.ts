@@ -40,7 +40,7 @@ interface RLineProp {
  *   type: 'coord1';
  *   value: 10;
  * }
- * represents a Coord which is on RLine, distant by 10 from its coord1 along RLine. 
+ * represents a Coord which is on RLine, distant by 10 from its coord1 along RLine.
  */
 type CoordOnLine = {
   type: 'coord1' | 'coord2' | 'ratio' | 'x' | 'y'
@@ -60,7 +60,7 @@ type CoordOnLine = {
  *
  * @hierarchy RShape <- RLine
  */
-abstract class RLine extends RShape {
+abstract class RLine extends RShape<SVGLineElement> {
   public static RES_TYPE = 'RLine'
 
   /**
@@ -68,8 +68,11 @@ abstract class RLine extends RShape {
    * @prop coord1 - RLine which cuts coord1, if exists.
    * @prop coord2 - RLine which cuts coord2, if exists.
    */
-  protected __dependenciesCut: { coord1: RLine | undefined; coord2: RLine | undefined }
-  public get dependencies(): RShape[] {
+  protected __dependenciesCut: {
+    coord1: RLine | undefined
+    coord2: RLine | undefined
+  }
+  public get dependencies(): RShape<any>[] {
     const d = this.__dependencies
     if (this.__dependenciesCut.coord1) d.push(this.__dependenciesCut.coord1)
     if (this.__dependenciesCut.coord2) d.push(this.__dependenciesCut.coord2)
@@ -77,13 +80,22 @@ abstract class RLine extends RShape {
   }
   protected declare __prop: RLineProp
 
-  constructor(dependencies: RShape[], prop: RLineProp, style: SVGAttributes<ReactSVGElement>, relType: string) {
+  constructor(
+    dependencies: RShape<any>[],
+    prop: RLineProp,
+    style: SVGAttributes<SVGLineElement>,
+    relType: string,
+  ) {
     super(dependencies, prop, style, RLine.RES_TYPE, relType)
     this.__dependenciesCut = { coord1: undefined, coord2: undefined }
   }
 
   public component = () => {
-    return Component({ resolved: this.resolve(), style: this.style, key: this.id })
+    return Component({
+      resolved: this.resolve(),
+      styles: this.style,
+      key: this.id,
+    })
   }
 
   /**
@@ -97,12 +109,18 @@ abstract class RLine extends RShape {
   public resolve(): RLineResolved {
     const preresolved = this.preresolve()
     if (this.__prop.cut1) {
-      const { coord: pointCutA } = RLine.intersect(this, this.__dependenciesCut.coord1)
+      const { coord: pointCutA } = RLine.intersect(
+        this,
+        this.__dependenciesCut.coord1,
+      )
       preresolved.coord1 = pointCutA
       preresolved.extend1 = false
     }
     if (this.__prop.cut2) {
-      const { coord: pointCutB } = RLine.intersect(this, this.__dependenciesCut.coord2)
+      const { coord: pointCutB } = RLine.intersect(
+        this,
+        this.__dependenciesCut.coord2,
+      )
       preresolved.coord2 = pointCutB
       preresolved.extend2 = false
     }
@@ -146,7 +164,9 @@ abstract class RLine extends RShape {
     const resolved = this.resolve()
     const theta = Theta.fromCoord(resolved.coord1, resolved.coord2)
     let coord: Coord
-    const m = (resolved.coord2.y - resolved.coord1.y) / (resolved.coord2.x - resolved.coord1.x)
+    const m =
+      (resolved.coord2.y - resolved.coord1.y) /
+      (resolved.coord2.x - resolved.coord1.x)
     switch (onLine.type) {
       case 'coord1':
         coord = resolved.coord1.addPolar(new CoordPolar(onLine.value, theta))
@@ -159,13 +179,19 @@ abstract class RLine extends RShape {
         break
       case 'x':
         if (sim(resolved.coord1.x, resolved.coord2.x))
-          throw ParallelLinesError(`RLine ${this.__dependencies[0].id}`, 'y-axis')
+          throw ParallelLinesError(
+            `RLine ${this.__dependencies[0].id}`,
+            'y-axis',
+          )
         const y = resolved.coord1.y + (onLine.value - resolved.coord1.x) * m
         coord = new Coord(onLine.value, y)
         break
       case 'y':
         if (sim(resolved.coord1.y, resolved.coord2.y))
-          throw ParallelLinesError(`RLine ${this.__dependencies[0].id}`, 'x-axis')
+          throw ParallelLinesError(
+            `RLine ${this.__dependencies[0].id}`,
+            'x-axis',
+          )
         const x = resolved.coord1.x + (onLine.value - resolved.coord1.y) / m
         coord = new Coord(x, onLine.value)
         break
@@ -184,7 +210,17 @@ abstract class RLine extends RShape {
    * @return  thetaMid  - The middle orientation.
    * @throws  Throws a ParallelLinesError if two RLines are parallel.
    */
-  public static intersect(lineL: RLine, lineM: RLine, reverseL?: boolean, reverseM?: boolean): { coord: Coord, theta0: ThetaMinimum, theta: ThetaMinimum, thetaMid: ThetaMinimum } {
+  public static intersect(
+    lineL: RLine,
+    lineM: RLine,
+    reverseL?: boolean,
+    reverseM?: boolean,
+  ): {
+    coord: Coord
+    theta0: ThetaMinimum
+    theta: ThetaMinimum
+    thetaMid: ThetaMinimum
+  } {
     const lResolved = lineL.preresolve()
     const mResolved = lineM.preresolve()
 
@@ -215,8 +251,12 @@ abstract class RLine extends RShape {
       )
     }
 
-    const theta1 = reverseL ? Theta.fromCoord(lResolved.coord2, lResolved.coord1) : Theta.fromCoord(lResolved.coord1, lResolved.coord2)
-    const theta2 = reverseM ? Theta.fromCoord(mResolved.coord2, mResolved.coord1) : Theta.fromCoord(mResolved.coord1, mResolved.coord2)
+    const theta1 = reverseL
+      ? Theta.fromCoord(lResolved.coord2, lResolved.coord1)
+      : Theta.fromCoord(lResolved.coord1, lResolved.coord2)
+    const theta2 = reverseM
+      ? Theta.fromCoord(mResolved.coord2, mResolved.coord1)
+      : Theta.fromCoord(mResolved.coord1, mResolved.coord2)
     const thetaSub = theta2.substract(theta1)
     let theta = new ThetaMinimum(thetaSub.t)
     let thetaMid = new ThetaMinimum((theta1.t + theta2.t) / 2)
@@ -224,11 +264,11 @@ abstract class RLine extends RShape {
       thetaMid = thetaMid.substract(Theta.pi())
       theta = theta.substract(Theta.pi())
     }
-    return { 
+    return {
       coord: a,
       theta: theta,
       theta0: theta1,
-      thetaMid: thetaMid
+      thetaMid: thetaMid,
     }
   }
 }

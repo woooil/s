@@ -1,4 +1,4 @@
-import { ReactSVGElement, SVGAttributes } from 'react'
+import { JSX, SVGAttributes } from 'react'
 import { RPoint, RPointResolvedProp } from './RPoint'
 import { RLine } from '../RLine'
 
@@ -22,12 +22,19 @@ class RPointIntersection extends RPoint {
   public static REL_TYPE = 'RPointIntersection'
   protected declare __dependencies: [RLine, RLine]
 
-  constructor(dependencies: [RLine, RLine], prop: RPointIntersectionProp, style?: SVGAttributes<ReactSVGElement>) {
+  constructor(
+    dependencies: [RLine, RLine],
+    prop: RPointIntersectionProp,
+    style?: SVGAttributes<SVGCircleElement>,
+  ) {
     super(dependencies, prop, style, RPointIntersection.REL_TYPE)
   }
 
   public resolve() {
-    const { coord } = RLine.intersect(this.__dependencies[0], this.__dependencies[1])
+    const { coord } = RLine.intersect(
+      this.__dependencies[0],
+      this.__dependencies[1],
+    )
     return {
       ...this.__prop,
       coord,
@@ -35,4 +42,4 @@ class RPointIntersection extends RPoint {
   }
 }
 
-export { RPointIntersection }
+export { RPointIntersectionProp, RPointIntersection }

@@ -1,4 +1,4 @@
-import { ReactSVGElement, SVGAttributes } from 'react'
+import { SVGAttributes } from 'react'
 import { CoordPolar } from '../Coord'
 import { Theta, ThetaTravel } from '../Theta'
 import { RArc } from './RArc'
@@ -28,7 +28,11 @@ class RArcTwoPoints extends RArc {
   protected declare __dependencies: [RPoint, RPoint]
   protected declare __prop: RArcTwoPointsProp
 
-  constructor(dependencies: [RPoint, RPoint], prop: RArcTwoPointsProp, style?: SVGAttributes<ReactSVGElement>) {
+  constructor(
+    dependencies: [RPoint, RPoint],
+    prop: RArcTwoPointsProp,
+    style?: SVGAttributes<SVGPathElement>,
+  ) {
     super(dependencies, prop, style, RArcTwoPoints.REL_TYPE)
   }
 
@@ -38,10 +42,13 @@ class RArcTwoPoints extends RArc {
     const d = aCoord.distance(bCoord)
     const r = d / (2 * Math.sin(this.__prop.theta.size / 2))
     const phi = Theta.fromCoord(aCoord, bCoord)
-    const h = Math.sqrt(r * r - d * d / 4)
+    const h = Math.sqrt(r * r - (d * d) / 4)
     const mCoord = aCoord.avg(bCoord)
-    const flag = this.__prop.theta.t > 0 !== this.__prop.theta.size < Math.PI ?  -1 : 1
-    const coord = mCoord.addPolar(new CoordPolar(flag * h, phi.add(Theta.halfPi())))
+    const flag =
+      this.__prop.theta.t > 0 !== this.__prop.theta.size < Math.PI ? -1 : 1
+    const coord = mCoord.addPolar(
+      new CoordPolar(flag * h, phi.add(Theta.halfPi())),
+    )
     const theta0 = Theta.fromCoord(coord, aCoord)
 
     return {

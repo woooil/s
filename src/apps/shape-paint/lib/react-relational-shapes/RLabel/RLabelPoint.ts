@@ -1,4 +1,4 @@
-import { ReactSVGElement, SVGAttributes } from 'react'
+import { SVGAttributes } from 'react'
 import { CoordPolar } from '../Coord'
 import { RLabelProp, RLabel } from './RLabel'
 import { RPoint } from '../RPoint'
@@ -27,7 +27,11 @@ class RLabelPoint extends RLabel {
   protected declare __dependencies: [RPoint]
   protected declare __prop: RLabelPointProp
 
-  constructor(dependencies: [RPoint], prop: RLabelPointProp, style?: SVGAttributes<ReactSVGElement>) {
+  constructor(
+    dependencies: [RPoint],
+    prop: RLabelPointProp,
+    style?: SVGAttributes<SVGGElement>,
+  ) {
     super(dependencies, prop, style, RLabelPoint.REL_TYPE)
   }
 

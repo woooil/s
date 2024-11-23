@@ -1,10 +1,10 @@
-import { ReactSVGElement, SVGAttributes } from 'react'
+import { SVGAttributes } from 'react'
 import { Theta } from '../Theta'
 import { RAngleProp, RAngle } from './RAngle'
 import { RPoint } from '../RPoint'
 
 /**
- * The properties of RAngleThreePointsProp which extends RAngleProp. 
+ * The properties of RAngleThreePointsProp which extends RAngleProp.
  * @prop reflex - Chooses the angle larger that PI if true.
  */
 interface RAngleThreePointsProp extends RAngleProp {
@@ -27,7 +27,11 @@ class RAngleThreePoints extends RAngle {
   protected declare __dependencies: [RPoint, RPoint, RPoint]
   protected declare __prop: RAngleThreePointsProp
 
-  constructor(dependencies: [RPoint, RPoint, RPoint], prop: RAngleThreePointsProp, style?: SVGAttributes<ReactSVGElement>) {
+  constructor(
+    dependencies: [RPoint, RPoint, RPoint],
+    prop: RAngleThreePointsProp,
+    style?: SVGAttributes<SVGGeometryElement>,
+  ) {
     super(dependencies, prop, style, RAngleThreePoints.REL_TYPE)
   }
 
@@ -47,7 +51,7 @@ class RAngleThreePoints extends RAngle {
       coord: bResolved.coord,
       theta0: theta0,
       theta: theta,
-      marker: this.__prop.marker
+      marker: this.__prop.marker,
     }
   }
 }

@@ -15,7 +15,7 @@ function getStandard(theta: number) {
 
 function AngleO({
   resolved,
-  style,
+  styles,
   ...props
 }: Props<RAngleResolved, SVGCircleElement>) {
   const std = getStandard(resolved.theta.t)
@@ -26,7 +26,7 @@ function AngleO({
     cy: resolved.coord.y + std.r * Math.sin(thetaMid),
     r: std.size / 4,
     fill: 'black',
-    ...style
+    ...styles,
   }
 
   return (
@@ -39,7 +39,7 @@ function AngleO({
 
 function AngleX({
   resolved,
-  style,
+  styles,
   ...props
 }: Props<RAngleResolved, SVGPathElement>) {
   const std = getStandard(resolved.theta.t)
@@ -47,21 +47,33 @@ function AngleX({
   const phi = Math.PI / 4 - theta
   const p = {
     M0: {
-      x: resolved.coord.x + std.r * Math.cos(theta) - std.size / 2 * Math.cos(phi),
-      y: resolved.coord.y + std.r * Math.sin(theta) + std.size / 2 * Math.sin(phi),
+      x:
+        resolved.coord.x +
+        std.r * Math.cos(theta) -
+        (std.size / 2) * Math.cos(phi),
+      y:
+        resolved.coord.y +
+        std.r * Math.sin(theta) +
+        (std.size / 2) * Math.sin(phi),
     },
     l1: {
       x: std.size * Math.cos(phi),
       y: -std.size * Math.sin(phi),
     },
     M2: {
-      x: resolved.coord.x + std.r * Math.cos(theta) - std.size / 2 * Math.sin(phi),
-      y: resolved.coord.y + std.r * Math.sin(theta) - std.size / 2 * Math.cos(phi),
+      x:
+        resolved.coord.x +
+        std.r * Math.cos(theta) -
+        (std.size / 2) * Math.sin(phi),
+      y:
+        resolved.coord.y +
+        std.r * Math.sin(theta) -
+        (std.size / 2) * Math.cos(phi),
     },
     l2: {
       x: std.size * Math.sin(phi),
       y: std.size * Math.cos(phi),
-    }
+    },
   }
   const d = `M ${p.M0.x} ${p.M0.y} l ${p.l1.x} ${p.l1.y} M ${p.M2.x} ${p.M2.y} l ${p.l2.x} ${p.l2.y}`
 
@@ -70,7 +82,7 @@ function AngleX({
     fill: 'none',
     stroke: 'black',
     strokeWidth: '1',
-    ...style
+    ...styles,
   }
 
   return (
@@ -83,7 +95,7 @@ function AngleX({
 
 function AngleRight({
   resolved,
-  style,
+  styles,
   ...props
 }: Props<RAngleResolved, SVGPathElement>) {
   const std = getStandard(resolved.theta.t)
@@ -102,16 +114,16 @@ function AngleRight({
     L2: {
       x: resolved.coord.x - flag * std.size * sin,
       y: resolved.coord.y + flag * std.size * cos,
-    }
+    },
   }
   const d = `M ${p.M.x} ${p.M.y} L ${p.L1.x} ${p.L1.y} ${p.L2.x} ${p.L2.y}`
-  
+
   const attr = {
     d: d,
     fill: 'none',
     stroke: 'black',
     strokeWidth: '1',
-    ...style
+    ...styles,
   }
 
   return (
@@ -124,24 +136,28 @@ function AngleRight({
 
 function AngleDefault({
   resolved,
-  style,
+  styles,
   ...props
 }: Props<RAngleResolved, SVGPathElement>) {
   const std = getStandard(resolved.theta.t)
   const p = {
     i: {
       x: resolved.coord.x + std.r * Math.cos(resolved.theta0.t),
-      y: resolved.coord.y + std.r * Math.sin(resolved.theta0.t)
+      y: resolved.coord.y + std.r * Math.sin(resolved.theta0.t),
     },
     rx: std.r,
     ry: std.r / std.scale,
-    rotation: (resolved.theta0.t + resolved.theta.t / 2) * 180 / Math.PI,
+    rotation: ((resolved.theta0.t + resolved.theta.t / 2) * 180) / Math.PI,
     largeArcFlag: Math.abs(resolved.theta.t) > Math.PI ? 1 : 0,
     sweepFlag: resolved.theta.t > 0 ? 1 : 0,
     f: {
-      x: resolved.coord.x + std.r * Math.cos(resolved.theta.t + resolved.theta0.t),
-      y: resolved.coord.y + std.r * Math.sin(resolved.theta.t + resolved.theta0.t)
-    }
+      x:
+        resolved.coord.x +
+        std.r * Math.cos(resolved.theta.t + resolved.theta0.t),
+      y:
+        resolved.coord.y +
+        std.r * Math.sin(resolved.theta.t + resolved.theta0.t),
+    },
   }
   const d = `M ${p.i.x} ${p.i.y} A ${p.rx} ${p.ry} ${p.rotation} ${p.largeArcFlag} ${p.sweepFlag} ${p.f.x} ${p.f.y}`
   const attr = {
@@ -149,7 +165,7 @@ function AngleDefault({
     fill: 'none',
     stroke: 'black',
     strokeWidth: '1',
-    ...style
+    ...styles,
   }
 
   return (
@@ -161,26 +177,42 @@ function AngleDefault({
 }
 
 export default function Angle({
-  resolved, 
-  style,
+  resolved,
+  styles,
   ...props
 }: Props<RAngleResolved, SVGGeometryElement>) {
   switch (resolved.marker) {
     case 'o':
       return (
-        <AngleO resolved={resolved} style={style} {...props} />
+        <AngleO
+          resolved={resolved}
+          styles={styles}
+          {...props}
+        />
       )
     case 'x':
       return (
-        <AngleX resolved={resolved} style={style} {...props} />
+        <AngleX
+          resolved={resolved}
+          styles={styles}
+          {...props}
+        />
       )
     case 'right':
       return (
-        <AngleRight resolved={resolved} style={style} {...props} />
+        <AngleRight
+          resolved={resolved}
+          styles={styles}
+          {...props}
+        />
       )
     default:
       return (
-        <AngleDefault resolved={resolved} style={style} {...props} />
+        <AngleDefault
+          resolved={resolved}
+          styles={styles}
+          {...props}
+        />
       )
   }
 }

@@ -2,6 +2,7 @@ import * as React from 'react'
 
 export type Props<R, T> = {
   resolved: R
-  style: React.SVGAttributes<React.ReactSVGElement>
+  styles: React.SVGAttributes<T>
+  key: any
 } & React.AllHTMLAttributes<T> &
   React.SVGAttributes<T>

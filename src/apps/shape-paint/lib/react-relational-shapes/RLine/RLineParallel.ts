@@ -1,4 +1,4 @@
-import { ReactSVGElement, SVGAttributes } from 'react'
+import { SVGAttributes } from 'react'
 import { LARGE_NUMBER } from '../tools'
 import { CoordPolar } from '../Coord'
 import { Theta } from '../Theta'
@@ -33,21 +33,29 @@ class RLineParallel extends RLine {
   protected declare __dependencies: [RPoint, RLine]
   protected declare __prop: RLineParallelProp
 
-  constructor(dependencies: [RPoint, RLine], prop: RLineParallelProp, style?: SVGAttributes<ReactSVGElement>) {
+  constructor(
+    dependencies: [RPoint, RLine],
+    prop: RLineParallelProp,
+    style?: SVGAttributes<SVGLineElement>,
+  ) {
     super(dependencies, prop, style, RLineParallel.REL_TYPE)
   }
 
   protected preresolve() {
     const aResolved = this.__dependencies[0].resolve()
     const lResolved = this.__dependencies[1].resolve()
-    const theta = this.__prop.reverse ? Theta.fromCoord(lResolved.coord2, lResolved.coord1) : Theta.fromCoord(lResolved.coord1, lResolved.coord2)
-    const coord2 = aResolved.coord.addPolar(new CoordPolar(this.__prop.length || LARGE_NUMBER, theta))
+    const theta = this.__prop.reverse
+      ? Theta.fromCoord(lResolved.coord2, lResolved.coord1)
+      : Theta.fromCoord(lResolved.coord1, lResolved.coord2)
+    const coord2 = aResolved.coord.addPolar(
+      new CoordPolar(this.__prop.length || LARGE_NUMBER, theta),
+    )
 
     return {
       coord1: aResolved.coord,
       coord2,
-      extend1: !!(this.__prop.extend1),
-      extend2: !(this.__prop.length),
+      extend1: !!this.__prop.extend1,
+      extend2: !this.__prop.length,
     }
   }
 }

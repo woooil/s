@@ -1,4 +1,4 @@
-import { ReactSVGElement, SVGAttributes } from 'react'
+import { SVGAttributes } from 'react'
 import { Coord } from '../Coord'
 import { RShape } from '../RShape'
 import Component from './Point'
@@ -12,7 +12,7 @@ interface RPointResolvedProp {
 }
 
 /**
- * The resolved of RPoint. 
+ * The resolved of RPoint.
  * @prop coord - The coordinates.
  * @extends RPointResolvedProp
  */
@@ -30,15 +30,24 @@ interface RPointResolved extends RPointResolvedProp {
  *
  * @hierarchy RShape <- RPoint
  */
-abstract class RPoint extends RShape {
+abstract class RPoint extends RShape<SVGCircleElement> {
   public static RES_TYPE = 'RPoint'
 
-  constructor(dependencies: RShape[], prop: any, style: SVGAttributes<ReactSVGElement>, relType: string) {
+  constructor(
+    dependencies: RShape<any>[],
+    prop: any,
+    style: SVGAttributes<SVGCircleElement>,
+    relType: string,
+  ) {
     super(dependencies, prop, style, RPoint.RES_TYPE, relType)
   }
 
   public component = () => {
-    return Component({ resolved: this.resolve(), style: this.style, key: this.id })
+    return Component({
+      resolved: this.resolve(),
+      styles: this.style,
+      key: this.id,
+    })
   }
 
   public abstract resolve(): RPointResolved
