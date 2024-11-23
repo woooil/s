@@ -1,3 +1,4 @@
+import { ReactSVGElement, SVGAttributes } from 'react'
 import { RPoint, RPointResolvedProp } from './RPoint'
 import { RLine } from '../RLine'
 
@@ -21,8 +22,8 @@ class RPointIntersection extends RPoint {
   public static REL_TYPE = 'RPointIntersection'
   protected declare __dependencies: [RLine, RLine]
 
-  constructor(dependencies: [RLine, RLine], prop: RPointIntersectionProp) {
-    super(dependencies, prop, RPointIntersection.REL_TYPE)
+  constructor(dependencies: [RLine, RLine], prop: RPointIntersectionProp, style?: SVGAttributes<ReactSVGElement>) {
+    super(dependencies, prop, style, RPointIntersection.REL_TYPE)
   }
 
   public resolve() {

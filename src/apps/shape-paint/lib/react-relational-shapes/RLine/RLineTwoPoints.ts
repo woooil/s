@@ -1,3 +1,4 @@
+import { ReactSVGElement, SVGAttributes } from 'react'
 import { RLineProp, RLine } from './RLine'
 import { RPoint } from '../RPoint'
 
@@ -27,8 +28,8 @@ class RLineTwoPoints extends RLine {
   protected declare __dependencies: [RPoint, RPoint]
   protected declare __prop: RLineTwoPointsProp
 
-  constructor(dependencies: [RPoint, RPoint], prop: RLineTwoPointsProp) {
-    super(dependencies, prop, RLineTwoPoints.REL_TYPE)
+  constructor(dependencies: [RPoint, RPoint], prop: RLineTwoPointsProp, style?: SVGAttributes<ReactSVGElement>) {
+    super(dependencies, prop, style, RLineTwoPoints.REL_TYPE)
   }
 
   protected preresolve() {

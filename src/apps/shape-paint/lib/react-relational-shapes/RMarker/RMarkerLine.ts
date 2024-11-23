@@ -1,3 +1,4 @@
+import { ReactSVGElement, SVGAttributes } from 'react'
 import { NotEqualError } from '../Error'
 import { Theta } from '../Theta'
 import { sim } from '../tools'
@@ -40,8 +41,8 @@ class RMarkerLine extends RMarker {
   }
   protected declare __prop: RMarkerLineProp
 
-  constructor(dependencies: [RLine], prop: RMarkerLineProp) {
-    super(dependencies, prop, RMarkerLine.REL_TYPE)
+  constructor(dependencies: [RLine], prop: RMarkerLineProp, style?: SVGAttributes<ReactSVGElement>) {
+    super(dependencies, prop, style, RMarkerLine.REL_TYPE)
   }
 
   public resolve() {

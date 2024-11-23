@@ -1,3 +1,4 @@
+import { ReactSVGElement, SVGAttributes } from 'react'
 import { ParallelLinesError, DefaultCaseError } from '../Error'
 import { sim } from '../tools'
 import { Coord, CoordPolar } from '../Coord'
@@ -76,13 +77,13 @@ abstract class RLine extends RShape {
   }
   protected declare __prop: RLineProp
 
-  constructor(dependencies: RShape[], prop: RLineProp, relType: string) {
-    super(dependencies, prop, RLine.RES_TYPE, relType)
+  constructor(dependencies: RShape[], prop: RLineProp, style: SVGAttributes<ReactSVGElement>, relType: string) {
+    super(dependencies, prop, style, RLine.RES_TYPE, relType)
     this.__dependenciesCut = { coord1: undefined, coord2: undefined }
   }
 
   public component = () => {
-    return Component({ resolved: this.resolve(), key: this.id })
+    return Component({ resolved: this.resolve(), style: this.style, key: this.id })
   }
 
   /**

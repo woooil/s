@@ -1,3 +1,4 @@
+import { ReactSVGElement, SVGAttributes } from 'react'
 import { CoordPolar } from '../Coord'
 import { Theta } from '../Theta'
 import { RLabelProp, RLabel } from './RLabel'
@@ -25,7 +26,7 @@ class RLabelLength extends RLabel {
   protected declare __dependencies: [RLength]
   protected declare __prop: RLabelLengthProp
 
-  constructor(dependencies: [RLength], prop: RLabelLengthProp) {
+  constructor(dependencies: [RLength], prop: RLabelLengthProp, style?: SVGAttributes<ReactSVGElement>) {
     super(dependencies, prop, RLabelLength.REL_TYPE)
   }
 

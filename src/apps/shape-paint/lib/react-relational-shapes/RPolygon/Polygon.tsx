@@ -4,6 +4,7 @@ import { RPolygonResolved } from './RPolygon'
 
 export default function Polygon({
   resolved,
+  style,
   ...props
 }: Props<RPolygonResolved, SVGPolygonElement>) {
   const points = resolved.coords.map(coord => `${coord.x} ${coord.y} `).join(' ').trimEnd()
@@ -13,6 +14,7 @@ export default function Polygon({
     fill: 'none',
     stroke: 'black',
     strokeWidth: 2,
+    ...style
   }
 
   return (

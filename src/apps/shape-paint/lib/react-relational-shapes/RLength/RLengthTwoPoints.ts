@@ -1,3 +1,4 @@
+import { ReactSVGElement, SVGAttributes } from 'react'
 import { RLength } from './RLength'
 import { RPoint } from '../RPoint'
 
@@ -9,8 +10,8 @@ class RLengthTwoPoints extends RLength {
   public static REL_TYPE = 'RLengthTwoPoints'
   protected declare __dependencies: [RPoint, RPoint]
 
-  constructor(dependencies: [RPoint, RPoint], _: any) {
-    super(dependencies, {}, RLengthTwoPoints.REL_TYPE)
+  constructor(dependencies: [RPoint, RPoint], _: any, style?: SVGAttributes<ReactSVGElement>) {
+    super(dependencies, {}, style, RLengthTwoPoints.REL_TYPE)
   }
 
   /**

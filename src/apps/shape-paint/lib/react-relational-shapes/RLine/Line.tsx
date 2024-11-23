@@ -5,6 +5,7 @@ import { Coord } from '../Coord'
 
 export default function Line({
   resolved,
+  style,
   ...props
 }: Props<RLineResolved, SVGLineElement>) {
   const extend = (coord: Coord, ref: Coord) => {
@@ -25,6 +26,7 @@ export default function Line({
     y2: resolved.coord2.y,
     stroke: 'black',
     strokeWidth: 2,
+    ...style
   }
 
   return (

@@ -49,6 +49,7 @@ function Arrow({ x1, y1, x2, y2 }: { x1: number, y1: number, x2: number, y2: num
 
 export default function Label({
   resolved,
+  style,
   ...props
 }: Props<RLabelResolved, SVGGElement>) {
   const attr = {
@@ -61,7 +62,8 @@ export default function Label({
     stroke: 'white',
     strokeWidth: '0.3em',
     strokeLinejoin: 'round',
-    paintOrder: 'stroke'
+    paintOrder: 'stroke',
+    ...style
   }
 
   if (resolved.offsite) {

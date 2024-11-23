@@ -1,3 +1,4 @@
+import { ReactSVGElement, SVGAttributes } from 'react'
 import { LARGE_NUMBER } from '../tools'
 import { CoordPolar } from '../Coord'
 import { RLineProp, RLine } from './RLine'
@@ -32,8 +33,8 @@ class RLineAngleBisector extends RLine {
   protected declare __dependencies: [RLine, RLine]
   protected declare __prop: RLineAngleBisectorProp
 
-  constructor(dependencies: [RLine, RLine], prop: RLineAngleBisectorProp) {
-    super(dependencies, prop, RLineAngleBisector.REL_TYPE)
+  constructor(dependencies: [RLine, RLine], prop: RLineAngleBisectorProp, style?: SVGAttributes<ReactSVGElement>) {
+    super(dependencies, prop, style, RLineAngleBisector.REL_TYPE)
   }
 
   /**

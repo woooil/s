@@ -1,3 +1,4 @@
+import { ReactSVGElement, SVGAttributes } from 'react'
 import { LARGE_NUMBER } from '../tools'
 import { CoordPolar } from '../Coord'
 import { ThetaMinimum } from '../Theta'
@@ -32,8 +33,8 @@ class RLineOriented extends RLine {
   protected declare __dependencies: [RPoint]
   protected declare __prop: RLineOrientedProp
 
-  constructor(dependencies: [RPoint], prop: RLineOrientedProp) {
-    super(dependencies, prop, RLineOriented.REL_TYPE)
+  constructor(dependencies: [RPoint], prop: RLineOrientedProp, style?: SVGAttributes<ReactSVGElement>) {
+    super(dependencies, prop, style, RLineOriented.REL_TYPE)
   }
 
   protected preresolve() {

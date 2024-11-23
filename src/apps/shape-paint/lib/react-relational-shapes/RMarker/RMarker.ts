@@ -1,3 +1,4 @@
+import { ReactSVGElement, SVGAttributes } from 'react'
 import { Coord } from '../Coord'
 import { ThetaMinimum } from '../Theta'
 import { RShape } from '../RShape'
@@ -38,12 +39,12 @@ interface RMarkerProp {
 abstract class RMarker extends RShape {
   public static RES_TYPE = 'RMarker'
 
-  constructor(dependencies: RShape[], prop: RMarkerProp, relType: string) {
-    super(dependencies, prop, RMarker.RES_TYPE, relType)
+  constructor(dependencies: RShape[], prop: RMarkerProp, style: SVGAttributes<ReactSVGElement>, relType: string) {
+    super(dependencies, prop, style, RMarker.RES_TYPE, relType)
   }
 
   public component = () => {
-    return Component({ resolved: this.resolve(), key: this.id })
+    return Component({ resolved: this.resolve(), style: this.style, key: this.id })
   }
 
   public abstract resolve(): RMarkerResolved

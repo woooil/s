@@ -4,6 +4,7 @@ import { RLengthResolved } from './RLength'
 
 export default function Length({
   resolved,
+  style,
   ...props
 }: Props<RLengthResolved, SVGPathElement>) {
   const theta = Math.atan2(resolved.coord2.y - resolved.coord1.y, resolved.coord2.x - resolved.coord1.x)
@@ -29,6 +30,7 @@ export default function Length({
     stroke: 'black',
     strokeWidth: '1',
     strokeDasharray: '6, 4',
+    ...style
   }
 
   return (

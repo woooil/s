@@ -1,3 +1,4 @@
+import { ReactSVGElement, SVGAttributes } from 'react'
 import { LARGE_NUMBER } from '../tools'
 import { Coord } from '../Coord'
 import { RLineProp, RLine } from './RLine'
@@ -25,8 +26,8 @@ class RLineVertical extends RLine {
   public static REL_TYPE = 'RLineVertical'
   protected declare __prop: RLineVerticalProp
 
-  constructor(_: RShape[], prop: RLineVerticalProp) {
-    super([], prop, RLineVertical.REL_TYPE)
+  constructor(_: RShape[], prop: RLineVerticalProp, style?: SVGAttributes<ReactSVGElement>) {
+    super([], prop, style, RLineVertical.REL_TYPE)
   }
 
   protected preresolve() {

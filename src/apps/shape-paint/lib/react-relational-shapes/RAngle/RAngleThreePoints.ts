@@ -1,3 +1,4 @@
+import { ReactSVGElement, SVGAttributes } from 'react'
 import { Theta } from '../Theta'
 import { RAngleProp, RAngle } from './RAngle'
 import { RPoint } from '../RPoint'
@@ -26,8 +27,8 @@ class RAngleThreePoints extends RAngle {
   protected declare __dependencies: [RPoint, RPoint, RPoint]
   protected declare __prop: RAngleThreePointsProp
 
-  constructor(dependencies: [RPoint, RPoint, RPoint], prop: RAngleThreePointsProp) {
-    super(dependencies, prop, RAngleThreePoints.REL_TYPE)
+  constructor(dependencies: [RPoint, RPoint, RPoint], prop: RAngleThreePointsProp, style?: SVGAttributes<ReactSVGElement>) {
+    super(dependencies, prop, style, RAngleThreePoints.REL_TYPE)
   }
 
   resolve() {

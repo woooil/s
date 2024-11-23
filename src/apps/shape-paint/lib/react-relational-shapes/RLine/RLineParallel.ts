@@ -1,3 +1,4 @@
+import { ReactSVGElement, SVGAttributes } from 'react'
 import { LARGE_NUMBER } from '../tools'
 import { CoordPolar } from '../Coord'
 import { Theta } from '../Theta'
@@ -32,8 +33,8 @@ class RLineParallel extends RLine {
   protected declare __dependencies: [RPoint, RLine]
   protected declare __prop: RLineParallelProp
 
-  constructor(dependencies: [RPoint, RLine], prop: RLineParallelProp) {
-    super(dependencies, prop, RLineParallel.REL_TYPE)
+  constructor(dependencies: [RPoint, RLine], prop: RLineParallelProp, style?: SVGAttributes<ReactSVGElement>) {
+    super(dependencies, prop, style, RLineParallel.REL_TYPE)
   }
 
   protected preresolve() {

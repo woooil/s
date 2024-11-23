@@ -1,3 +1,4 @@
+import { ReactSVGElement, SVGAttributes } from 'react'
 import { RAngleProp, RAngle } from './RAngle'
 import { RLine } from '../RLine'
 
@@ -27,8 +28,8 @@ class RAngleTwoLines extends RAngle {
   protected declare __dependencies: [RLine, RLine]
   protected declare __prop: RAngleTwoLinesProp
 
-  constructor(dependencies: [RLine, RLine], prop: RAngleTwoLinesProp) {
-    super(dependencies, prop, RAngleTwoLines.REL_TYPE)
+  constructor(dependencies: [RLine, RLine], prop: RAngleTwoLinesProp, style?: SVGAttributes<ReactSVGElement>) {
+    super(dependencies, prop, style, RAngleTwoLines.REL_TYPE)
   }
 
   /**

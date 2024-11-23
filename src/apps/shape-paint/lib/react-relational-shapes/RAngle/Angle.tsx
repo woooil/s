@@ -15,6 +15,7 @@ function getStandard(theta: number) {
 
 function AngleO({
   resolved,
+  style,
   ...props
 }: Props<RAngleResolved, SVGCircleElement>) {
   const std = getStandard(resolved.theta.t)
@@ -25,6 +26,7 @@ function AngleO({
     cy: resolved.coord.y + std.r * Math.sin(thetaMid),
     r: std.size / 4,
     fill: 'black',
+    ...style
   }
 
   return (
@@ -37,6 +39,7 @@ function AngleO({
 
 function AngleX({
   resolved,
+  style,
   ...props
 }: Props<RAngleResolved, SVGPathElement>) {
   const std = getStandard(resolved.theta.t)
@@ -67,6 +70,7 @@ function AngleX({
     fill: 'none',
     stroke: 'black',
     strokeWidth: '1',
+    ...style
   }
 
   return (
@@ -79,6 +83,7 @@ function AngleX({
 
 function AngleRight({
   resolved,
+  style,
   ...props
 }: Props<RAngleResolved, SVGPathElement>) {
   const std = getStandard(resolved.theta.t)
@@ -106,6 +111,7 @@ function AngleRight({
     fill: 'none',
     stroke: 'black',
     strokeWidth: '1',
+    ...style
   }
 
   return (
@@ -118,6 +124,7 @@ function AngleRight({
 
 function AngleDefault({
   resolved,
+  style,
   ...props
 }: Props<RAngleResolved, SVGPathElement>) {
   const std = getStandard(resolved.theta.t)
@@ -142,6 +149,7 @@ function AngleDefault({
     fill: 'none',
     stroke: 'black',
     strokeWidth: '1',
+    ...style
   }
 
   return (
@@ -154,24 +162,25 @@ function AngleDefault({
 
 export default function Angle({
   resolved, 
+  style,
   ...props
 }: Props<RAngleResolved, SVGGeometryElement>) {
   switch (resolved.marker) {
     case 'o':
       return (
-        <AngleO resolved={resolved} {...props} />
+        <AngleO resolved={resolved} style={style} {...props} />
       )
     case 'x':
       return (
-        <AngleX resolved={resolved} {...props} />
+        <AngleX resolved={resolved} style={style} {...props} />
       )
     case 'right':
       return (
-        <AngleRight resolved={resolved} {...props} />
+        <AngleRight resolved={resolved} style={style} {...props} />
       )
     default:
       return (
-        <AngleDefault resolved={resolved} {...props} />
+        <AngleDefault resolved={resolved} style={style} {...props} />
       )
   }
 }

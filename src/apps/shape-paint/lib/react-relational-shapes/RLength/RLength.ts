@@ -1,3 +1,4 @@
+import { ReactSVGElement, SVGAttributes } from 'react'
 import { Coord } from '../Coord'
 import { RShape } from '../RShape'
 import Component from './Length'
@@ -32,12 +33,12 @@ abstract class RLength extends RShape {
    */
   public static RES_TYPE = 'RLength'
 
-  constructor(dependencies: RShape[], _: any, relType: string) {
-    super(dependencies, {}, RLength.RES_TYPE, relType)
+  constructor(dependencies: RShape[], _: any, style: SVGAttributes<ReactSVGElement>, relType: string) {
+    super(dependencies, {}, style, RLength.RES_TYPE, relType)
   }
 
   public component = () => {
-    return Component({ resolved: this.resolve(), key: this.id })
+    return Component({ resolved: this.resolve(), style: this.style, key: this.id })
   }
 
   /**

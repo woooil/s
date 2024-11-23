@@ -1,3 +1,4 @@
+import { ReactSVGElement, SVGAttributes } from 'react'
 import { NotEqualError } from '../Error'
 import { Coord } from '../Coord'
 import { sim } from '../tools'
@@ -54,12 +55,12 @@ abstract class RAngle extends RShape {
   }
   protected declare __prop: RAngleProp
 
-  constructor(dependencies: RShape[], prop: RAngleProp, relType: string) {
-    super(dependencies, prop, RAngle.RES_TYPE, relType)
+  constructor(dependencies: RShape[], prop: RAngleProp, style: SVGAttributes<ReactSVGElement>, relType: string) {
+    super(dependencies, prop, style, RAngle.RES_TYPE, relType)
   }
 
   public component = () => {
-    return Component({ resolved: this.resolve(), key: this.id })
+    return Component({ resolved: this.resolve(), style: this.style, key: this.id })
   }
 
   public abstract resolve(): RAngleResolved

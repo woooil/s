@@ -5,6 +5,7 @@ import { Coord } from '../Coord'
 
 export default function Arc({
   resolved,
+  style,
   ...props
 }: Props<RArcResolved, SVGPathElement>) {
   const p = {
@@ -30,6 +31,7 @@ export default function Arc({
     fill: 'none',
     stroke: 'black',
     strokeWidth: '1',
+    ...style
   }
 
   return (

@@ -35,6 +35,7 @@ function Path({ marker, id }: { marker: string, id: string }) {
 
 export default function Marker({
   resolved,
+  style,
   ...props
 }: Props<RMarkerResolved, SVGGElement>) {
   const r = 1
@@ -53,7 +54,8 @@ export default function Marker({
     d: `M ${p.M.x} ${p.M.y} l ${p.l.x} ${p.l.y}`,
     fill: 'none',
     stroke: 'none',
-    markerStart: `url(#${id})`
+    markerStart: `url(#${id})`,
+    ...style
   }
 
   return (

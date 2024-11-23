@@ -1,3 +1,4 @@
+import { ReactSVGElement, SVGAttributes } from 'react'
 import { LARGE_NUMBER } from '../tools'
 import { CoordPolar } from '../Coord'
 import { Theta } from '../Theta'
@@ -33,8 +34,8 @@ class RLinePerpendicular extends RLine {
   protected declare __dependencies: [RPoint, RLine]
   protected declare __prop: RLinePerpendicularProp
 
-  constructor(dependencies: [RPoint, RLine], prop: RLinePerpendicularProp) {
-    super(dependencies, prop, RLinePerpendicular.REL_TYPE)
+  constructor(dependencies: [RPoint, RLine], prop: RLinePerpendicularProp, style?: SVGAttributes<ReactSVGElement>) {
+    super(dependencies, prop, style, RLinePerpendicular.REL_TYPE)
   }
 
   protected preresolve() {

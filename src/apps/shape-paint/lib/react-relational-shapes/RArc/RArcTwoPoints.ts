@@ -1,3 +1,4 @@
+import { ReactSVGElement, SVGAttributes } from 'react'
 import { CoordPolar } from '../Coord'
 import { Theta, ThetaTravel } from '../Theta'
 import { RArc } from './RArc'
@@ -27,8 +28,8 @@ class RArcTwoPoints extends RArc {
   protected declare __dependencies: [RPoint, RPoint]
   protected declare __prop: RArcTwoPointsProp
 
-  constructor(dependencies: [RPoint, RPoint], prop: RArcTwoPointsProp) {
-    super(dependencies, prop, RArcTwoPoints.REL_TYPE)
+  constructor(dependencies: [RPoint, RPoint], prop: RArcTwoPointsProp, style?: SVGAttributes<ReactSVGElement>) {
+    super(dependencies, prop, style, RArcTwoPoints.REL_TYPE)
   }
 
   resolve() {

@@ -1,3 +1,4 @@
+import { ReactSVGElement, SVGAttributes } from 'react'
 import { CoordPolar } from '../Coord'
 import { RLabelProp, RLabel } from './RLabel'
 import { RAngle } from '../RAngle'
@@ -26,8 +27,8 @@ class RLabelAngle extends RLabel {
   protected declare __dependencies: [RAngle]
   protected declare __prop: RLabelAngleProp
 
-  constructor(dependencies: [RAngle], prop: RLabelAngleProp) {
-    super(dependencies, prop, RLabelAngle.REL_TYPE)
+  constructor(dependencies: [RAngle], prop: RLabelAngleProp, style?: SVGAttributes<ReactSVGElement>) {
+    super(dependencies, prop, style, RLabelAngle.REL_TYPE)
   }
 
   resolve() {

@@ -1,3 +1,4 @@
+import { ReactSVGElement, SVGAttributes } from 'react'
 import { Coord } from '../Coord'
 import { ThetaTravel, ThetaMinimum } from '../Theta'
 import { RShape } from '../RShape'
@@ -33,12 +34,12 @@ interface RArcResolved {
 abstract class RArc extends RShape {
   public static RES_TYPE = 'RArc'
 
-  constructor(dependencies: RShape[], _: any, relType: string) {
-    super(dependencies, {}, RArc.RES_TYPE, relType)
+  constructor(dependencies: RShape[], _: any, style: SVGAttributes<ReactSVGElement>, relType: string) {
+    super(dependencies, {}, style, RArc.RES_TYPE, relType)
   }
 
   public component = () => {
-    return Component({ resolved: this.resolve(), key: this.id })
+    return Component({ resolved: this.resolve(), style: this.style, key: this.id })
   }
 
   public abstract resolve(): RArcResolved

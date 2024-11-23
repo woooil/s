@@ -4,6 +4,7 @@ import { RPointResolved } from './RPoint'
 
 export default function Point({
   resolved,
+  style,
   ...props
 }: Props<RPointResolved, SVGCircleElement>) {
   const attr = {
@@ -11,6 +12,7 @@ export default function Point({
     cy: resolved.coord.y,
     r: 3,
     fill: 'black',
+    ...style
   }
   
   return (

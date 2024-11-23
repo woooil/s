@@ -1,3 +1,4 @@
+import { ReactSVGElement, SVGAttributes } from 'react'
 import { RPoint, RPointResolvedProp } from './RPoint'
 import { RLine, CoordOnLine } from '../RLine'
 
@@ -26,8 +27,8 @@ class RPointOnLine extends RPoint {
   protected declare __dependencies: [RLine]
   protected declare __prop: RPointOnLineProp
 
-  constructor(dependencies: [RLine], prop: RPointOnLineProp) {
-    super(dependencies, prop, RPointOnLine.REL_TYPE)
+  constructor(dependencies: [RLine], prop: RPointOnLineProp, style?: SVGAttributes<ReactSVGElement>) {
+    super(dependencies, prop, style, RPointOnLine.REL_TYPE)
   }
 
   public resolve() {

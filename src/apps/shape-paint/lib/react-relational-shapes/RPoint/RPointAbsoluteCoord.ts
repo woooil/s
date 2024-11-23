@@ -1,3 +1,4 @@
+import { ReactSVGElement, SVGAttributes } from 'react'
 import { Coord } from '../Coord'
 import { RPoint, RPointResolvedProp } from './RPoint'
 import { RShape } from '../RShape'
@@ -27,8 +28,8 @@ class RPointAbsoluteCoord extends RPoint {
   public static REL_TYPE = 'RPointAbsoluteCoord'
   protected declare __prop: RPointAbsoluteCoordProp
 
-  constructor(_: RShape[], prop: RPointAbsoluteCoordProp) {
-    super([], prop, RPointAbsoluteCoord.REL_TYPE)
+  constructor(_: RShape[], prop: RPointAbsoluteCoordProp, style?: SVGAttributes<ReactSVGElement>) {
+    super([], prop, style, RPointAbsoluteCoord.REL_TYPE)
   }
 
   public resolve() {

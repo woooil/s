@@ -1,4 +1,4 @@
-import { ReactSVGElement } from 'react'
+import { ReactSVGElement, SVGAttributes } from 'react'
 import { v4 as uuid } from 'uuid'
 
 /**
@@ -40,6 +40,10 @@ abstract class RShape {
     return this.__prop
   }
   /**
+   * The styles of this RShape.
+   */
+  public style: SVGAttributes<ReactSVGElement>
+  /**
    * The type of the resolved of RShape.
    */
   public static RES_TYPE: string
@@ -69,10 +73,11 @@ abstract class RShape {
   /**
    * Assigns properties to this RShape. id is auto-generated using uuid().
    */
-  constructor(dependencies: RShape[], prop: any, resType: string, relType: string) {
+  constructor(dependencies: RShape[], prop: any, style: SVGAttributes<ReactSVGElement>, resType: string, relType: string) {
     this.id = `${RShape.ID_PREFIX}${uuid()}`
     this.__dependencies = dependencies
     this.__prop = prop
+    this.style = style
     this.resType = resType
     this.relType = relType
   }

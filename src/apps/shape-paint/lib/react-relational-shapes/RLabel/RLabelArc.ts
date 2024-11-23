@@ -1,3 +1,4 @@
+import { ReactSVGElement, SVGAttributes } from 'react'
 import { CoordPolar } from '../Coord'
 import { RLabelProp, RLabel } from './RLabel'
 import { RArc } from '../RArc'
@@ -26,8 +27,8 @@ class RLabelArc extends RLabel {
   protected declare __dependencies: [RArc]
   protected declare __prop: RLabelArcProp
 
-  constructor(dependencies: [RArc], prop: RLabelArcProp) {
-    super(dependencies, prop, RLabelArc.REL_TYPE)
+  constructor(dependencies: [RArc], prop: RLabelArcProp, style?: SVGAttributes<ReactSVGElement>) {
+    super(dependencies, prop, style, RLabelArc.REL_TYPE)
   }
 
   resolve() {
