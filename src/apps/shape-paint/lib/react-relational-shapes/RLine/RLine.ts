@@ -62,6 +62,7 @@ type CoordOnLine = {
  */
 abstract class RLine extends RShape<SVGLineElement> {
   public static RES_TYPE = 'RLine'
+  protected __Component = Component
 
   /**
    * The dependencies for the cut.
@@ -88,14 +89,6 @@ abstract class RLine extends RShape<SVGLineElement> {
   ) {
     super(dependencies, prop, style, RLine.RES_TYPE, relType)
     this.__dependenciesCut = { coord1: undefined, coord2: undefined }
-  }
-
-  public component = () => {
-    return Component({
-      resolved: this.resolve(),
-      styles: this.style,
-      key: this.id,
-    })
   }
 
   /**

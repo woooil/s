@@ -1,8 +1,9 @@
 import * as React from 'react'
+import component from '../component'
 import { Props } from '../ComponentProps'
 import { RPointResolved } from './RPoint'
 
-export default function Point({
+export default component(function Point({
   resolved,
   styles,
   ...props
@@ -21,4 +22,4 @@ export default function Point({
       {...props}
     />
   )
-}
+})

@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { NoSuchShapeError } from './Error'
+import { Coord } from './Coord'
 import { RShape } from './RShape'
 import * as RAngle from './RAngle'
 import * as RArc from './RArc'
@@ -187,6 +188,8 @@ function useShapes() {
   }
 
   const update = {
+    style: (rshape: RShape<any>, style: React.SVGAttributes<React.JSX.Element>) => __update([rshape], () => rshape.style = { ...rshape.style, ...style }),
+    
     angle: {
       congruent: (
         rangle: RAngle.RAngle,
@@ -211,6 +214,13 @@ function useShapes() {
         marker: string,
       ) =>
         __update([rmarker, rmarker2], () => rmarker.parallel(rmarker2, marker)),
+    },
+
+    point: {
+      absoluteCoord: {
+        move: (rpoint: RPoint.RPointAbsoluteCoord, coord: Coord) => 
+          __update([rpoint], () => rpoint.move(coord))
+      },
     },
   }
 

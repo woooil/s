@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { v4 as uuid } from 'uuid'
+import component from '../component'
 import { Props } from '../ComponentProps'
 import { RMarkerResolved } from './Rmarker'
 
@@ -75,7 +76,7 @@ function Path({ marker, id }: { marker: string; id: string }) {
   }
 }
 
-export default function Marker({
+export default component(function Marker({
   resolved,
   styles,
   ...props
@@ -111,4 +112,4 @@ export default function Marker({
       <path {...attr} />
     </g>
   )
-}
+})

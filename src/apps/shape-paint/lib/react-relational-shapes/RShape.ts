@@ -1,5 +1,7 @@
-import { JSX, SVGAttributes } from 'react'
+import * as React from 'react'
+import { createElement, ReactElement, SVGAttributes, memo } from 'react'
 import { v4 as uuid } from 'uuid'
+import { Props } from './ComponentProps'
 
 /**
  * Represents any shapes by the definition related to other shapes.
@@ -65,10 +67,18 @@ abstract class RShape<T extends SVGElement> {
    */
   public abstract resolve(): any
 
+  protected __Component: (prop: Props<any, T>) => ReactElement
+  public get Component() {
+    return this.__Component
+  }
+
   /**
    * Returns React SVG Component displaying this RShape.
    */
-  public abstract component(props: any): JSX.Element
+  public component(props?: any) {
+    // return this.Component({ resolved: this.resolve(), style: this.style, key: this.id, ...props })
+    return createElement(this.Component, { resolved: this.resolve(), style: this.style, key: this.id, id: this.id, ...props })
+  }
 
   /**
    * Assigns properties to this RShape. id is auto-generated using uuid().

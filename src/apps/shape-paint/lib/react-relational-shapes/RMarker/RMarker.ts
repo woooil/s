@@ -38,6 +38,7 @@ interface RMarkerProp {
  */
 abstract class RMarker extends RShape<SVGGElement> {
   public static RES_TYPE = 'RMarker'
+  protected __Component = Component
 
   constructor(
     dependencies: RShape<any>[],
@@ -46,14 +47,6 @@ abstract class RMarker extends RShape<SVGGElement> {
     relType: string,
   ) {
     super(dependencies, prop, style, RMarker.RES_TYPE, relType)
-  }
-
-  public component = () => {
-    return Component({
-      resolved: this.resolve(),
-      styles: this.style,
-      key: this.id,
-    })
   }
 
   public abstract resolve(): RMarkerResolved

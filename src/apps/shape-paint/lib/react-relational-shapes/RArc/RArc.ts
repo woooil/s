@@ -33,6 +33,7 @@ interface RArcResolved {
  */
 abstract class RArc extends RShape<SVGPathElement> {
   public static RES_TYPE = 'RArc'
+  protected __Component = Component
 
   constructor(
     dependencies: RShape<any>[],
@@ -41,14 +42,6 @@ abstract class RArc extends RShape<SVGPathElement> {
     relType: string,
   ) {
     super(dependencies, {}, style, RArc.RES_TYPE, relType)
-  }
-
-  public component = () => {
-    return Component({
-      resolved: this.resolve(),
-      styles: this.style,
-      key: this.id,
-    })
   }
 
   public abstract resolve(): RArcResolved

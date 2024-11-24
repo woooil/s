@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { v4 as uuid } from 'uuid'
+import component from '../component'
 import { Props } from '../ComponentProps'
 import { RLabelResolved } from './RLabel'
 
@@ -64,7 +65,7 @@ function Arrow({
   )
 }
 
-export default function Label({
+export default component(function Label({
   resolved,
   styles,
   ...props
@@ -114,4 +115,4 @@ export default function Label({
       </text>
     </g>
   )
-}
+})

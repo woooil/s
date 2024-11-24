@@ -1,8 +1,9 @@
 import * as React from 'react'
+import component from '../component'
 import { Props } from '../ComponentProps'
 import { RLengthResolved } from './RLength'
 
-export default function Length({
+export default component(function Length({
   resolved,
   styles,
   ...props
@@ -46,4 +47,4 @@ export default function Length({
       {...props}
     />
   )
-}
+})

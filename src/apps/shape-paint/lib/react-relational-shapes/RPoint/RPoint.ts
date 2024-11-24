@@ -32,6 +32,7 @@ interface RPointResolved extends RPointResolvedProp {
  */
 abstract class RPoint extends RShape<SVGCircleElement> {
   public static RES_TYPE = 'RPoint'
+  protected __Component = Component
 
   constructor(
     dependencies: RShape<any>[],
@@ -40,14 +41,6 @@ abstract class RPoint extends RShape<SVGCircleElement> {
     relType: string,
   ) {
     super(dependencies, prop, style, RPoint.RES_TYPE, relType)
-  }
-
-  public component = () => {
-    return Component({
-      resolved: this.resolve(),
-      styles: this.style,
-      key: this.id,
-    })
   }
 
   public abstract resolve(): RPointResolved

@@ -44,6 +44,7 @@ interface RAngleProp {
  */
 abstract class RAngle extends RShape<SVGGeometryElement> {
   public static RES_TYPE = 'RAngle'
+  protected __Component = Component
 
   /**
    * The dependencies for the congruent. If exists, this indicates the congruent RAngle to this RAngle.
@@ -63,14 +64,6 @@ abstract class RAngle extends RShape<SVGGeometryElement> {
     relType: string,
   ) {
     super(dependencies, prop, style, RAngle.RES_TYPE, relType)
-  }
-
-  public component = () => {
-    return Component({
-      resolved: this.resolve(),
-      styles: this.style,
-      key: this.id,
-    })
   }
 
   public abstract resolve(): RAngleResolved

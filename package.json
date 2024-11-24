@@ -13,6 +13,7 @@
     "defaults"
   ],
   "dependencies": {
+    "deep-equal": "^2.2.3",
     "react": "^18.0.1",
     "react-dom": "^18.0.1",
     "uuid": "^10.0.0"

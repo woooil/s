@@ -1,4 +1,4 @@
-import { JSX, SVGAttributes } from 'react'
+import { SVGAttributes } from 'react'
 import { RPoint, RPointResolvedProp } from './RPoint'
 import { RLine } from '../RLine'
 

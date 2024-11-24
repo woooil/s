@@ -23,6 +23,7 @@ interface RPolygonResolved {
  */
 abstract class RPolygon extends RShape<SVGPolygonElement> {
   public static RES_TYPE = 'RPolygon'
+  protected __Component = Component
 
   constructor(
     dependencies: RShape<any>[],
@@ -31,14 +32,6 @@ abstract class RPolygon extends RShape<SVGPolygonElement> {
     relType: string,
   ) {
     super(dependencies, prop, style, RPolygon.RES_TYPE, relType)
-  }
-
-  public component = () => {
-    return Component({
-      resolved: this.resolve(),
-      styles: this.style,
-      key: this.id,
-    })
   }
 
   public abstract resolve(): RPolygonResolved

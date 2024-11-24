@@ -1,9 +1,10 @@
 import * as React from 'react'
+import component from '../component'
 import { Props } from '../ComponentProps'
 import { RLineResolved } from './RLine'
 import { Coord } from '../Coord'
 
-export default function Line({
+export default component(function Line({
   resolved,
   styles,
   ...props
@@ -18,16 +19,16 @@ export default function Line({
   const tempA = resolved.extend1
     ? extend(resolved.coord1, resolved.coord2)
     : resolved.coord1
-  resolved.coord2 = resolved.extend2
+  const coord2 = resolved.extend2
     ? extend(resolved.coord2, resolved.coord1)
     : resolved.coord2
-  resolved.coord1 = tempA
+  const coord1 = tempA
 
   const attr = {
-    x1: resolved.coord1.x,
-    y1: resolved.coord1.y,
-    x2: resolved.coord2.x,
-    y2: resolved.coord2.y,
+    x1: coord1.x,
+    y1: coord1.y,
+    x2: coord2.x,
+    y2: coord2.y,
     stroke: 'black',
     strokeWidth: 2,
     ...styles,
@@ -39,4 +40,4 @@ export default function Line({
       {...props}
     />
   )
-}
+})

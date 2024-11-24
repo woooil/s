@@ -1,4 +1,5 @@
 import * as React from 'react'
+import component from '../component'
 import { Props } from '../ComponentProps'
 import { RAngleResolved } from './RAngle'
 
@@ -176,7 +177,7 @@ function AngleDefault({
   )
 }
 
-export default function Angle({
+export default component(function Angle({
   resolved,
   styles,
   ...props
@@ -215,4 +216,4 @@ export default function Angle({
         />
       )
   }
-}
+})

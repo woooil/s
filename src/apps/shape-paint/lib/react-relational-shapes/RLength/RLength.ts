@@ -28,10 +28,8 @@ interface RLengthResolved {
  * @hierarchy RShape <- RLength
  */
 abstract class RLength extends RShape<SVGPathElement> {
-  /**
-   * 'RLength'.
-   */
   public static RES_TYPE = 'RLength'
+  protected __Component = Component
 
   constructor(
     dependencies: any,
@@ -40,14 +38,6 @@ abstract class RLength extends RShape<SVGPathElement> {
     relType: string,
   ) {
     super(dependencies, {}, style, RLength.RES_TYPE, relType)
-  }
-
-  public component = () => {
-    return Component({
-      resolved: this.resolve(),
-      styles: this.style,
-      key: this.id,
-    })
   }
 
   /**

@@ -41,6 +41,11 @@ class RPointAbsoluteCoord extends RPoint {
       coord: new Coord(this.__prop.x, this.__prop.y),
     }
   }
+
+  public move(coord: Coord) {
+    this.__prop.x = coord.x
+    this.__prop.y = coord.y
+  }
 }
 
 export { RPointAbsoluteCoordProp, RPointAbsoluteCoord }

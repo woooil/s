@@ -1,8 +1,9 @@
 import * as React from 'react'
+import component from '../component'
 import { Props } from '../ComponentProps'
 import { RPolygonResolved } from './RPolygon'
 
-export default function Polygon({
+export default component(function Polygon({
   resolved,
   styles,
   ...props
@@ -21,4 +22,4 @@ export default function Polygon({
   }
 
   return <polygon {...attr} />
-}
+})
